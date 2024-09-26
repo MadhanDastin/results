@@ -110,7 +110,7 @@ const HomeScreen = () => {
             }
             .header {
                 width: 100%;
-                height: auto;
+                height: 75px;
                 background: #00355b;
                 padding: 10px 0;
             }
