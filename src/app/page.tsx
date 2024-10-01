@@ -54,7 +54,7 @@ const Login = () => {
                                     <div className="small-label float-end">Default password is SIF/NO (Format: YYYYNSCHOOLID)</div>
                                 </div>
                                 <div className="mb-3 d-flex justify-content-center">
-                                    <a href="#" className="forgotPassword"><Image src="/images/vector.png" alt="Logo" width={15} height={15} />  Forgot Password?</a>
+                                    <a href="#" className="forgotPassword"><Image src="/images/Vector.png" alt="Logo" width={15} height={15} />  Forgot Password?</a>
                                 </div>
                                 <div className="d-flex justify-content-center mt-5">
                                     <button type="submit" className="btn btn-primary custom-button">
