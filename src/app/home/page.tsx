@@ -1,10 +1,18 @@
 "use client";
+
 import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Carousel } from 'react-bootstrap';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const HomeScreen = () => {
+    
+    const router = useRouter();
+
+  const handleGrade12ResultsClick = () => {
+    router.push("/login");
+  };
     const carouselItems = [
         {
             image: '/images/pnglogov4.png',
@@ -129,7 +137,7 @@ const HomeScreen = () => {
                             <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p>
                         </div>
                         <div className='col-md-3 text-center'>
-                            <button className="btn bg-gradient mx-3 title-color">Grade 12 Results</button>
+                            <button className="btn bg-gradient mx-3 title-color" onClick={handleGrade12ResultsClick}>Grade 12 Results</button>
                             <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p>
                         </div>
                         <div className='col-md-3 text-center'>

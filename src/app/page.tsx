@@ -2,9 +2,28 @@
 import React from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors,isValid },
+    } = useForm({
+        mode: 'onChange', // Check form validity on every change
+    });
+
+    // Handle form submission
+    const onSubmit = (data: any) => {
+        console.log('Form Data:', data);
+        // Handle form data (e.g., send it to a server)
+        reset();
+    };
+
+
+
+
     return (
         <div className="loginPage vh-100">
             <div className="container-fluid">
@@ -15,7 +34,7 @@ const Login = () => {
                     <div className="col-md-4 text-center">
                         <div>
                             <div>
-                                <Image src="/images/Group 95.png" alt="Logo" width={90} height={90} />
+                                <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
                             </div>
                             <div className="mt-0">
                                 <h2 className="gradeTitle mt-2">GRADE 10 RESULTS</h2>
@@ -25,11 +44,14 @@ const Login = () => {
                         {/* Logo and Department Title in the same row */}
                         <div className="row d-flex d-none d-sm-flex justify-content-center align-items-center mt-5 pe-4 ">
                             <div className="col-auto mt-5 pe-0">
-                                <Image src="/images/img5.png" alt="Department Logo" width={60} height={60} />
+                                <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
                             </div>
                             <div className="col-auto mt-5 ps-0">
-                                <p className="departmentTitle">
-                                    Department Of Education<br />Papua New Guinea
+                                <p className="departmentTitle mb-0 mt-3">
+                                    Department Of Education
+                                </p>
+                                <p className="departmentTitle text-start">
+                                Papua New Guinea
                                 </p>
                             </div>
                         </div>
@@ -38,8 +60,66 @@ const Login = () => {
                     {/* Right side - Form */}
                     <div className="col-md-4 d-flex justify-content-center align-items-center">
                         <div className="formCard p-3">
-                            <h2 className="loginTitle mt-2 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={20} height={20} /></h2>
-                            <form className='w-100'>
+                            <h2 className="loginTitle mt-2 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} /></h2>
+                            <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
+                                {/* Surname Field */}
+                                <div className="mb-4">
+                                    <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
+                                        placeholder="Surname"
+                                        {...register('surname', { required: 'Surname is required' })}
+                                    />
+                                    {errors.surname && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.surname.message?.toString()}</div>}
+                                </div>
+
+                                {/* Given Names Field */}
+                                <div className="mb-4">
+                                    <label className="form-label mb-0 ps-4 ms-2">Given Names *</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
+                                        placeholder="First Name + Middle Name"
+                                        {...register('givenNames', { required: 'Given names are required' })}
+                                    />
+                                    {errors.givenNames && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.givenNames.message?.toString()}</div>}
+                                </div>
+
+                                {/* Password Field */}
+                                <div className="mb-3">
+                                    <label className="form-label mb-0 ps-4 ms-2">Password *</label>
+                                    <input
+                                        type="password"
+                                        className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
+                                        placeholder="Password/GFL NO"
+                                        {...register('password', {
+                                            required: 'Password is required',
+                                            minLength: {
+                                                value: 6,
+                                                message: 'Password must be at least 6 characters',
+                                            },
+                                        })}
+                                    />
+                                    {errors.password && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.password.message?.toString()}</div>}
+                                    <div className="small-label ps-4 ms-2">Default password=SLF NO(Format:YYYYPRSCHCAND)</div>
+                                    <div className='text-center mb-4 pb-2'>
+                                        <a href="#" className="forgotPassword"><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
+                                    </div>
+                                </div>
+
+                                <div className="d-flex justify-content-center mt-3">
+                                    <button type="submit" className="btn btn-primary custom-button" >
+                                        Get My Results &nbsp;
+
+                                        <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
+
+                                    </button>
+                                </div>
+
+
+                            </form>
+                            {/* <form className='w-100'>
                                 <div className="mb-2">
                                     <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
                                     <input type="text" className="form-control inputField lh-lg" placeholder="Surname" />
@@ -64,7 +144,7 @@ const Login = () => {
 
                                     </button>
                                 </div>
-                            </form>
+                            </form> */}
                             <div className="text-center mt-4 pt-2 mb-4">
                                 <a href="#" className="btn  btn-sm customButton">Help <Image src="/images/Vector (2).png" alt="Logo" width={12} height={12} /></a>
                                 <a href="#" className="btn btn-outline-info  btn-sm customButton mx-3">Home <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></a>
@@ -77,7 +157,7 @@ const Login = () => {
                             <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
                         </div>
                         <div className="col-auto ps-0">
-                            <p className="departmentTitle">
+                            <p className="departmentTitle mt-3">
                                 Department Of Education<br />Papua New Guinea
                             </p>
                         </div>
@@ -133,7 +213,6 @@ const Login = () => {
                 .departmentTitle {
                     color: #FCE886;
                     font-size: 0.7rem;
-                    margin-top: 20px;
                 }
 
                 .formCard {
@@ -161,10 +240,10 @@ const Login = () => {
                 }
 
                 .custom-button {
-                //   background: 'linear-gradient( #181D6E 0%, #0071BD 100%)'
-                    background-color: #0053ba; /* Adjust the background color to match */
+              
+                    //background-color: #0053ba; /* Adjust the background color to match */
                     color: #fff;
-                   
+                    background-image: linear-gradient(to right, #181D6E , #0071BD);
                     border-radius: 10px; /* Rounded corners */
                     font-size: 10px;
                     font-weight: bold;
@@ -184,6 +263,11 @@ const Login = () => {
         
                 .form-label{
                     color:white;
+                    font-size: 14px;
+                }
+
+                .invalid-feedback{
+                    color:yellow;
                     font-size: 12px;
                 }
 
@@ -192,7 +276,7 @@ const Login = () => {
                     font-size: 12px;
                     background-color: #006FBB !important;
                      border: 1px solid #006FBB !important;
-                    
+                     box-shadow: 0px 4px 4px 4px #00000040;
                 }
         
                 .small-label{
