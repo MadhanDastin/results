@@ -170,6 +170,16 @@ const HomeScreen = () => {
 
             {/* CSS */}
             <style jsx>{`
+            @font-face {
+  font-family: 'MyFont';
+  src: url('/fonts/Holiday_Trip_Free.ttf') format('ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+ 
+.subtitle-xs {
+  font-family: 'MyFont';
+}
             body {
                 overflow: hidden;
             }

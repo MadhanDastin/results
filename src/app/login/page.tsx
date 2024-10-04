@@ -3,8 +3,16 @@ import React from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
-
+type FormValues = {
+    surname: string;
+    givenNames: string;
+    password: string;
+  };
+  
 const Login = () => {
+
+   
+
     const {
         register,
         handleSubmit,
@@ -13,14 +21,41 @@ const Login = () => {
     } = useForm({
         mode: 'onChange', // Check form validity on every change
     });
-
-    // Handle form submission
-    const onSubmit = (data: any) => {
-        console.log('Form Data:', data);
-        // Handle form data (e.g., send it to a server)
+    
+    const onSubmit = async (data: FormValues) => {
+        console.log('form data ', data);
+        try {
+          // Make a POST request to the login API
+          const response = await fetch("http://127.0.0.1:4000/api/v1/twl/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                lastname: data.surname,
+              givennames: data.givenNames,
+              slfnumber: data.password,
+            }),
+          });
+    
+          const result = await response.json();
+    
+          if (response.ok) {
+            // Handle successful login
+            console.log("Login successful:", result);
+            alert("Login successful!");
+            reset(); // Reset form fields after successful login
+          } else {
+            // Handle API error response
+            console.error("Login failed:", result.message);
+            alert(`Login failed: ${result.message}`);
+          }
+        } catch (error) {
+          console.error("An error occurred during login:", error);
+          alert("An error occurred. Please try again.");
+        }
         reset();
-    };
-
+      };
 
 
 
@@ -102,14 +137,14 @@ const Login = () => {
                                         })}
                                     />
                                     {errors.password && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.password.message?.toString()}</div>}
-                                    <div className="small-label ps-4 ms-2">Default password=SLF NO(Format:YYYYPRSCHCAND)</div>
+                                    <div className="small-label ps-4 ms-2 mt-1">Default password=SLF NO(Format:YYYYPRSCHCAND)</div>
                                     <div className='text-center mb-4 pb-2'>
                                         <a href="#" className="forgotPassword"><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
                                     </div>
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3">
-                                    <button type="submit" className="btn btn-primary custom-button" >
+                                    <button type="submit" className="btn btn-primary custom-button" disabled={!isValid}>
                                         Get My Results &nbsp;
 
                                         <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
@@ -119,32 +154,7 @@ const Login = () => {
 
 
                             </form>
-                            {/* <form className='w-100'>
-                                <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
-                                    <input type="text" className="form-control inputField lh-lg" placeholder="Surname" />
-                                </div>
-                                <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Given Names *</label>
-                                    <input type="text" className="form-control inputField lh-lg" placeholder="First Name + Middle Name" />
-                                </div>
-                                <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Password *</label>
-                                    <input type="password" className="form-control inputField lh-lg" placeholder="Password/GFL NO" />
-                                    <div className="small-label ps-4 ms-2">Default password=SLF NO(Format:YYYYPRSCHCAND)</div>
-                                    <div className='text-center mb-4 pb-2'>
-                                        <a href="#" className="forgotPassword"><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
-                                    </div>
-                                </div>
-                                <div className="d-flex justify-content-center mt-3">
-                                    <button type="submit" className="btn btn-primary custom-button">
-                                        Get My Results &nbsp;
-
-                                        <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
-
-                                    </button>
-                                </div>
-                            </form> */}
+                            
                             <div className="text-center mt-4 pt-2 mb-4">
                                 <a href="#" className="btn  btn-sm customButton">Help <Image src="/images/Vector (2).png" alt="Logo" width={12} height={12} /></a>
                                 <a href="#" className="btn btn-outline-info  btn-sm customButton mx-3">Home <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></a>
@@ -216,13 +226,11 @@ const Login = () => {
                 }
 
                 .formCard {
-                    //background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+                   
                     border: 2px solid  #4BB5FF;
                     border-radius: 20px;
                     box-shadow: 0px 4px 4px 4px #00000040;
-                    //box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-                    width:330px;
-                    // height:450px;
+                    width:330px;                   
                      padding: 1.5rem;
                 }
 
@@ -245,9 +253,10 @@ const Login = () => {
                     color: #fff;
                     background-image: linear-gradient(to right, #181D6E , #0071BD);
                     border-radius: 10px; /* Rounded corners */
-                    font-size: 10px;
+                    font-size: 12px;
                     font-weight: bold;
                     width:150px;
+                    height:45px;
                 }
 
                 .inputField {
