@@ -66,18 +66,18 @@ const HomeScreen = () => {
                                     </div>
 
                                     <div className="col-6 text-center text-color-blue">
-                                        <p className="head fw-bold m-0 fs-4 fs-sm-4 fs-md-3 fs-lg-2 pt-0">
+                                        <p className="head fw-bold m-0 fs-4 fs-sm-5 fs-md-3 fs-lg-2 pt-0 d-sm-fllex">
                                             NATIONAL EXAMINATION RESULTS - 2024
                                         </p>
-                                        <p className="subhead fw-bold fs-6 fs-sm-5 fs-md-4 mb-0 p-lh">
+                                        <p className="subhead fw-bold fs-6 fs-sm-5 fs-md-4 mb-0 p-lh d-none d-sm-block">
                                             Department Of Education
                                         </p>
-                                        <p className="fw-bold fs-7 fs-sm-6 fs-md-5 ">
+                                        <p className="fw-bold fs-7 fs-sm-6 fs-md-5 d-none d-sm-block ">
                                             Papua New Guinea
                                         </p>
                                     </div>
 
-                                    <div className="col-3 col-sm-3 col-md-2 col-lg-1 text-end right-logo-div">
+                                    <div className="col-3 col-sm-3 col-md-2 col-lg-1 text-end right-logo-div d-none d-sm-block">
                                         <Image src="/images/img5.png" alt="Department of Education logo" width={80} height={80} className="img-fluid" />
                                     </div>
 
@@ -110,7 +110,7 @@ const HomeScreen = () => {
                 {/* </div> */}
             </div >
             <div className="container-fluid">
-                <div className="row no-gutters d-none d-md-flex">
+                <div className="row no-gutters">
                     {images.map((image, index) => (
                         <div className="col p-1" key={index}>
                             <div className="card">
@@ -138,15 +138,15 @@ const HomeScreen = () => {
                 {/* Buttons Section */}
                 <div className='col-md-12 mb-3'>
                     <div className="row mt-4">
-                        <div className='offset-md-3 col-md-2 text-center px-0'>
+                        <div className='offset-md-3 col-md-2 text-center px-0 mb-sm-5'>
                             <button className="btn btn-bg-gradient mx-3 title-color">Grade 10 Results</button>
                             {/* <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p> */}
                         </div>
-                        <div className='col-md-2 text-center px-0'>
+                        <div className='col-md-2 text-center px-0 mb-sm-5'>
                             <button className="btn btn-bg-gradient mx-3 title-color" onClick={handleGrade12ResultsClick}>Grade 12 Results</button>
                             {/* <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p> */}
                         </div>
-                        <div className='col-md-2 text-center px-0'>
+                        <div className='col-md-2 text-center px-0 mb-sm-5'>
                             <button className="btn btn-bg-gradient mx-3 title-color">STEM Results</button>
                             {/* <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p> */}
                         </div>
