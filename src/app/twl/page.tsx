@@ -2,6 +2,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
+import Footer from '../footer/footer';
 
 const Marksheet = () => {
   return (
@@ -164,6 +165,7 @@ const Marksheet = () => {
             </div>
         </div>
       </div>
+      <Footer/>
       </div>
 
       <style jsx>{`

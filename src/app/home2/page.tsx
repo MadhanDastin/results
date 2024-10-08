@@ -5,10 +5,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Carousel } from 'react-bootstrap';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Footer from '../footer/footer';
 
 
 
-const HomeScreen = () => {
+const HomeScreen: React.FC  = () => {
+
+    const containerStyle: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh', // Full height to ensure footer sticks to the bottom
+      };
+    
+      const mainContentStyle: React.CSSProperties = {
+        flex: 1, // This ensures the main content takes up remaining space
+      };
 
     const router = useRouter();
 
@@ -57,7 +68,7 @@ const HomeScreen = () => {
                 {/* <h1>Header Section</h1> */}
                 <div className="header">
                     <div className="header-content">
-                        <div className="row justify-content-center header-row-div">
+                        <div className="row justify-content-center header-row-div d-none d-sm-block">
                             <div className="col-12">
                                 <div className="row align-items-center justify-content-between g-1">
 
@@ -82,6 +93,17 @@ const HomeScreen = () => {
                                     </div>
 
                                 </div>
+
+                            </div>
+                        </div>
+                        <div className="row justify-content-center header-row-div d-block d-sm-none">
+                            <div className="col-12 d-inline-flex align-items-center justify-content-center">
+                                <Image src="/images/Papua New Guinea.png" alt="Emblem of Papua New Guinea" width={80} height={80}
+                                    className="img-fluid mt-2 ps-2" />
+                                <p className="head fw-bold m-0 fs-6 pt-3 text-center">
+                                    NATIONAL EXAMINATION RESULTS - 2024
+                                </p>
+
                             </div>
                         </div>
 
@@ -110,7 +132,7 @@ const HomeScreen = () => {
                 {/* </div> */}
             </div >
             <div className="container-fluid">
-                <div className="row no-gutters d-none d-md-flex">
+                <div className="row no-gutters d-md-flex">
                     {images.map((image, index) => (
                         <div className="col p-1" key={index}>
                             <div className="card">
@@ -136,22 +158,28 @@ const HomeScreen = () => {
                 </p>
 
                 {/* Buttons Section */}
-                <div className='col-md-12 mb-3'>
-                    <div className="row mt-4">
-                        <div className='offset-md-3 col-md-2 text-center px-0'>
-                            <button className="btn btn-bg-gradient mx-3 title-color">Grade 10 Results</button>
-                            {/* <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p> */}
+                <div className="col-md-12 mb-3">
+                    <div className="row mt-4 justify-content-center">
+                        <div className="col-md-2 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 title-color">Grade Results</button>
                         </div>
-                        <div className='col-md-2 text-center px-0'>
-                            <button className="btn btn-bg-gradient mx-3 title-color" onClick={handleGrade12ResultsClick}>Grade 12 Results</button>
-                            {/* <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p> */}
+
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28817.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 title-color" onClick={handleGrade12ResultsClick}>
+                                Grade Results
+                            </button>
                         </div>
-                        <div className='col-md-2 text-center px-0'>
-                            <button className="btn btn-bg-gradient mx-3 title-color">STEM Results</button>
-                            {/* <p className='declaration fw-bold mt-2 color-red'>*Declared at: 11 AM, 8th December, 2024</p> */}
+
+                        <div className="col-md-2 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 title-color">STEM Results</button>
                         </div>
                     </div>
                 </div>
+
+              
             </div >
             <div className='row d-flex d-block d-sm-none'>
                 <div className='col-xs-12 text-center'>
@@ -169,13 +197,15 @@ const HomeScreen = () => {
 
                     <p className="mb-0 d-inline-block mt-1 fw-bold align-middle">
                         <span className='ministry-text-xs subtitle-xs footer-text-color'>Department of Education</span><br />
-                        <span className='country-text-xs fs-7 footer-text-color'>Papua New Guinea</span>
+                        <span className='country-text-xs fs-7 mb-0 footer-text-color'>Papua New Guinea</span>
                     </p>
                 </div>
             </div>
-            <div className="p-1 mb-0 mt-4 bg-gradient-custom ">
+
+            <Footer />
+            {/* <div className="p-1 mb-0 mt-4 bg-gradient-custom ">
                 by DASTIN Technologies
-            </div>
+            </div> */}
 
             {/* CSS */}
             <style jsx>{`
@@ -192,16 +222,7 @@ const HomeScreen = () => {
                 height: 75px;
             }
 
-//              @font-face {
-//   font-family: 'MyFont';
-//   src: url('/fonts/IntroRust-Base.otf') format('otf');
-//   font-weight: normal;
-//   font-style: normal;
-// }
- 
-// .header {
-//   font-family: 'MyFont';
-// }
+
 
             .bg-gradient-custom {
     background: linear-gradient(to right, white 5%, #4BB5FF);
@@ -223,9 +244,7 @@ const HomeScreen = () => {
             .bg-color-blue {
                 background-color: #14317F;
             }
-            // body {
-            //     overflow: hidden;
-            // }
+          
             .fs-7 {
                 font-size: 0.675rem;
             }
@@ -243,20 +262,26 @@ const HomeScreen = () => {
                 }
       .header {
           width: 100%;
-        //   height: 85px;
-        //   background:#00355b;
-        //    linear-gradient(#fee05c, #febc5b);
+       
         }
 
         .btn-bg-gradient {
-        color: #fff;
-                    background-image: linear-gradient(to right, #181D6E , #0071BD);
-          width: 170px;
-        }
+            width: 144px;
+            height: 34.85px;
+            background: linear-gradient(180deg, #181D6E 0%, #0071BD 100%);
+            border-radius: 13px;
+            border: 0.75px solid #1A4CD3;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-        .header-content {
-         
         }
+       .btn-bg-gradient:hover {
+  background: linear-gradient(180deg, #0071BD 0%, #181D6E 100%); /* Hover effect - reverse gradient */
+}
 
         .flaglogo {
           width: 80px;
@@ -292,6 +317,7 @@ const HomeScreen = () => {
 
         .title-color {
           color: white;
+          font-size: 12px;
         }
 
         .subtitle {

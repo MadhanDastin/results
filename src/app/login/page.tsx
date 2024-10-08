@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
+
 type FormValues = {
     surname: string;
     givenNames: string;
@@ -72,7 +73,7 @@ const Login = () => {
                                 <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
                             </div>
                             <div className="mt-0">
-                                <h2 className="gradeTitle mt-2">GRADE 10 RESULTS</h2>
+                                <h2 className="gradeTitle mt-2">GRADE 12 RESULTS</h2>
                                 <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
                             </div>
                         </div>
@@ -144,7 +145,7 @@ const Login = () => {
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3">
-                                    <button type="submit" className="btn btn-primary custom-button" disabled={!isValid}>
+                                    <button type="submit" className="btn btn-primary custom-button">
                                         Get My Results &nbsp;
 
                                         <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
@@ -173,7 +174,9 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
+               
             </div>
+            
 
             <style jsx>{`
                 ::-webkit-input-placeholder {
@@ -307,7 +310,9 @@ const Login = () => {
                   
                 }
       `}</style>
+       
         </div>
+        
     );
 };
 
