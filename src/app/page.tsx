@@ -2,24 +2,25 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Carousel } from 'react-bootstrap';
+// import { Carousel } from 'react-bootstrap';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from './footer/footer';
+import { Carousel } from 'react-responsive-carousel';
 
 
 
-const HomeScreen: React.FC  = () => {
+const HomeScreen: React.FC = () => {
 
     const containerStyle: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh', // Full height to ensure footer sticks to the bottom
-      };
-    
-      const mainContentStyle: React.CSSProperties = {
+    };
+
+    const mainContentStyle: React.CSSProperties = {
         flex: 1, // This ensures the main content takes up remaining space
-      };
+    };
 
     const router = useRouter();
 
@@ -113,8 +114,20 @@ const HomeScreen: React.FC  = () => {
             {/* Carousel */}
             < div className='row mt-0' >
 
-
-                < div className="carousel-container w-100" >
+                <div className="carousel-container w-100">
+                    <Carousel useKeyboardArrows={true} showArrows={false} showStatus={false}>
+                        {carouselItems.map((item, index) => (
+                            <div className="slide" key={index}>
+                                <Image className="d-block carousel-image" src={item.image} alt={`Slide ${index}`} width="0"
+                                    height="0"
+                                    sizes="100vw"
+                                    style={{ width: '100%', height: '200px' }}
+                                    key={index} />
+                            </div>
+                        ))}
+                    </Carousel>
+                </div>
+                {/* < div className="carousel-container w-100" >
                     <Carousel interval={5000} controls={false} indicators={true} className='c-indicator'>
                         {carouselItems.map((item, index) => (
                             <Carousel.Item key={index}>
@@ -126,7 +139,7 @@ const HomeScreen: React.FC  = () => {
                             </Carousel.Item>
                         ))}
                     </Carousel>
-                </div >
+                </div > */}
                 {/* </div> */}
             </div >
             <div className="container-fluid">
@@ -219,11 +232,11 @@ const HomeScreen: React.FC  = () => {
                     </div>
                 </div>
 
-              
+
             </div >
-            <div className='row d-flex d-block d-sm-none'>
+            <div className='row d-flex d-block d-sm-none mt-5'>
                 <div className='col-xs-12 text-center'>
-                    <Image src="/images/img5.png" alt="Logo" width={60} height={60} className="logo-xs" />
+                    <Image src="/images/img5.png" alt="Logo" width={50} height={50} className="logo-xs" />
 
                     <p className="mb-0 d-inline-block mt-0 fw-bold align-middle lh-1">
                         <span className='ministry-text-xs subtitle-xs footer-text-color'>Department of Education</span><br />
@@ -249,23 +262,7 @@ const HomeScreen: React.FC  = () => {
 
             {/* CSS */}
             <style jsx>{`
-            // .carousel-indicators [data-bs-target] {
-            //     width: 12px;               /* Set width of bullet */
-            //     height: 12px;              /* Set height of bullet */
-            //     border-radius: 50%;        /* Make them round */
-            //     background-color: #0071BD; /* Custom color for bullets */
-            //     border: 2px solid white;   /* Optional: white border around bullets */
-            //     opacity: 0.7;              /* Slight transparency */
-            //     }
 
-            //     .carousel-indicators .active {
-            //     background-color: #004085; /* Darker color for active bullet */
-            //     opacity: 1;                /* Fully visible active bullet */
-            //     }
-
-            //     .carousel-indicators [data-bs-target]:hover {
-            //     opacity: 1;                /* Fully visible on hover */
-            //     }
             .p-lh {
                 line-height: 16px;
             }
@@ -306,8 +303,8 @@ const HomeScreen: React.FC  = () => {
                 font-size: 0.675rem;
             }
             .subtitle-xs {
-                font-size: 0.875rem;
-                 color: #00355b;
+                font-size: 0.75rem;
+                color: #00355b;
             }
             
             .declaration{
@@ -328,7 +325,7 @@ const HomeScreen: React.FC  = () => {
             background: linear-gradient(180deg, #181D6E 0%, #0071BD 100%);
             border-radius: 13px;
             border: 0.75px solid #1A4CD3;
-            color: white;
+            color: white !important;
             font-weight: bold;
             font-size: 16px;
             display: flex;
@@ -424,8 +421,8 @@ const HomeScreen: React.FC  = () => {
         }
 
         .logo-xs {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
         }
         
         .ministry-text {
