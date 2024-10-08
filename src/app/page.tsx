@@ -77,7 +77,7 @@ const HomeScreen: React.FC  = () => {
                                     </div>
 
                                     <div className="col-6 text-center text-color-blue">
-                                        <p className="head fw-bold m-0 fs-4 fs-sm-4 fs-md-3 fs-lg-2 pt-0">
+                                        <p className="head fw-bold m-0 fs-sm-4 fs-md-3 fs-lg-2 pt-0">
                                             NATIONAL EXAMINATION RESULTS - 2024
                                         </p>
                                         <p className="subhead fw-bold fs-6 fs-sm-5 fs-md-4 mb-0 p-lh">
@@ -106,8 +106,6 @@ const HomeScreen: React.FC  = () => {
 
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </header >
@@ -185,13 +183,13 @@ const HomeScreen: React.FC  = () => {
                 <div className='col-xs-12 text-center'>
                     <Image src="/images/img5.png" alt="Logo" width={60} height={60} className="logo-xs" />
 
-                    <p className="mb-0 d-inline-block mt-1 fw-bold align-middle">
+                    <p className="mb-0 d-inline-block mt-0 fw-bold align-middle lh-1">
                         <span className='ministry-text-xs subtitle-xs footer-text-color'>Department of Education</span><br />
                         <span className='country-text-xs fs-7 footer-text-color'>Papua New Guinea</span>
                     </p>
                 </div>
             </div>
-            <div className='row d-flex d-none d-sm-block d-md-block d-lg-none'>
+            <div className='row d-flex d-none d-sm-block d-md-none d-lg-none'>
                 <div className='col-sm-12 text-center'>
                     <Image src="/images/img5.png" alt="Logo" width={60} height={60} className="logo-xs" />
 
