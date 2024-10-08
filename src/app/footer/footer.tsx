@@ -7,8 +7,9 @@ const Footer: React.FC = () => {
     color: '#000',
     height: '18px',
     fontSize: '8px',
-    padding: '0.5rem',
+    padding: '0.25rem',
     marginTop: '23px', 
+    alignItems: 'center',
     // marginTop: '1rem',
     // textAlign: 'center',
    

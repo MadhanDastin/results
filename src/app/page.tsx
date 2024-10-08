@@ -28,19 +28,19 @@ const HomeScreen: React.FC  = () => {
     };
     const carouselItems = [
         {
-            image: '/images/courasle_page-0001.jpg',
+            image: '/images/Home-carousel-Img-01.png',
             name: '1',
         },
         {
-            image: '/images/courasle_page-0002.jpg',
+            image: '/images/Home-carousel-Img-02.png',
             name: '2',
         },
         {
-            image: '/images/courasle_page-0003.jpg',
+            image: '/images/Home-carousel-Img-03.png',
             name: '3',
         },
         {
-            image: '/images/courasle_page-0004.jpg',
+            image: '/images/Home-carousel-Img-04.png',
             name: '4',
         },
     ];
@@ -68,7 +68,7 @@ const HomeScreen: React.FC  = () => {
                 {/* <h1>Header Section</h1> */}
                 <div className="header">
                     <div className="header-content">
-                        <div className="row justify-content-center header-row-div d-none d-sm-block">
+                        <div className="row justify-content-center header-row-div d-none d-md-block">
                             <div className="col-12">
                                 <div className="row align-items-center justify-content-between g-1">
 
@@ -96,12 +96,12 @@ const HomeScreen: React.FC  = () => {
 
                             </div>
                         </div>
-                        <div className="row justify-content-center header-row-div d-block d-sm-none">
+                        <div className="row justify-content-center header-row-div d-block d-md-none">
                             <div className="col-12 d-inline-flex align-items-center justify-content-center">
                                 <Image src="/images/Papua New Guinea.png" alt="Emblem of Papua New Guinea" width={80} height={80}
                                     className="img-fluid mt-2 ps-2" />
-                                <p className="head fw-bold m-0 fs-6 pt-3 text-center">
-                                    NATIONAL EXAMINATION RESULTS - 2024
+                                <p className="head fw-bold m-0 mx-2 fs-6 pt-3 text-center">
+                                    NATIONAL EXAMINATION RESULTS 2024
                                 </p>
 
                             </div>
@@ -115,7 +115,7 @@ const HomeScreen: React.FC  = () => {
 
 
                 < div className="carousel-container w-100" >
-                    <Carousel interval={5000} controls={false} indicators={true}>
+                    <Carousel interval={5000} controls={false} indicators={true} className='c-indicator'>
                         {carouselItems.map((item, index) => (
                             <Carousel.Item key={index}>
                                 <Image className="d-block carousel-image" src={item.image} alt={`Slide ${index}`} width="0"
@@ -156,23 +156,65 @@ const HomeScreen: React.FC  = () => {
                 </p>
 
                 {/* Buttons Section */}
-                <div className="col-md-12 mb-3">
+                <div className="col-md-12 mb-3 d-none d-lg-block">
                     <div className="row mt-4 justify-content-center">
-                        <div className="col-md-2 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 title-color">Grade Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font">Grade Results</button>
                         </div>
 
-                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                        <div className="col-md-4 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28817.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 title-color" onClick={handleGrade12ResultsClick}>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font" onClick={handleGrade12ResultsClick}>
                                 Grade Results
                             </button>
                         </div>
 
-                        <div className="col-md-2 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 title-color">STEM Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font">STEM Results</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-md-12 mb-3 d-none d-sm-block d-md-block d-lg-none">
+                    <div className="row mt-4 justify-content-center">
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">Grade Results</button>
+                        </div>
+
+                        <div className="col-md-4 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28817.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font" onClick={handleGrade12ResultsClick}>
+                                Grade Results
+                            </button>
+                        </div>
+
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">STEM Results</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-md-12 mb-3 d-block d-sm-none">
+                    <div className="row mt-4 justify-content-center">
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">Grade Results</button>
+                        </div>
+
+                        <div className="col-md-4 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28817.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font" onClick={handleGrade12ResultsClick}>
+                                Grade Results
+                            </button>
+                        </div>
+
+                        <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
+                            <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">STEM Results</button>
                         </div>
                     </div>
                 </div>
@@ -193,7 +235,7 @@ const HomeScreen: React.FC  = () => {
                 <div className='col-sm-12 text-center'>
                     <Image src="/images/img5.png" alt="Logo" width={60} height={60} className="logo-xs" />
 
-                    <p className="mb-0 d-inline-block mt-1 fw-bold align-middle">
+                    <p className="mb-0 d-inline-block mt-1 fw-bold align-middle lh-1">
                         <span className='ministry-text-xs subtitle-xs footer-text-color'>Department of Education</span><br />
                         <span className='country-text-xs fs-7 mb-0 footer-text-color'>Papua New Guinea</span>
                     </p>
@@ -207,6 +249,23 @@ const HomeScreen: React.FC  = () => {
 
             {/* CSS */}
             <style jsx>{`
+            // .carousel-indicators [data-bs-target] {
+            //     width: 12px;               /* Set width of bullet */
+            //     height: 12px;              /* Set height of bullet */
+            //     border-radius: 50%;        /* Make them round */
+            //     background-color: #0071BD; /* Custom color for bullets */
+            //     border: 2px solid white;   /* Optional: white border around bullets */
+            //     opacity: 0.7;              /* Slight transparency */
+            //     }
+
+            //     .carousel-indicators .active {
+            //     background-color: #004085; /* Darker color for active bullet */
+            //     opacity: 1;                /* Fully visible active bullet */
+            //     }
+
+            //     .carousel-indicators [data-bs-target]:hover {
+            //     opacity: 1;                /* Fully visible on hover */
+            //     }
             .p-lh {
                 line-height: 16px;
             }
@@ -313,11 +372,12 @@ const HomeScreen: React.FC  = () => {
           font-size: 36px;
         }
 
-        .title-color {
-          color: white;
-          font-size: 12px;
+        .btn-font {
+          font-size: 12px !important;
         }
-
+        .btn-md-font {
+            font-size: 12px !important;
+        }
         .subtitle {
           font-size: 16px;
           color: #00355b;
