@@ -3,60 +3,68 @@ import React from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 type FormValues = {
     surname: string;
     givenNames: string;
     password: string;
-  };
-  
+};
+
 const Login = () => {
 
-   
+    const router = useRouter();
+    const handleHomeClick = () => {
+        router.push("/");
+    };
+
+    const handleReset = () => {
+        reset(); // This will reset the form to its default values
+    };
 
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors,isValid },
+        formState: { errors, isValid },
     } = useForm({
         mode: 'onChange', // Check form validity on every change
     });
-    
+
     const onSubmit = async (data: FormValues) => {
         console.log('form data ', data);
         try {
-          // Make a POST request to the login API
-          const response = await fetch("http://devapi.dastintechnologies.com/api/v1/twl/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                lastname: data.surname,
-              givennames: data.givenNames,
-              slfnumber: data.password,
-            }),
-          });
-    
-          const result = await response.json();
-    
-          if (response.ok) {
-            // Handle successful login
-            console.log("Login successful:", result);
-            alert("Login successful!");
-            reset(); // Reset form fields after successful login
-          } else {
-            // Handle API error response
-            console.error("Login failed:", result.message);
-            alert(`Login failed: ${result.message}`);
-          }
+            // Make a POST request to the login API
+            const response = await fetch("http://devapi.dastintechnologies.com/api/v1/twl/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    lastname: data.surname,
+                    givennames: data.givenNames,
+                    slfnumber: data.password,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Handle successful login
+                console.log("Login successful:", result);
+                alert("Login successful!");
+                reset(); // Reset form fields after successful login
+            } else {
+                // Handle API error response
+                console.error("Login failed:", result.message);
+                alert(`Login failed: ${result.message}`);
+            }
         } catch (error) {
-          console.error("An error occurred during login:", error);
-          alert("An error occurred. Please try again.");
+            console.error("An error occurred during login:", error);
+            alert("An error occurred. Please try again.");
         }
         reset();
-      };
+    };
 
 
 
@@ -87,7 +95,7 @@ const Login = () => {
                                     Department Of Education
                                 </p>
                                 <p className="departmentTitle text-start">
-                                Papua New Guinea
+                                    Papua New Guinea
                                 </p>
                             </div>
                         </div>
@@ -97,48 +105,80 @@ const Login = () => {
                     <div className="col-md-4 d-flex justify-content-center align-items-center">
                         <div className="formCard p-3">
                             <h2 className="loginTitle mt-2 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} /></h2>
+
+
+
+
                             <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
-                                {/* Surname Field */}
-                                <div className="mb-4">
+
+                                <div className="mb-2">
                                     <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
                                     <input
                                         type="text"
                                         className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
                                         placeholder="Surname"
-                                        {...register('surname', { required: 'Surname is required' })}
+                                        {...register('surname', {
+                                            required: 'Surname is required',
+                                            pattern: {
+                                                value: /^[A-Za-z]+$/i,
+                                                message: 'Surname must contain only letters',
+                                            },
+                                            onChange: (e) => {
+                                                e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
+                                            },
+                                        })}
                                     />
-                                    {errors.surname && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.surname.message?.toString()}</div>}
+                                    {errors.surname && (
+                                        <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"} style={{ display: errors.surname ? 'block' : 'none' }}>
+                                            {errors.surname.message?.toString()}
+                                        </span>
+                                    )}
                                 </div>
 
-                                {/* Given Names Field */}
-                                <div className="mb-4">
+                                <div className="mb-2">
                                     <label className="form-label mb-0 ps-4 ms-2">Given Names *</label>
                                     <input
                                         type="text"
                                         className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
                                         placeholder="First Name + Middle Name"
-                                        {...register('givenNames', { required: 'Given names are required' })}
+                                        {...register('givenNames', {
+                                            required: 'Given names are required',
+                                            pattern: {
+                                                value: /^[A-Za-z\s]+$/i, // Allow letters and spaces
+                                                message: 'Given names must contain only letters',
+                                            },
+                                            onChange: (e) => {
+                                                e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
+                                            },
+                                        })}
                                     />
-                                    {errors.givenNames && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.givenNames.message?.toString()}</div>}
+                                    {errors.givenNames && (
+                                        <span className={"invalid-feedback mb-1 ps-4 ms-2 mt-0"} style={{ visibility: errors.givenNames ? 'visible' : 'hidden' }}>
+                                            {errors.givenNames.message?.toString()}
+                                        </span>
+                                    )}
                                 </div>
 
-                                {/* Password Field */}
-                                <div className="mb-3">
-                                    <label className="form-label mb-0 ps-4 ms-2">Password *</label>
+
+                                
+
+
+                                <div className="mb-2">
+                                    <label className="form-label mb-0 ps-4 ms-2">Password * <span className="small-label">(Format:YYYYPRSCHCAND)</span> </label>
                                     <input
                                         type="password"
                                         className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
-                                        placeholder="Password/GFL NO"
+                                        placeholder="Password/SLF NO"
                                         {...register('password', {
                                             required: 'Password is required',
                                             minLength: {
                                                 value: 6,
                                                 message: 'Password must be at least 6 characters',
-                                            },
+                                            }
                                         })}
                                     />
-                                    {errors.password && <div className="invalid-feedback mb-0 ps-4 ms-2">{errors.password.message?.toString()}</div>}
-                                    <div className="small-label ps-4 ms-2 mt-1">Default password=SLF NO(Format:YYYYPRSCHCAND)</div>
+                                    {errors.password && <span className={"invalid-feedback mb-1 ps-4 ms-2 mt-0"} style={{ visibility: errors.givenNames ? 'visible' : 'hidden' }}>{errors.password.message?.toString()}</span>}
+
                                     <div className='text-center mb-4 pb-2'>
                                         <a href="#" className="forgotPassword"><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
                                     </div>
@@ -155,11 +195,11 @@ const Login = () => {
 
 
                             </form>
-                            
+
                             <div className="text-center mt-4 pt-2 mb-4">
-                                <a href="#" className="btn  btn-sm customButton">Help <Image src="/images/Vector (2).png" alt="Logo" width={12} height={12} /></a>
-                                <a href="#" className="btn btn-outline-info  btn-sm customButton mx-3">Home <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></a>
-                                <button className="btn btn-outline-info  btn-sm customButton">Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
+                                <button className="btn  btn-sm customButton">Help <Image src="/images/Vector (2).png" alt="Logo" width={12} height={12} /></button>
+                                <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleHomeClick}>Home <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
+                                <button className="btn btn-outline-info  btn-sm customButton" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
                             </div>
                         </div>
                     </div>
@@ -174,9 +214,9 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
-               
+
             </div>
-            
+
 
             <style jsx>{`
                 ::-webkit-input-placeholder {
@@ -279,8 +319,8 @@ const Login = () => {
                 }
 
                 .invalid-feedback{
-                    color:yellow;
-                    font-size: 12px;
+                    color:#FFBF00;
+                    font-size: 10px;
                 }
 
                 .customButton{
@@ -310,9 +350,9 @@ const Login = () => {
                   
                 }
       `}</style>
-       
+
         </div>
-        
+
     );
 };
 

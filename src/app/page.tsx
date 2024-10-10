@@ -7,20 +7,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from './footer/footer';
 import { Carousel } from 'react-responsive-carousel';
+import Header from './header/header';
 
 
 
 const HomeScreen: React.FC = () => {
 
-    const containerStyle: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh', // Full height to ensure footer sticks to the bottom
-    };
 
-    const mainContentStyle: React.CSSProperties = {
-        flex: 1, // This ensures the main content takes up remaining space
-    };
 
     const router = useRouter();
 
@@ -58,6 +51,7 @@ const HomeScreen: React.FC = () => {
 
     return (
         <>
+        <div className='vh-100'>
             {/* Header */}
             <div className="container-fluid p-0">
                 <div className="row no-gutters">
@@ -65,8 +59,9 @@ const HomeScreen: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <header className="header">
-                {/* <h1>Header Section</h1> */}
+            <Header/>
+            {/* <header className="header">
+               
                 <div className="header">
                     <div className="header-content">
                         <div className="row justify-content-center header-row-div d-none d-md-block">
@@ -109,7 +104,7 @@ const HomeScreen: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </header >
+            </header > */}
 
             {/* Carousel */}
             < div className='row mt-0' >
@@ -435,6 +430,7 @@ const HomeScreen: React.FC = () => {
           color: white;
         }
       `}</style>
+      </div>
         </>
     );
 };
