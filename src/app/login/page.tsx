@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState,Suspense } from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import { useRouter,useSearchParams } from 'next/navigation';
 import './login.css';
 import { IoCloseCircle } from "react-icons/io5";
-
+import dynamic from 'next/dynamic';
 type FormValues = {
     surname: string;
     givenNames: string;
@@ -15,6 +15,9 @@ type FormValues = {
 
 const Login = () => {
     const router = useRouter();
+  const searchParams = useSearchParams();
+  const [results, setResults] = useState<string | null>(null);
+
 
     const handleHomeClick = () => {
         router.push("/");
@@ -30,7 +33,7 @@ const Login = () => {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isValid }, setError,
+        formState: { errors }, setError,
     } = useForm<FormValues>({
         mode: 'onChange', // Check form validity on every change
         reValidateMode: 'onChange', // Optional: Re-validate the form on every change
@@ -51,42 +54,42 @@ const Login = () => {
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
         console.log('form data ', data);
         try {
-            // Make a POST request to the login API
-            const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    lastname: data.surname,
-                    givennames: data.givenNames,
-                    slfnumber: data.password,
-                }),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                if (result.token) {
-                    localStorage.setItem('authToken', result.token); // Store token in localStorage
-                    console.log("Token stored:", result.token);
+            if (results === '12') {
+                // Make a POST request to the login API
+                const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        lastname: data.surname,
+                        givennames: data.givenNames,
+                        slfnumber: data.password,
+                    }),
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                    if (result.token) {
+                        localStorage.setItem('authToken', result.token); // Store token in localStorage
+                        console.log("Token stored:", result.token);
+                    }
+                    // Handle successful login
+                    console.log("Login successful:", result);
+                    // alert("Login successful!");
+                    reset(); // Reset form fields after successful login
+                    const encodedResult = encodeURIComponent(JSON.stringify(result));
+                    router.push(`/twl?response=${encodedResult}`);
+                    
+                } else {
+                    // Handle API error response
+                    console.error("Login failed:", result.message);
+                    alert(`Login failed: ${result.message}`);
                 }
-                // Handle successful login
-                console.log("Login successful:", result);
-                alert("Login successful!");
-                reset(); // Reset form fields after successful login
-                const encodedResult = encodeURIComponent(JSON.stringify(result));
-                router.push(`/twl?response=${encodedResult}`);
-                // router.push(`/twl?response=${encodeURIComponent(JSON.stringify(result))}`);
-                // router.push("/twl");
-                // router.push({
-                //     pathname: "/twl",
-                //     query: { data: JSON.stringify(result) }, // Pass data as a query parameter
-                // });
             } else {
-                // Handle API error response
-                console.error("Login failed:", result.message);
-                alert(`Login failed: ${result.message}`);
+                alert('Work In Progress');
+                return;
             }
         } catch (error) {
             console.error("An error occurred during login:", error);
@@ -95,9 +98,16 @@ const Login = () => {
         reset();
     };
 
+    useEffect(()=>{
+    var results= searchParams.get('results');
+    setResults(results)
+    },[searchParams])
 
+    console.log("results",results);
+    
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div className="loginPage vh-100">
             <div className="container-fluid">
                 <div className="row align-items-center justify-content-center">
@@ -110,7 +120,7 @@ const Login = () => {
                                 <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
                             </div>
                             <div className="mt-0">
-                                <h2 className="gradeTitle mt-2">GRADE 12 RESULTS</h2>
+                                <h2 className="gradeTitle mt-2">{results === '10' ? 'GRADE 10 RESULTS' :results === '12' ? 'GRADE 12 RESULTS':'STEM RESULTS' }</h2>
                                 <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
                             </div>
                         </div>
@@ -140,6 +150,7 @@ const Login = () => {
                                     <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
                                     <input
                                         type="text"
+                                        autoComplete="off"
                                         className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
                                         placeholder="Surname"
                                         {...register('surname', {
@@ -169,6 +180,7 @@ const Login = () => {
                                     <label className="form-label mb-0 ps-4 ms-2">Given Names *</label>
                                     <input
                                         type="text"
+                                        autoComplete="off"
                                         className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
                                         placeholder="First Name + Middle Name"
                                         {...register('givenNames', {
@@ -199,13 +211,18 @@ const Login = () => {
                                     <label className="form-label mb-0 ps-4 ms-2">Password * <span className="small-label">(SLF NO Format:YYYYPRSCHCAND)</span> </label>
                                     <input
                                         type="password"
+                                        autoComplete="off"
                                         className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
-                                        placeholder="Password/SLF NO"
+                                        placeholder="Password/SLF NO"  maxLength={12} 
                                         {...register('password', {
                                             required: 'Password is required',
                                             minLength: {
+                                                value: 8,
+                                                message: 'Password must be at least 8 characters',
+                                            },
+                                            maxLength: {
                                                 value: 12,
-                                                message: 'Password must be at least 12 characters',
+                                                message: 'Password must be maximum 12 characters',
                                             }
                                         })}
                                     />
@@ -254,8 +271,8 @@ const Login = () => {
 
             </div>
         </div>
-
+        </Suspense>
     );
 };
 
-export default Login;
+export default dynamic(() => Promise.resolve(Login), { ssr: false });

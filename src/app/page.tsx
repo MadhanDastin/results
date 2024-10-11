@@ -15,8 +15,17 @@ const HomeScreen: React.FC = () => {
     const router = useRouter();
 
     const handleGrade12ResultsClick = () => {
-        router.push("/login");
+        router.push(`/login?results=12`);
     };
+
+    const handleGrade10ResultsClick = () => {
+        router.push(`/login?results=10`);
+    };
+
+    const handleGradeSTEMResultsClick = () => {
+        router.push(`/login?results=STEM`);
+    };
+    
     const carouselItems = [
         {
             image: '/images/Home-carousel-Img-01.png',
@@ -99,7 +108,7 @@ const HomeScreen: React.FC = () => {
                     <div className="row mt-4 justify-content-center">
                         <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font"> Grade 10 Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font" onClick={handleGrade10ResultsClick}> Grade 10 Results</button>
                         </div>
 
                         <div className="col-md-4 text-center px-0 d-inline-flex align-items-center justify-content-center">
@@ -111,7 +120,7 @@ const HomeScreen: React.FC = () => {
 
                         <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font">STEM Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-font" onClick={handleGradeSTEMResultsClick}>STEM Results</button>
                         </div>
                     </div>
                 </div>
@@ -181,7 +190,7 @@ const HomeScreen: React.FC = () => {
                 </div>
             </div>
 
-            <Footer />
+            {/* <Footer /> */}
 
             </div>
            

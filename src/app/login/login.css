@@ -134,6 +134,10 @@ font-size: 13px!important;
     margin-top: -1px;
 }
 
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    background-image: none !important;
+}
+
 @media (max-width: 768px) {
     .gradeTitle {
         font-size: 1.5rem;

@@ -6,30 +6,37 @@ import Image from 'next/image';
 import './twl.css';
 import MyNavbar from '../../lib/ui/navbar/navbar';
 import { useRouter, useSearchParams } from 'next/navigation';
- 
+
 const Marksheet = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
- 
+  const [studentResultsData, setStudentResultsData] = useState<any>(null);
+
   useEffect(() => {
     const response = searchParams.get('response');
+
     if (response) {
       try {
         const decodedResponse = decodeURIComponent(response);
         const parsedResponse = JSON.parse(decodedResponse);
-        setStudentData(parsedResponse);
+        setStudentData(parsedResponse.data.student.student);
+        const studentResults = parsedResponse.data.student.results;
+        const filteredResults = studentResults.filter((result: any) =>
+          result.finalstdscore !== 0 && result.grade.trim() !== ""
+        );
+        setStudentResultsData(filteredResults);
         console.log("twl", parsedResponse);
       } catch (error) {
         console.error('Failed to decode/parse response:', error);
       }
     }
   }, [searchParams]);
- 
+
   if (!studentData) {
     return <div>Loading...</div>;
   }
- 
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="container d-flex justify-content-center align-items-center">
@@ -50,13 +57,13 @@ const Marksheet = () => {
                   className="img-fluid"
                 />
               </div>
- 
+
               {/* Title and Subtitle */}
               <div className="text-center flex-grow-1">
                 <h4 className="title mb-1">GRADE - 12 NATIONAL EXAMINATION RESULTS - 2024</h4>
                 <h5 className="subtitle">Department of Education</h5>
               </div>
- 
+
               {/* Right Logo */}
               <div className="logo-end">
                 <Image
@@ -68,7 +75,7 @@ const Marksheet = () => {
                 />
               </div>
             </div>
- 
+
             <div className="d-flex justify-content-between mb-0 mt-0 ">
               <p className='para'><strong>Published Date:</strong> 1-10-2024</p>
               <p className='para'><strong>Valid Until:</strong> 1-10-2025</p>
@@ -84,29 +91,29 @@ const Marksheet = () => {
                         <tr>
                           <td className='para'><strong>Given Names:</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.givennames}</td>
+                          <td className='para'>{studentData.givennames}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Surname:</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.lastname}</td>
+                          <td className='para'>{studentData.lastname}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Gender:</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.sex}</td>
+                          <td className='para'>{studentData.sex}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Cand. No:</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.candidateno}</td>
+                          <td className='para'>{studentData.candidateno}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
- 
+
               {/* School Details */}
               <div className="col-md-6 d-flex">
                 <div className="border p-2 flex-grow-1 borderCustom">
@@ -117,17 +124,17 @@ const Marksheet = () => {
                         <tr>
                           <td className='para'><strong>Region</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.region}</td>
+                          <td className='para'>{studentData.region}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Province:</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.province}</td>
+                          <td className='para'>{studentData.province}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>School:</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.data.student.student.schoolname}</td>
+                          <td className='para'>{studentData.schoolname}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -135,7 +142,7 @@ const Marksheet = () => {
                 </div>
               </div>
             </div>
- 
+
             {/* Results Section */}
             <div className="mb-2 border p-2 borderCustom">
               <h6 className='textcolor'><strong>Results</strong></h6>
@@ -150,8 +157,8 @@ const Marksheet = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {studentData.data.student.results.length > 0 ? (
-                      studentData.data.student.results.map((result: any, index: number) => (
+                    {studentResultsData.length > 0 ? (
+                      studentResultsData.map((result: any, index: number) => (
                         <tr key={index}>
                           <td>{result.subshortname}</td>
                           <td>{result.subject}</td>
@@ -168,23 +175,23 @@ const Marksheet = () => {
                 </table>
               </div>
             </div>
- 
+
             {/* Summary Section */}
             <div className="border p-2 mb-2 borderCustom">
               <h6 className='textcolor'><strong>Result Summary</strong></h6>
               <div className="row">
                 <div className="col-md-2">
-                  <p className='para'><strong>Rank:</strong> {studentData.data.student.student.rank}</p>
+                  <p className='para'><strong>Rank:</strong> {studentData.rank}</p>
                 </div>
                 <div className="col-md-4">
-                  <p className='para'><strong>Tertiary Entrance Rank:</strong> {studentData.data.student.student.ter}</p>
+                  <p className='para'><strong>Tertiary Entrance Rank:</strong> {studentData.ter}</p>
                 </div>
                 <div className="col-md-6">
-                  <p className='para'><strong>Grade 12 Student Population:</strong> {studentData.data.student.student.schoolname}</p>
+                  <p className='para'><strong>Grade 12 Student Population:</strong> {studentData.schoolname}</p>
                 </div>
               </div>
             </div>
- 
+
             {/* Terms Section */}
             <div className="terms border p-2 borderCustom">
               <h6><strong>Terms:</strong></h6>
@@ -209,5 +216,5 @@ const Marksheet = () => {
     </Suspense>
   );
 };
- 
+
 export default dynamic(() => Promise.resolve(Marksheet), { ssr: false });

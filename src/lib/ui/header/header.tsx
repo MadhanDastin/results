@@ -12,7 +12,7 @@ const Header = () => {
                   <Image src="/images/Papua New Guinea.png" alt="Emblem of Papua New Guinea" width={80} height={80} className="img-fluid" />
                 </div>
                 <div className="col-6 text-center text-color-blue">
-                  <p className="head fw-bold m-0 fs-sm-4 fs-md-3 fs-lg-2 pt-0">
+                  <p className="head fw-bold m-0 fs-sm-4 fs-md-3 fs-lg-2 pt-1">
                     NATIONAL EXAMINATION RESULTS - 2024
                   </p>
                   <p className="subhead fw-bold fs-6 fs-sm-5 fs-md-4 mb-0 p-lh">

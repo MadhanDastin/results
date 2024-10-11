@@ -23,13 +23,17 @@ const carouselItems = [
 
 const CustomCarousel = () => {
     return (
-        <Carousel useKeyboardArrows={true} showThumbs={false} showArrows={false} showStatus={false}>
+        <Carousel useKeyboardArrows={true} showThumbs={false} showArrows={false} showStatus={false}
+            autoPlay={true}           // Enable auto-play
+            infiniteLoop={true}       // Loop the carousel infinitely
+            interval={5000}           // Set the interval to 3 seconds (3000 ms)
+            stopOnHover={true}>
             {carouselItems.map((item, index) => (
                 <div className="slide" key={index}>
-                    <Image 
-                        className="d-block carousel-image" 
-                        src={item.image} 
-                        alt={`Slide ${index}`} 
+                    <Image
+                        className="d-block carousel-image"
+                        src={item.image}
+                        alt={`Slide ${index}`}
                         width="0"
                         height="0"
                         sizes="100vw"
