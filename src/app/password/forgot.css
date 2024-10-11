@@ -1,0 +1,131 @@
+::-webkit-input-placeholder {
+    font-size: 25px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    font-size: 25px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    font-size: 25px;
+}
+
+/* Overriding styles */
+
+::-webkit-input-placeholder {
+font-size: 13px!important;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    font-size: 13px!important;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+    font-size: 13px!important;
+}
+.loginPage {
+    
+    background: radial-gradient(180.77% 285.2% at 50.05% 54.5%, #006EB9 0.17%, #006EB9 6.13%, #14317F 31.79%);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+}
+.gradeTitle {
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.subTitle {
+    color: white;
+    font-size: 1rem;
+}
+
+.departmentTitle {
+    color: #FCE886;
+    font-size: 0.7rem;
+}
+
+.formCard {
+   
+    border: 2px solid  #4BB5FF;
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px 4px #00000040;
+    width:330px;                   
+     padding: 1.5rem;
+}
+
+.loginTitle {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    gap: 10px;
+    color: white; /* White text for title */
+}
+
+.loginTitle svg {
+    color: #007bff; /* Customize the arrow color */
+    font-size: 18px;
+}
+
+.custom-button {   
+    color: #fff;
+    background-image: linear-gradient(to right, #181D6E , #0071BD);
+    border-radius: 10px; /* Rounded corners */
+    font-size: 12px;
+    font-weight: bold;
+    width:150px;
+    height:45px;
+}
+
+.inputField {
+    background-color: white; /* White input box */
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width:230px;
+    height: 30px;
+    margin: 0 auto;
+}
+
+.form-label{
+    color:white;
+    font-size: 14px;
+}
+
+.invalid-feedback{
+    color:#FF8200;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 24px;
+}
+
+.customButton{
+    color:white !important;
+    font-size: 12px;
+    background-color: #006FBB !important;
+     border: 1px solid #006FBB !important;
+     box-shadow: 0px 4px 4px 4px #00000040;
+}
+
+.small-label{
+    font-size: 0.5rem;
+    color:#FCE886;
+}
+
+.forgotPassword {
+    font-size: 0.55rem;
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .gradeTitle {
+        font-size: 1.5rem;
+    }
+   
+  
+}
+

@@ -1,9 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import './login.css';
+import { IoCloseCircle } from "react-icons/io5";
 
 type FormValues = {
     surname: string;
@@ -12,8 +14,8 @@ type FormValues = {
 };
 
 const Login = () => {
-
     const router = useRouter();
+
     const handleHomeClick = () => {
         router.push("/");
     };
@@ -22,20 +24,35 @@ const Login = () => {
         reset(); // This will reset the form to its default values
     };
 
+    const [loginResponse, setLoginResponse] = useState<any>(null);
+
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isValid },
-    } = useForm({
+        formState: { errors, isValid }, setError,
+    } = useForm<FormValues>({
         mode: 'onChange', // Check form validity on every change
+        reValidateMode: 'onChange', // Optional: Re-validate the form on every change
     });
 
-    const onSubmit = async (data: FormValues) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, fieldName: keyof FormValues) => {
+        const isNumeric = /^[0-9]$/.test(e.key); // Check if the pressed key is a numeric value
+        if (isNumeric) {
+            e.preventDefault(); // Prevent input of numeric values
+            // Set an error for the specific field
+            setError(fieldName, {
+                type: "manual",
+                message: "Only letters are allowed"
+            });
+        }
+    };
+
+    const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
         console.log('form data ', data);
         try {
             // Make a POST request to the login API
-            const response = await fetch("http://devapi.dastintechnologies.com/api/v1/twl/login", {
+            const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -50,10 +67,22 @@ const Login = () => {
             const result = await response.json();
 
             if (response.ok) {
+                if (result.token) {
+                    localStorage.setItem('authToken', result.token); // Store token in localStorage
+                    console.log("Token stored:", result.token);
+                }
                 // Handle successful login
                 console.log("Login successful:", result);
                 alert("Login successful!");
                 reset(); // Reset form fields after successful login
+                const encodedResult = encodeURIComponent(JSON.stringify(result));
+                router.push(`/twl?response=${encodedResult}`);
+                // router.push(`/twl?response=${encodeURIComponent(JSON.stringify(result))}`);
+                // router.push("/twl");
+                // router.push({
+                //     pathname: "/twl",
+                //     query: { data: JSON.stringify(result) }, // Pass data as a query parameter
+                // });
             } else {
                 // Handle API error response
                 console.error("Login failed:", result.message);
@@ -106,11 +135,7 @@ const Login = () => {
                         <div className="formCard p-3">
                             <h2 className="loginTitle mt-2 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} /></h2>
 
-
-
-
                             <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
-
                                 <div className="mb-2">
                                     <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
                                     <input
@@ -121,16 +146,21 @@ const Login = () => {
                                             required: 'Surname is required',
                                             pattern: {
                                                 value: /^[A-Za-z]+$/i,
-                                                message: 'Surname must contain only letters',
+                                                message: 'Invalid - Numbers not allowed',
                                             },
                                             onChange: (e) => {
                                                 e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
                                             },
                                         })}
+                                        onKeyDown={(e) => handleKeyDown(e, 'surname')} // Handle key down event directly
                                     />
+                                    {!errors.surname && (
+                                        <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
+                                    )}
+
                                     {errors.surname && (
-                                        <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"} style={{ display: errors.surname ? 'block' : 'none' }}>
-                                            {errors.surname.message?.toString()}
+                                        <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
+                                        <IoCloseCircle className='error-icon' />  {errors.surname.message}
                                         </span>
                                     )}
                                 </div>
@@ -145,26 +175,28 @@ const Login = () => {
                                             required: 'Given names are required',
                                             pattern: {
                                                 value: /^[A-Za-z\s]+$/i, // Allow letters and spaces
-                                                message: 'Given names must contain only letters',
+                                                message: 'Invalid - Numbers not allowed',
                                             },
                                             onChange: (e) => {
                                                 e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
                                             },
                                         })}
+                                        onKeyDown={(e) => handleKeyDown(e, 'givenNames')} // Handle key down event directly
                                     />
+                                    {!errors.givenNames && (
+                                        <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
+                                    )}
                                     {errors.givenNames && (
-                                        <span className={"invalid-feedback mb-1 ps-4 ms-2 mt-0"} style={{ visibility: errors.givenNames ? 'visible' : 'hidden' }}>
-                                            {errors.givenNames.message?.toString()}
-                                        </span>
+                                       
+                                            <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
+                                            <IoCloseCircle className='error-icon' /> {errors.givenNames.message}
+                                            </span>
+                                        
                                     )}
                                 </div>
 
-
-                                
-
-
                                 <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Password * <span className="small-label">(Format:YYYYPRSCHCAND)</span> </label>
+                                    <label className="form-label mb-0 ps-4 ms-2">Password * <span className="small-label">(SLF NO Format:YYYYPRSCHCAND)</span> </label>
                                     <input
                                         type="password"
                                         className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
@@ -172,16 +204,21 @@ const Login = () => {
                                         {...register('password', {
                                             required: 'Password is required',
                                             minLength: {
-                                                value: 6,
-                                                message: 'Password must be at least 6 characters',
+                                                value: 12,
+                                                message: 'Password must be at least 12 characters',
                                             }
                                         })}
                                     />
-                                    {errors.password && <span className={"invalid-feedback mb-1 ps-4 ms-2 mt-0"} style={{ visibility: errors.givenNames ? 'visible' : 'hidden' }}>{errors.password.message?.toString()}</span>}
+                                    {!errors.password && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
+                                    {errors.password && (<span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}> 
+                                      <IoCloseCircle className='error-icon' />   {errors.password.message?.toString()}
+                                    </span>)}
 
                                     <div className='text-center mb-4 pb-2'>
-                                        <a href="#" className="forgotPassword"><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
+                                        <a href="/forgotpassword" className="forgotPassword"
+                                        ><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
                                     </div>
+
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3">
@@ -216,141 +253,6 @@ const Login = () => {
                 </div>
 
             </div>
-
-
-            <style jsx>{`
-                ::-webkit-input-placeholder {
-                    font-size: 25px;
-                }
-
-                :-moz-placeholder { /* Firefox 18- */
-                    font-size: 25px;
-                }
-
-                ::-moz-placeholder {  /* Firefox 19+ */
-                    font-size: 25px;
-                }
-
-                /* Overriding styles */
-
-                ::-webkit-input-placeholder {
-                font-size: 13px!important;
-                }
-
-                :-moz-placeholder { /* Firefox 18- */
-                    font-size: 13px!important;
-                }
-                ::-moz-placeholder {  /* Firefox 19+ */
-                    font-size: 13px!important;
-                }
-                .loginPage {
-                    background: url('/images/blue-gradient.jpg') no-repeat center center fixed;
-                    background-size: cover;
-                    height: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    overflow-y: scroll;
-                }
-                .gradeTitle {
-                    color: white;
-                    font-weight: bold;
-                    font-size: 2rem;
-                }
-
-                .subTitle {
-                    color: white;
-                    font-size: 1rem;
-                }
-
-                .departmentTitle {
-                    color: #FCE886;
-                    font-size: 0.7rem;
-                }
-
-                .formCard {
-                   
-                    border: 2px solid  #4BB5FF;
-                    border-radius: 20px;
-                    box-shadow: 0px 4px 4px 4px #00000040;
-                    width:330px;                   
-                     padding: 1.5rem;
-                }
-
-                .loginTitle {
-                    font-size: 24px;
-                    font-weight: bold;
-                    text-align: center;
-                    gap: 10px;
-                    color: white; /* White text for title */
-                }
-
-                .loginTitle svg {
-                    color: #007bff; /* Customize the arrow color */
-                    font-size: 18px;
-                }
-
-                .custom-button {
-              
-                    //background-color: #0053ba; /* Adjust the background color to match */
-                    color: #fff;
-                    background-image: linear-gradient(to right, #181D6E , #0071BD);
-                    border-radius: 10px; /* Rounded corners */
-                    font-size: 12px;
-                    font-weight: bold;
-                    width:150px;
-                    height:45px;
-                }
-
-                .inputField {
-                    background-color: white; /* White input box */
-                    border: none;
-                    border-radius: 5px;
-                    padding: 10px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                    width:230px;
-                    height: 30px;
-                    margin: 0 auto;
-                }
-        
-                .form-label{
-                    color:white;
-                    font-size: 14px;
-                }
-
-                .invalid-feedback{
-                    color:#FFBF00;
-                    font-size: 10px;
-                }
-
-                .customButton{
-                    color:white;
-                    font-size: 12px;
-                    background-color: #006FBB !important;
-                     border: 1px solid #006FBB !important;
-                     box-shadow: 0px 4px 4px 4px #00000040;
-                }
-        
-                .small-label{
-                    font-size: 0.5rem;
-                    color:#FCE886;
-                }
-
-                .forgotPassword {
-                    font-size: 0.55rem;
-                    color: white;
-                    text-decoration: none;
-                }
-
-                @media (max-width: 768px) {
-                    .gradeTitle {
-                        font-size: 1.5rem;
-                    }
-                   
-                  
-                }
-      `}</style>
-
         </div>
 
     );

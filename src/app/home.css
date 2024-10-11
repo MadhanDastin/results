@@ -1,0 +1,170 @@
+.p-lh {
+    line-height: 16px;
+}
+.right-logo-div {
+    margin-top: -4px;
+}
+.left-logo-div {
+    margin-top: -8px;
+}
+.header-row-div {
+    height: 75px;
+}
+
+
+
+.bg-gradient-custom {
+background: linear-gradient(to right, white 5%, #4BB5FF);
+color: #000;
+height:18px;
+font-size:10px;
+}
+
+/* Ensure full-width elements */
+.container-fluid {
+padding: 0 !important;
+margin: 0 !important;
+width: 100%;
+}
+
+.text-color-blue {
+    color: #14317F;
+}
+.bg-color-blue {
+    background-color: #14317F;
+}
+
+.fs-7 {
+    font-size: 0.675rem;
+}
+.subtitle-xs {
+    font-size: 0.75rem;
+    color: #00355b;
+}
+
+.declaration{
+    font-size: 0.675rem !important;
+    
+}
+    .color-blue {
+        color: #00355b;
+    }
+.header {
+width: 100%;
+
+}
+
+.btn-bg-gradient {
+width: 144px;
+height: 34.85px;
+background: linear-gradient(180deg, #181D6E 0%, #0071BD 100%);
+border-radius: 13px;
+border: 0.75px solid #1A4CD3;
+color: white !important;
+font-weight: bold;
+font-size: 16px;
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+.btn-bg-gradient:hover {
+background: linear-gradient(180deg, #0071BD 0%, #181D6E 100%); /* Hover effect - reverse gradient */
+}
+
+.flaglogo {
+width: 80px;
+height: 80px;
+
+object-fit: cover;
+
+}
+
+.flaglogo-xs {
+width: 80px;
+height: 80px;
+object-fit: cover;
+border-radius: 50px;
+background-color:white;
+}
+
+.footer-text-color {
+color: #00355b;
+}
+
+.text-container {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.title {
+font-size: 36px;
+}
+
+.btn-font {
+font-size: 12px !important;
+}
+.btn-md-font {
+font-size: 12px !important;
+}
+.subtitle {
+font-size: 16px;
+color: #00355b;
+text-align: center;
+margin-top: 5px;
+font-weight: 300;
+}
+.carousel-container {
+    height: 200px;
+
+object-fit: cover;
+
+
+}
+.carousel-image {
+    height: 200px;
+    width: 100%;
+    
+    margin:0 auto;
+}
+
+.paragraph {
+font-size: 14px;
+color: #3c3c3c;
+text-align: justify;
+line-height: 1.5;
+}
+
+.btn {
+padding: 10px 20px;
+font-size: 14px;
+font-weight: bold;
+}
+.bottom-section {
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 50px;
+}
+.logo {
+width: 50px;
+height: 50px;
+margin-right: 10px;
+}
+
+.logo-xs {
+width: 50px;
+height: 50px;
+}
+
+.ministry-text {
+font-size: 16px;
+font-weight: bold;
+color: white;
+}
+.country-text {
+font-size: 14px;
+color: white;
+}
