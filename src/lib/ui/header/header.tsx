@@ -48,13 +48,13 @@ const Header = () => {
           height: 75px;
         }
         .left-logo-div {
-          margin-top: -8px;
+          margin-top: -4px;
         }
         .text-color-blue {
           color: #14317f;
         }
         .right-logo-div {
-          margin-top: -4px;
+          margin-top: 0;
         }
       `}</style>
     </header>

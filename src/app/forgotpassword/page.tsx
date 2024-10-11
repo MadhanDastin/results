@@ -138,10 +138,10 @@ const ForgotPassword = () => {
                                         className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
                                         placeholder="Password/SLF NO"
                                         {...register('password', {
-                                            required: 'Password is required',
+                                            required: 'SLF No is required',
                                             minLength: {
                                                 value: 12,
-                                                message: 'Password must be at least 12 characters',
+                                                message: 'SLF No must be at least 12 characters',
                                             }
                                         })}
                                     />
@@ -161,13 +161,13 @@ const ForgotPassword = () => {
 
                                     </button>
                                 </div>
-                                <div className="text-center mt-4 pt-2 mb-4">
-
-                                    <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleHomeClick}>Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
-                                    <button className="btn btn-outline-info  btn-sm customButton " onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
-                                </div>
 
                             </form>
+                            <div className="d-flex align-items-center justify-content-evenly mt-4 pt-2 mb-4">
+
+                                <button className="btn btn-outline-info  btn-md customButton" onClick={handleHomeClick}>Back to Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
+                                <button className="btn btn-outline-info  btn-md customButton" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
+                            </div>
 
 
                         </div>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm,SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import './forgot.css'
+import './changepassword.css'
 
 type FormValues = {
     surname: string;
@@ -153,9 +153,9 @@ const ForgotPassword = () => {
 
                                     </button>
                                 </div>
-                                <div className="text-center mt-4 pt-2 mb-4">
+                                <div className="d-flex align-items-center justify-content-evenly mt-4 pt-2 mb-4">
                                
-                                <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleHomeClick}>Home <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
+                                <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleHomeClick}>Back to Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
                                 <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
                             </div>
 
