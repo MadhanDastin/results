@@ -1,58 +1,38 @@
-"use client"
-import React from 'react';
+"use client";
+import React, { useEffect, useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
-import './twl.css'
+import './twl.css';
 import MyNavbar from '../../lib/ui/navbar/navbar';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+ 
 const Marksheet = () => {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
-
+ 
   useEffect(() => {
-    // Get the 'response' query parameter
     const response = searchParams.get('response');
-
     if (response) {
       try {
-        // Decode and parse the response
         const decodedResponse = decodeURIComponent(response);
         const parsedResponse = JSON.parse(decodedResponse);
         setStudentData(parsedResponse);
         console.log("twl", parsedResponse);
-
       } catch (error) {
         console.error('Failed to decode/parse response:', error);
       }
     }
   }, [searchParams]);
-
+ 
   if (!studentData) {
     return <div>Loading...</div>;
   }
-  // const searchParams = useSearchParams();
-  // const responseParam = searchParams.get('response');
-
-  // // State to store and parse the response data
-  // const [studentData, setStudentData] = useState<any>(null);
-
-  // useEffect(() => {
-  //     if (responseParam) {
-  //         const parsedResponse = JSON.parse(decodeURIComponent(responseParam));
-  //         setStudentData(parsedResponse);
-  //         console.log("twldata",parsedResponse);
-
-  //     }
-  // }, [responseParam]);
-
-
+ 
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="container d-flex justify-content-center align-items-center">
-
         <div className="sheet px-4 py-1">
           <div className='py-1'>
             <MyNavbar />
@@ -70,13 +50,13 @@ const Marksheet = () => {
                   className="img-fluid"
                 />
               </div>
-
+ 
               {/* Title and Subtitle */}
               <div className="text-center flex-grow-1">
                 <h4 className="title mb-1">GRADE - 12 NATIONAL EXAMINATION RESULTS - 2024</h4>
                 <h5 className="subtitle">Department of Education</h5>
               </div>
-
+ 
               {/* Right Logo */}
               <div className="logo-end">
                 <Image
@@ -88,13 +68,11 @@ const Marksheet = () => {
                 />
               </div>
             </div>
-
+ 
             <div className="d-flex justify-content-between mb-0 mt-0 ">
               <p className='para'><strong>Published Date:</strong> 1-10-2024</p>
               <p className='para'><strong>Valid Until:</strong> 1-10-2025</p>
             </div>
-            {/* <hr className='mt-0' /> */}
-
             {/* Candidate & School Details */}
             <div className="row mb-2">
               <div className="col-md-6 d-flex">
@@ -125,10 +103,11 @@ const Marksheet = () => {
                         </tr>
                       </tbody>
                     </table>
-
                   </div>
                 </div>
               </div>
+ 
+              {/* School Details */}
               <div className="col-md-6 d-flex">
                 <div className="border p-2 flex-grow-1 borderCustom">
                   <h6 className='textcolor'><strong>School Details</strong></h6>
@@ -156,9 +135,7 @@ const Marksheet = () => {
                 </div>
               </div>
             </div>
-
-
-
+ 
             {/* Results Section */}
             <div className="mb-2 border p-2 borderCustom">
               <h6 className='textcolor'><strong>Results</strong></h6>
@@ -189,11 +166,9 @@ const Marksheet = () => {
                     )}
                   </tbody>
                 </table>
-
-
               </div>
             </div>
-
+ 
             {/* Summary Section */}
             <div className="border p-2 mb-2 borderCustom">
               <h6 className='textcolor'><strong>Result Summary</strong></h6>
@@ -209,16 +184,15 @@ const Marksheet = () => {
                 </div>
               </div>
             </div>
-
+ 
             {/* Terms Section */}
             <div className="terms border p-2 borderCustom">
               <h6><strong>Terms:</strong></h6>
               <div>
                 <p>1) National Department of Education (NDoE) online result is a provisional indicative information copy only; shall not be considered as final. The Orginal Certificate of Results will be issued by the MSD of NDoE which may be subject to changes for some valid reasons such as corrections from schools.</p>
                 <p>2) The downloaded copy of the result in full/ partial will not guarantee any admission into any of the educational institutions within or outside PNG; Admissions to further education is dependent on the Official National Examination Results only.</p>
-                <p>3) Any sort of manipulation or duplication or re- production of this provisional result copy without the prior consent of NDoE, within or outside PNG will be considered as a serious offence and shall be dealt with it accordingly.</p>
+                <p>3) Any sort of manipulation or duplication or re-production of this provisional result copy without the prior consent of NDoE, within or outside PNG will be considered as a serious offense and shall be dealt with it accordingly.</p>
               </div>
-              {/* Scanner Image Below Table */}
               <div className="text-center mt-2">
                 <Image
                   src="/images/qrc.png"
@@ -231,11 +205,9 @@ const Marksheet = () => {
             </div>
           </div>
         </div>
-
-
       </div>
-    </div>
+    </Suspense>
   );
 };
-
-export default Marksheet;
+ 
+export default dynamic(() => Promise.resolve(Marksheet), { ssr: false });
