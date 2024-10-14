@@ -4,7 +4,7 @@ import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import './forgot.css'
+// import './forgot.css'
 
 type FormValues = {
     surname: string;

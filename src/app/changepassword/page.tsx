@@ -4,7 +4,7 @@ import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm,SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import './changepassword.css'
+// import './changepassword.css'
 
 type FormValues = {
     surname: string;

@@ -40,8 +40,9 @@ const Marksheet = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="container d-flex justify-content-center align-items-center">
-        <div className="sheet px-4 py-1">
-          <div className='py-1'>
+      
+        {/* <div className="sheet px-4 py-1"> */}
+        <div className='py-1 navbar-wrapper'>
             <MyNavbar />
           </div>
           <div className='p-3 bordercolor'>
@@ -75,11 +76,11 @@ const Marksheet = () => {
                 />
               </div>
             </div>
-
-            <div className="d-flex justify-content-between mb-0 mt-0 ">
+           <div>
+            <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
               <p className='para'><strong>Published Date:</strong> 1-10-2024</p>
               <p className='para'><strong>Valid Until:</strong> 1-10-2025</p>
-            </div>
+            </div><hr className="custom-hr" /></div>
             {/* Candidate & School Details */}
             <div className="row mb-2">
               <div className="col-md-6 d-flex">
@@ -89,22 +90,22 @@ const Marksheet = () => {
                     <table>
                       <tbody>
                         <tr>
-                          <td className='para'><strong>Given Names:</strong></td>
+                          <td className='para'><strong>Given Names</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.givennames}</td>
                         </tr>
                         <tr>
-                          <td className='para'><strong>Surname:</strong></td>
+                          <td className='para'><strong>Surname</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.lastname}</td>
                         </tr>
                         <tr>
-                          <td className='para'><strong>Gender:</strong></td>
+                          <td className='para'><strong>Gender</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.sex}</td>
                         </tr>
                         <tr>
-                          <td className='para'><strong>Cand. No:</strong></td>
+                          <td className='para'><strong>Cand. No</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.candidateno}</td>
                         </tr>
@@ -127,12 +128,12 @@ const Marksheet = () => {
                           <td className='para'>{studentData.region}</td>
                         </tr>
                         <tr>
-                          <td className='para'><strong>Province:</strong></td>
+                          <td className='para'><strong>Province</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.province}</td>
                         </tr>
                         <tr>
-                          <td className='para'><strong>School:</strong></td>
+                          <td className='para'><strong>School</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.schoolname}</td>
                         </tr>
@@ -211,7 +212,7 @@ const Marksheet = () => {
               </div>
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </Suspense>
   );

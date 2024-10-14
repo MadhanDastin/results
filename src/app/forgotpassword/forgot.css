@@ -22,7 +22,7 @@ font-size: 13px!important;
 ::-moz-placeholder {  /* Firefox 19+ */
     font-size: 13px!important;
 }
-.loginPage {
+.login-Page {
     
     background: radial-gradient(180.77% 285.2% at 50.05% 54.5%, #006EB9 0.17%, #006EB9 6.13%, #14317F 31.79%);
     height: 100%;
@@ -31,23 +31,7 @@ font-size: 13px!important;
     align-items: center;
     overflow-y: scroll;
 }
-.gradeTitle {
-    color: white;
-    font-weight: bold;
-    font-size: 2rem;
-}
-
-.subTitle {
-    color: white;
-    font-size: 1rem;
-}
-
-.departmentTitle {
-    color: #FCE886;
-    font-size: 0.7rem;
-}
-
-.formCard {
+.form-Card {
    
     border: 2px solid  #4BB5FF;
     border-radius: 20px;
@@ -56,7 +40,7 @@ font-size: 13px!important;
      padding: 1.5rem;
 }
 
-.loginTitle {
+.login-Title {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
@@ -64,12 +48,12 @@ font-size: 13px!important;
     color: white; /* White text for title */
 }
 
-.loginTitle svg {
+.login-Title svg {
     color: #007bff; /* Customize the arrow color */
     font-size: 18px;
 }
 
-.custom-button {   
+.custombutton {   
     color: #fff;
     background-image: linear-gradient(to right, #181D6E , #0071BD);
     border-radius: 10px; /* Rounded corners */
@@ -79,7 +63,7 @@ font-size: 13px!important;
     height:45px;
 }
 
-.inputField {
+.input-Field {
     background-color: white; /* White input box */
     border: none;
     border-radius: 5px;
@@ -90,45 +74,38 @@ font-size: 13px!important;
     margin: 0 auto;
 }
 
-.form-label{
+.formlabel{
     color:white;
     font-size: 14px;
 }
 
-.invalid-feedback{
+.invalidfeedback{
     color:#FF8200;
     font-weight: bold;
     font-size: 12px;
     line-height: 24px;
 }
 
-.customButton{
-    color:white !important;
+.custom-Button{
+    color: white !important;
     font-size: 12px;
     background-color: #006FBB !important;
      border: 1px solid #006FBB !important;
      box-shadow: 0px 4px 4px 4px #00000040;
 }
 
-.small-label{
-    font-size: 0.5rem;
-    color:#FCE886;
-}
 
-.forgotPassword {
-    font-size: 0.55rem;
-    color: white;
-    text-decoration: none;
-}
+
+
+
 
 .form-control.is-invalid, .was-validated .form-control:invalid {
     background-image: none !important;
 }
 
+
 @media (max-width: 768px) {
-    .gradeTitle {
-        font-size: 1.5rem;
-    }
+    
    
   
 }
