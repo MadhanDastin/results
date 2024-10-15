@@ -8,7 +8,7 @@ const carouselItems = [
         name: '1',
     },
     {
-        image: '/images/Home-carousel-Img-02.png',
+        image: '/images/Home-carousel-Img-02 (1).png',
         name: '2',
     },
     {

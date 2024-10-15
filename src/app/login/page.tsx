@@ -5,21 +5,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 // import './login.css';
+
 import dynamic from 'next/dynamic';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 type FormValues = {
     surname: string;
     givenNames: string;
     password: string;
 };
 
+
+
 const Login = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [results, setResults] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
-   
-     
-    
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
+
     const handleHomeClick = () => {
         router.push("/");
     };
@@ -27,6 +34,27 @@ const Login = () => {
     const handleReset = () => {
         reset(); // This will reset the form to its default values
     };
+
+    const getTitle = (title: string) => {
+        switch (title) {
+            case "10":
+                return () => {
+                    router.push(`/forgotpassword?results=10`);
+                };
+            case "12":
+                return () => {
+                    router.push(`/forgotpassword?results=12`);
+                };
+            case "STEM":
+                return () => {
+                    router.push(`/forgotpassword?results=STEM`);
+                };
+            default:
+                return () => { }; // Return a no-op function for the default case
+        }
+    }
+
+    const resultsTitle = getTitle(results as string);
 
     const [loginResponse, setLoginResponse] = useState<any>(null);
 
@@ -40,7 +68,7 @@ const Login = () => {
         reValidateMode: 'onChange', // Optional: Re-validate the form on every change
     });
 
-    const [showPassword,setShowPassword] = useState(false)
+
     // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, fieldName: keyof FormValues) => {
     //     const isNumeric = /^[0-9]$/.test(e.key); // Check if the pressed key is a numeric value
     //     if (isNumeric) {
@@ -77,7 +105,6 @@ const Login = () => {
                         localStorage.setItem('authToken', result.token); // Store token in localStorage
                         console.log("Token stored:", result.token);
                     }
-                    // Handle successful login
                     console.log("Login successful:", result);
                     // alert("Login successful!");
                     // reset(); // Reset form fields after successful login
@@ -166,7 +193,7 @@ const Login = () => {
                                                 //     e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
                                                 // },
                                             })}
-                                            // onKeyDown={(e) => handleKeyDown(e, 'surname')} // Handle key down event directly
+                                        // onKeyDown={(e) => handleKeyDown(e, 'surname')} // Handle key down event directly
                                         />
                                         {!errors.surname && (
                                             <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
@@ -174,7 +201,7 @@ const Login = () => {
 
                                         {errors.surname && (
                                             <span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
-                                                  {errors.surname.message}
+                                                {errors.surname.message}
                                             </span>
                                         )}
                                     </div>
@@ -196,7 +223,7 @@ const Login = () => {
                                                 //     e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
                                                 // },
                                             })}
-                                            // onKeyDown={(e) => handleKeyDown(e, 'givenNames')} // Handle key down event directly
+                                        // onKeyDown={(e) => handleKeyDown(e, 'givenNames')} // Handle key down event directly
                                         />
                                         {!errors.givenNames && (
                                             <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
@@ -204,12 +231,11 @@ const Login = () => {
                                         {errors.givenNames && (
 
                                             <span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
-                                                 {errors.givenNames.message}
+                                                {errors.givenNames.message}
                                             </span>
 
                                         )}
                                     </div>
-
                                     <div className="mb-2">
                                         <label className="form-label mb-0 ps-4 ms-2">Password* <span className="small-label">(Default Password: SLF NO)</span> </label>
                                         <div className="form-group">
@@ -237,15 +263,24 @@ const Login = () => {
                                         {errors.password && (<span className={"invalid-feedback  mb-0 ms-5 mt-0 text-end"}>
                                                {errors.password.message?.toString()}
                                         </span>)}  </div>
-
                                         <div className='text-center mb-4 pb-2'>
-                                            <a href="/forgotpassword" className="forgotPassword"
-                                            ><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
-                                        </div>
+                                            <a
+                                                href={`/forgotpassword?results=${results}`}
+                                                className="forgotPassword"
+                                                onClick={(e) => {
+                                                    e.preventDefault(); // Prevent default anchor click behavior
+                                                    resultsTitle(); // Call the handler
+                                                }}
+                                            >
+                                                <Image src="/images/Vector.png" alt="Logo" width={10} height={10} />
+                                                Forgot Password?
+                                            </a>
+                                        </div>                                       
 
                                     </div>
+                                    
 
-                                   
+                                    
 
                                     <div className="d-flex justify-content-center mt-3">
                                         <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center">
@@ -272,7 +307,7 @@ const Login = () => {
                                 </div>
 
 
-                               
+
                             </div>
                         </div>
                         <div className="row d-flex d-block d-sm-none justify-content-center align-items-center mt-4">
@@ -291,6 +326,14 @@ const Login = () => {
 
                 <style>
                     {`
+                    .input-group .password-toggle-btn {
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                        background-color: white;
+                        color: black;
+                        width: 30px;
+                        height: 30px;
+                    }
 ::-webkit-input-placeholder {
     font-size: 25px;
 }
@@ -409,7 +452,11 @@ font-size: 13px!important;
     display: inline-block;
     vertical-align: middle;
 }
-
+.input-group{
+ position:relative;
+ width: 284px;
+ margin: 0 auto;
+}
 .inputField {
     background-color: white; /* White input box */
     border: none;
@@ -419,6 +466,29 @@ font-size: 13px!important;
     width:230px;
     height: 30px;
     margin: 0 auto;
+     
+}
+    .inputField-pass{
+     height: 30px;
+  box-sizing:border-box;
+  padding-left: 1.5rem;
+  width:230px;
+    
+    }
+    .password-toggle-btn {
+//   border: none;
+//   background: none;
+//   color: #666;
+//   height: 28px;
+ height: 1.5rem;
+  width: 1.5rem;
+//   background-color: red;
+  padding: 4px;
+  position: absolute;
+  box-sizing:border-box;
+  top:50%;
+  left:2px;
+  transform: translateY(-50%);
 }
 
 .form-label{

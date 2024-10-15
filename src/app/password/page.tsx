@@ -1,10 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState,Suspense} from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-// import './forgot.css'
+import { useRouter, useSearchParams } from 'next/navigation';
+import './password.css'
+import dynamic from 'next/dynamic';
 
 type FormValues = {
     surname: string;
@@ -13,14 +14,20 @@ type FormValues = {
 };
 
 const YourPassword = () => {
-
+    const searchParams = useSearchParams();
     const router = useRouter();
+    const [password, setPassword] = useState<string | null>('');
    
     const handleLoginRedirect = () => {
-        router.push('/login'); // Navigate to the login page
+        router.back();// Navigate to the login page
       };
-  
 
+      useEffect(() => {
+        var password = searchParams.get('password');
+        setPassword(password)
+    }, [searchParams])
+  
+    console.log(password);
     const {
         register,
         handleSubmit,
@@ -47,6 +54,7 @@ const YourPassword = () => {
 
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div className="loginPage vh-100">
             <div className="container-fluid">
                 <div className="row align-items-center justify-content-center">
@@ -70,9 +78,9 @@ const YourPassword = () => {
                                 <div className="mb-2">
                                     {/* <label className="form-label mb-0 ps-4 ms-2"> </label> */}
                                     <input
-                                        type="password"
+                                        type="text"
                                         className={`form-control inputField `}
-                                       
+                                       value={password ? password : ''}
                                        
                                     />
                                     
@@ -100,8 +108,8 @@ const YourPassword = () => {
 
             </div>
                 </div>
-
+                </Suspense>
     );
 };
 
-export default YourPassword;
+export default dynamic(() => Promise.resolve(YourPassword), { ssr: false });

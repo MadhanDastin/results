@@ -39,12 +39,13 @@ const Marksheet = () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="container d-flex justify-content-center align-items-center">
-      
-        {/* <div className="sheet px-4 py-1"> */}
-        <div className='py-1 navbar-wrapper'>
+      <div className='py-1 navbar-wrapper'>
             <MyNavbar />
           </div>
+      <div className="container d-flex justify-content-center align-items-center">
+      
+        <div className="sheet px-4 py-1">
+        
           <div className='p-3 bordercolor'>
             {/* Header */}
             <div className="d-flex align-items-center justify-content-between mb-2">
@@ -212,7 +213,7 @@ const Marksheet = () => {
               </div>
             </div>
           </div>
-        {/* </div> */}
+        </div>
       </div>
     </Suspense>
   );

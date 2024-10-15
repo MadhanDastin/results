@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 // import './forgot.css';
 import dynamic from 'next/dynamic';
+
 type FormValues = {
     surname: string;
     givenNames: string;
@@ -15,10 +16,26 @@ type FormValues = {
 const ForgotPassword = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const handleHomeClick = () => {
-        router.push("/login");
-    };
+
     const [results, setResults] = useState<string | null>(null);
+
+    const getTitle = (title: string) => {
+
+        switch (title) {
+            case "10":
+                return "GRADE 10 RESULTS"
+            case "12":
+                return "GRADE 12 RESULTS"
+            case "STEM":
+                return "STEM RESULTS"
+              
+
+            default:
+                break;
+        }
+    }
+
+    const resultTitle = getTitle(results as string)
 
     const {
         register,
@@ -40,26 +57,51 @@ const ForgotPassword = () => {
         });
     };
 
-    // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, fieldName: keyof FormValues) => {
-    //     const isNumeric = /^[0-9]$/.test(e.key); // Check if the pressed key is a numeric value
-    //     if (isNumeric) {
-    //         e.preventDefault(); // Prevent input of numeric values
-    //         // Set an error for the specific field
-    //         setError(fieldName, {
-    //             type: "manual",
-    //             message: "Only letters are allowed"
-    //         });
-    //     }
-    // };
+    
 
     useEffect(() => {
         var results = searchParams.get('results');
         setResults(results)
     }, [searchParams])
 
+    const handleHomeClick = () => {
+        router.back();
+    };
+
+    // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    //     console.log('form data ', data);
+      
+    // };
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-        console.log('form data ', data);
-        // reset();
+        try {
+            const response = await fetch('https://devapi.dastintechnologies.com/api/v1/twl/forgot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lastname: data.surname.toUpperCase(),
+                    givennames: data.givenNames.toUpperCase(),
+                    slfnumber: data.password,
+                }),
+            });
+
+            if (!response.ok) {
+                router.push('/invalid');
+                throw new Error('Failed to reset password');
+               
+            }
+
+            const responseData = await response.json();
+            console.log(responseData);
+
+            // Assuming the response contains the new password or success message
+            // Navigate to the password page and pass the response data via query params
+            router.push(`/password?password=${responseData.data.password}`);
+        } catch (error) {
+            console.error('API error:', error);
+            setError('password', { type: 'manual', message: 'Failed to reset password.' });
+        }
     };
 
     return (
@@ -74,7 +116,7 @@ const ForgotPassword = () => {
                                 <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
                             </div>
                             <div className="mt-0">
-                                <h2 className="gradeTitle mt-2">{results === '10' ? 'GRADE 10 RESULTS' : results === '12' ? 'GRADE 12 RESULTS' : 'STEM RESULTS'}</h2>
+                                <h2 className="gradeTitle mt-2">{resultTitle}</h2>
                                 <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
                             </div>
                         </div>
@@ -115,11 +157,9 @@ const ForgotPassword = () => {
                                                 value: /^[A-Za-z]+$/i,
                                                 message: 'Invalid - Numbers not allowed',
                                             },
-                                            // onChange: (e) => {
-                                            //     e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
-                                            // },
+                                         
                                         })}
-                                    // onKeyDown={(e) => handleKeyDown(e, 'surname')} // Handle key down event directly
+                                   
                                     />
                                     {!errors.surname && (
                                         <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
@@ -145,11 +185,9 @@ const ForgotPassword = () => {
                                                 value: /^[A-Za-z\s]+$/i, // Allow letters and spaces
                                                 message: 'Invalid - Numbers not allowed',
                                             },
-                                            // onChange: (e) => {
-                                            //     e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
-                                            // },
+                                           
                                         })}
-                                    // onKeyDown={(e) => handleKeyDown(e, 'givenNames')} // Handle key down event directly
+                                   
                                     />
                                     {!errors.givenNames && (
                                         <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
@@ -187,10 +225,7 @@ const ForgotPassword = () => {
                                         {errors.password.message?.toString()}
                                     </span>)}
 
-                                    {/* <div className='text-center mb-4 pb-2'>
-                                        <a href="/forgotpassword" className="forgotPassword"
-                                        ><Image src="/images/Vector.png" alt="Logo" width={10} height={10} />  Forgot Password?</a>
-                                    </div> */}
+                                    
 
                                 </div>
 
@@ -224,6 +259,21 @@ const ForgotPassword = () => {
                 .small-label{
     font-size: 0.5rem;
     color:#FCE886;
+}
+.gradeTitle {
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.subTitle {
+    color: white;
+    font-size: 1rem;
+}
+
+.departmentTitle {
+    color: #FCE886;
+    font-size: 0.7rem;
 }
 
                 .custom-button {   
@@ -407,6 +457,7 @@ font-size: 13px!important;
 };
 
 export default dynamic(() => Promise.resolve(ForgotPassword), { ssr: false });
+
 
 
 
