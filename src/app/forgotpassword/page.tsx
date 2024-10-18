@@ -392,7 +392,7 @@ font-size: 13px!important;
     overflow-y: scroll;
 }
 .form-Card {
-   
+   height:500px;
     border: 2px solid  #4BB5FF;
     border-radius: 20px;
     box-shadow: 0px 4px 4px 4px #00000040;
