@@ -17,7 +17,7 @@ const Login = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const username = searchParams.get('surname');
-    const givenname = searchParams.get('givenNames');
+    const givenname = searchParams.get('givennames');
     const [results, setResults] = useState<string | null>(null);
 
 
@@ -164,9 +164,9 @@ const Login = () => {
 
                                         <div className="mb-4 paratext justify-content-center align-items-center text-start">
                                             <p>
-                                                Dear &lt;{username} {givenname}&gt;, there seems to be a problem with your Input Details or your Eligibility for Certification.
+                                                Dear {`${username} ${givenname}`}, there seems to be a problem with your Input Details or your Eligibility for Certification.
                                                 Please use the <strong>FORGOT PASSWORD</strong> option to recover your password (or) contact your School as you may have issues with MSD Records.
-                                                <br /><br />
+                                                
                                             </p>
                                         </div>
 

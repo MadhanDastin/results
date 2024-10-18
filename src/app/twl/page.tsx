@@ -80,7 +80,7 @@ const Marksheet = () => {
             <div>
               <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
                 <p className='para'><strong>Published Date:</strong> 01-10-2024</p>
-                <p className='para'><strong>Valid Until:</strong> 01-10-2025</p>
+                <p className='para'><strong>Valid Until:</strong> 30-03-2025</p>
               </div>
             </div>
               <hr className="custom-hr mt-0" />
@@ -128,17 +128,17 @@ const Marksheet = () => {
                         <tr>
                           <td className='para'><strong>Region</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.region}({studentData.regioncode})</td>
+                          <td className='para'>{studentData.region} ({studentData.regioncode})</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Province</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.province}({studentData.provincecode})</td>
+                          <td className='para'>{studentData.province} ({studentData.provincecode})</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>School</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.schoolname}({studentData.schoolcode})</td>
+                          <td className='para'>{studentData.schoolname} ({studentData.schoolcode})</td>
                         </tr>
                       </tbody>
                     </table>
@@ -165,7 +165,7 @@ const Marksheet = () => {
                       studentResultsData.map((result: any, index: number) => (
                         <tr key={index}>
                           <td>{result.subshortname}</td>
-                          <td style={{ textAlign: 'left' }}>{result.subject}</td>
+                          <td style={{ textAlign: 'left', paddingLeft: '20px' }}>{result.subject}</td>
                           <td>{result.grade}</td>
                           <td>{result.finalstdscore}</td>
                         </tr>

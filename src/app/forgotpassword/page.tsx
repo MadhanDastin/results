@@ -88,7 +88,7 @@ const ForgotPassword = () => {
             });
 
             if (!response.ok) {
-                router.push('/invalid');
+                router.push(`/invalid?results=${results}`);
                 throw new Error('Failed to reset password');
 
             }
@@ -98,7 +98,7 @@ const ForgotPassword = () => {
                 console.log(responseData);
 
 
-                router.push(`/password?password=${responseData.data.password}`);
+                router.push(`/password?password=${responseData.data.password}&results=${results}`);
             }
         } 
         else  if (results === 'STEM') {
@@ -115,7 +115,7 @@ const ForgotPassword = () => {
             });
 
             if (!response.ok) {
-                router.push('/invalid');
+                router.push(`/invalid?results=${results}`);
                 throw new Error('Failed to reset password');
 
             }
@@ -125,7 +125,7 @@ const ForgotPassword = () => {
                 console.log(responseData);
 
 
-                router.push(`/password?password=${responseData.data.password}`);
+                router.push(`/password?password=${responseData.data.password}&results=${results}`);
             }
         } 
     }

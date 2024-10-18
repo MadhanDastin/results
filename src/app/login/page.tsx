@@ -164,7 +164,7 @@ const Login = () => {
                     console.error("Login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
                     // router.push('/loginfailed');
-                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}`);
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
                 }
             } else if (results === 'STEM') {
                 // POST request for the "STEM" result
@@ -193,7 +193,7 @@ const Login = () => {
                 } else {
                     console.error("STEM login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
-                    router.push('/loginfailed');
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
                 }
             } else {
                 // alert('Work In Progress');

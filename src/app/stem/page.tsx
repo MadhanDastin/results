@@ -48,6 +48,7 @@ const Marksheet = () => {
       
       // Set student data
       const student = {
+        ...parsedStudentData,
         givennames: parsedStudentData.GIVEN_Names,
         lastname: parsedStudentData.Surname,
         sex: parsedStudentData.Gender,
@@ -157,7 +158,7 @@ const Marksheet = () => {
            <div>
             <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
               <p className='para'><strong>Published Date:</strong> 01-10-2024</p>
-              <p className='para'><strong>Valid Until:</strong> 01-10-2025</p>
+              <p className='para'><strong>Valid Until:</strong> 30-03-2025</p>
             </div></div><hr className="custom-hr mt-0" />
             {/* Candidate & School Details */}
             <div className="row mb-2">
@@ -203,17 +204,17 @@ const Marksheet = () => {
                         <tr>
                           <td className='para'><strong>Region</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.region}({studentData.regioncode})</td>
+                          <td className='para'>{studentData.region} ({studentData.Region_code})</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Province</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.province}({studentData.provincecode})</td>
+                          <td className='para'>{studentData.province} ({studentData.Province_Code})</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>School</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.schoolname}({studentData.schoolcode})</td>
+                          <td className='para'>{studentData.schoolname} ({studentData.School_Code})</td>
                         </tr>
                       </tbody>
                     </table>
@@ -241,7 +242,7 @@ const Marksheet = () => {
                       studentResultsData.map((result: any, index: number) => (
                         <tr key={index}>
                           <td>{result.subshortname}</td>
-                          <td style={{ textAlign: 'left' }}>{result.subject}</td>
+                          <td style={{ textAlign: 'left', paddingLeft: '20px' }}>{result.subject}</td>
                           <td>{result.marks}</td>
                           <td>{result.grade}</td>
                           <td>{result.finalstdscore}</td>
@@ -274,9 +275,9 @@ const Marksheet = () => {
             </div> */}
 
             {/* Terms Section */}
-            <div className="terms border p-2 borderCustom">
+            <div className="terms border p-2 borderCustom justify-content-center align-items-center text-start">
               <h6><strong>Terms:</strong></h6>
-              <div>
+              <div justify-content-center align-items-center text-start>
                 <p>1) National Department of Education (NDoE) online result is a provisional indicative information copy only; shall not be considered as final. The Original Certificate of Results will be issued by the MSD of NDoE which may be subject to changes for some valid reasons such as corrections from schools.</p>
                 <p>2) The downloaded copy of the result in full/ partial will not guarantee any admission into any of the educational institutions within or outside PNG; Admissions to further education is dependent on the Official National Examination Results only.</p>
                 <p>3) Any sort of manipulation or duplication or re-production of this provisional result copy without the prior consent of NDoE, within or outside PNG will be considered as a serious offense and shall be dealt with it accordingly.</p>

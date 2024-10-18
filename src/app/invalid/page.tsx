@@ -17,7 +17,7 @@ const InvalidPassword = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [password, setPassword] = useState<string | null>('');
-
+    const [results, setResults] = useState<string | null>(null);
     const handleLoginRedirect = () => {
         if (window.history.length > 1) {
             router.back(); // Go back if there's a history
@@ -26,10 +26,36 @@ const InvalidPassword = () => {
         }
     };
 
+    
+    const getTitle = (title: string) => {
+
+        switch (title) {
+            case "10":
+                return "GRADE 10 RESULTS"
+            case "12":
+                return "GRADE 12 RESULTS"
+            case "STEM":
+                return "STEM RESULTS"
+
+
+            default:
+                break;
+        }
+    }
+
+    const resultTitle = getTitle(results as string)
+
     useEffect(() => {
         var password = searchParams.get('password');
         setPassword(password)
     }, [searchParams])
+
+    useEffect(() => {
+        var results = searchParams.get('results');
+        console.log('Retrieved results:', results);
+        setResults(results)
+    }, [searchParams])
+
 
     console.log(password);
     const {
@@ -62,6 +88,32 @@ const InvalidPassword = () => {
             <div className="loginPage vh-100">
                 <div className="container-fluid">
                     <div className="row align-items-center justify-content-center">
+
+                    <div className="col-md-4 text-center">
+                            <div>
+                                <div>
+                                    <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
+                                </div>
+                                <div className="mt-0">
+                                    <h2 className="gradeTitle mt-2">{resultTitle}</h2>
+                                    <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
+                                </div>
+                            </div>
+                            {/* Logo and Department Title in the same row */}
+                            <div className="row d-flex d-none d-sm-flex justify-content-center align-items-center mt-5 pe-4 ">
+                                <div className="col-auto mt-5 pe-0">
+                                    <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
+                                </div>
+                                <div className="col-auto mt-5 ps-0">
+                                    <p className="departmentTitle mb-0 mt-3">
+                                        Department Of Education
+                                    </p>
+                                    <p className="departmentTitle text-start">
+                                        Papua New Guinea
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="col-md-4 d-flex justify-content-center align-items-center">
                             <div className="formCard p-3">
