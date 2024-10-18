@@ -1,35 +1,112 @@
-"use client";
-import React, { useEffect, useState, Suspense } from 'react';
-import dynamic from 'next/dynamic';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Image from 'next/image';
-import './twl.css';
-import MyNavbar from '../../lib/ui/navbar/navbar';
-import { useRouter, useSearchParams } from 'next/navigation';
+// "use client";
+// import React, { useEffect, useState, Suspense } from 'react';
+// import dynamic from 'next/dynamic';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import Image from 'next/image';
+// import './stem.css';
+// import MyNavbar from '../../lib/ui/navbar/navbar';
+// import { useRouter, useSearchParams } from 'next/navigation';
+
+// const Marksheet = () => {
+//   const router = useRouter();
+//   const searchParams = useSearchParams();
+//   const [studentData, setStudentData] = useState<any>(null);
+//   const [studentResultsData, setStudentResultsData] = useState<any>(null);
+
+//   useEffect(() => {
+//     const response = searchParams.get('response');
+
+   
+//   }, [searchParams]);
+
+//   if (!studentData) {
+//     return <div>Loading...</div>;
+//   }
+  "use client";
+import React, { useEffect, useState, Suspense } from "react";
+import dynamic from "next/dynamic";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Image from "next/image";
+import "./stem.css";
+import MyNavbar from "../../lib/ui/navbar/navbar";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Marksheet = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
-  const [studentResultsData, setStudentResultsData] = useState<any>(null);
+  const [studentResultsData, setStudentResultsData] = useState<any[]>([]);
 
   useEffect(() => {
-    const response = searchParams.get('response');
-
+    const response = searchParams.get("response");
+    
     if (response) {
-      try {
-        const decodedResponse = decodeURIComponent(response);
-        const parsedResponse = JSON.parse(decodedResponse);
-        setStudentData(parsedResponse.data.student.student);
-        const studentResults = parsedResponse.data.student.results;
-        const filteredResults = studentResults.filter((result: any) =>
-          result.finalstdscore !== 0 && result.grade.trim() !== ""
-        );
-        setStudentResultsData(filteredResults);
-        console.log("twl", parsedResponse);
-      } catch (error) {
-        console.error('Failed to decode/parse response:', error);
-      }
+      // Assume the response is JSON, so we parse it (adapt this part based on your actual response format)
+      const parsedResponse = JSON.parse(response);
+      console.log('parsedResponse ',parsedResponse);
+      const parsedStudentData = parsedResponse.data.student;
+      
+      // Set student data
+      const student = {
+        givennames: parsedStudentData.GIVEN_Names,
+        lastname: parsedStudentData.Surname,
+        sex: parsedStudentData.Gender,
+        candidateno: parsedStudentData.Candidate_No,
+        rank: parsedStudentData.Seq_No,
+        ter: "TBD", // Replace this with actual value if available
+        schoolname: parsedStudentData.School_Name,
+        region: parsedStudentData.Region,
+        province: parsedStudentData.Province,
+      };
+      setStudentData(student);
+      console.log('studentData ',studentData);
+      // Set student results data
+      const results = [
+        {
+          subshortname: "BIO",
+          subject: "Biology",
+          marks: parsedStudentData.Biology_Mark,
+          grade: parsedStudentData.Biology_Grade,
+          finalstdscore: parsedStudentData.Biology_Remarks,
+        },
+        {
+          subshortname: "CHEM",
+          subject: "Chemistry",
+          marks: parsedStudentData.Chemistry_Mark,
+          grade: parsedStudentData.Chemistry_Grade,
+          finalstdscore: parsedStudentData.Chemistry_Remarks,
+        },
+        {
+          subshortname: "MATH",
+          subject: "Mathematics",
+          marks: parsedStudentData.Mathematics_Mark,
+          grade: parsedStudentData.Mathematics_Grade,
+          finalstdscore: parsedStudentData.Mathematics_Remarks,
+        },
+        {
+          subshortname: "PHYS",
+          subject: "Physics",
+          marks: parsedStudentData.Physics_Mark,
+          grade: parsedStudentData.Physics_Grade,
+          finalstdscore: parsedStudentData.Physics_Remarks,
+        },
+        {
+          subshortname: "ENG",
+          subject: "Engineering",
+          marks: parsedStudentData.Engineering_Mark,
+          grade: parsedStudentData.Engineering_Grade,
+          finalstdscore: parsedStudentData.Engineering_Remarks,
+        },
+        {
+          subshortname: "TECH",
+          subject: "Technology",
+          marks: parsedStudentData.Technology_Mark,
+          grade: parsedStudentData.Technology_Grade,
+          finalstdscore: parsedStudentData.Technology_Remarks,
+        },
+      ];
+      setStudentResultsData(results);
+      console.log('studentResultsData ',studentResultsData);
     }
   }, [searchParams]);
 
@@ -62,7 +139,7 @@ const Marksheet = () => {
 
               {/* Title and Subtitle */}
               <div className="text-center flex-grow-1">
-                <h4 className="title mb-1">GRADE - 12 NATIONAL EXAMINATION RESULTS - 2024</h4>
+                <h4 className="title mb-1">STEM NATIONAL EXAMINATION RESULTS - 2024</h4>
                 <h5 className="subtitle">Department of Education</h5>
               </div>
 
@@ -90,7 +167,7 @@ const Marksheet = () => {
                   <div className='mt-1 mb-1'>
                     <table>
                       <tbody>
-                        <tr>
+                        <tr className="">
                           <td className='para'><strong>Given Names</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.givennames}</td>
@@ -154,6 +231,7 @@ const Marksheet = () => {
                     <tr>
                       <th>SUB-SHORT</th>
                       <th>SUBJECT</th>
+                      <th>MARKS</th>
                       <th>GRADE</th>
                       <th>ACHIEVEMENT</th>
                     </tr>
@@ -164,6 +242,7 @@ const Marksheet = () => {
                         <tr key={index}>
                           <td>{result.subshortname}</td>
                           <td>{result.subject}</td>
+                          <td>{result.marks}</td>
                           <td>{result.grade}</td>
                           <td>{result.finalstdscore}</td>
                         </tr>

@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 // import './changepassword.css'
 
 type FormValues = {
-    surname: string;
-    givenNames: string;
-    password: string;
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
 };
 
 const ForgotPassword = () => {
@@ -55,9 +55,9 @@ const ForgotPassword = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    lastname: data.surname,
-                    givennames: data.givenNames,
-                    slfnumber: data.password,
+                    lastname: data.currentPassword,
+                    givennames: data.newPassword,
+                    slfnumber: data.confirmPassword,
                 }),
             });
 
@@ -105,19 +105,24 @@ const ForgotPassword = () => {
                                     <label className="form-label mb-0 ps-4 ms-2">Current Password * </label>
                                     <input
                                         type="password"
-                                        className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
-                                        placeholder="Password/SLF NO"
-                                        {...register('password', {
+                                        autoComplete="off"
+                                        className={`form-control inputField ${errors.currentPassword ? 'is-invalid' : ''}`}
+                                        placeholder="Password/SLF NO"  maxLength={12}
+                                        {...register('currentPassword', {
                                             required: 'Password is required',
                                             minLength: {
+                                                value: 8,
+                                                message: 'Required 8 - 12 characters',
+                                            },
+                                            maxLength: {
                                                 value: 12,
-                                                message: 'Password must be at least 12 characters',
+                                                message: 'Password must be maximum 12 characters',
                                             }
                                         })}
                                     />
-                                    {!errors.password && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
-                                    {errors.password && <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
-                                        {errors.password.message?.toString()}
+                                    {!errors.currentPassword && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
+                                    {errors.currentPassword && <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
+                                        {errors.currentPassword.message?.toString()}
                                     </span>}
 
                                   
@@ -127,9 +132,9 @@ const ForgotPassword = () => {
                                     <label className="form-label mb-0 ps-4 ms-2">New Password * </label>
                                     <input
                                         type="password"
-                                        className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
+                                        className={`form-control inputField ${errors.newPassword ? 'is-invalid' : ''}`}
                                         placeholder="Password/SLF NO"
-                                        {...register('password', {
+                                        {...register('newPassword', {
                                             required: 'Password is required',
                                             minLength: {
                                                 value: 12,
@@ -137,13 +142,36 @@ const ForgotPassword = () => {
                                             }
                                         })}
                                     />
-                                    {!errors.password && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
-                                    {errors.password && <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
-                                        {errors.password.message?.toString()}
+                                    {!errors.newPassword && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
+                                    {errors.newPassword && <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
+                                        {errors.newPassword.message?.toString()}
                                     </span>}
 
                                   
                                 </div>
+
+                                <div className="mb-2">
+                                    <label className="form-label mb-0 ps-4 ms-2">Confirm Password * </label>
+                                    <input
+                                        type="password"
+                                        className={`form-control inputField ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                                        placeholder="Password/SLF NO"
+                                        {...register('confirmPassword', {
+                                            required: 'Password is required',
+                                            minLength: {
+                                                value: 12,
+                                                message: 'Password must be at least 12 characters',
+                                            }
+                                        })}
+                                    />
+                                    {!errors.confirmPassword && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
+                                    {errors.confirmPassword && <span className={"invalid-feedback mb-0 ps-4 ms-2 mt-0"}>
+                                        {errors.confirmPassword.message?.toString()}
+                                    </span>}
+
+                                  
+                                </div>
+
 
                                 <div className="d-flex justify-content-center mt-3">
                                     <button type="submit" className="btn btn-primary custom-button">

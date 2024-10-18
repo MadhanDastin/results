@@ -81,11 +81,66 @@ const Login = () => {
     //     }
     // };
 
+    // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    //     console.log('form data ', data);
+    //     try {
+    //         if (results === '12') {
+    //             // Make a POST request to the login API
+    //             const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 body: JSON.stringify({
+    //                     lastname: data.surname.toUpperCase(),
+    //                     givennames: data.givenNames.toUpperCase(),
+    //                     password: data.password,
+    //                 }),
+    //             });
+
+    //             const result = await response.json();
+
+    //             if (response.ok) {
+    //                 if (result.token) {
+    //                     localStorage.setItem('authToken', result.token); // Store token in localStorage
+    //                     console.log("Token stored:", result.token);
+    //                 }
+    //                 console.log("Login successful:", result);
+    //                 // alert("Login successful!");
+    //                 // reset(); // Reset form fields after successful login
+    //                 const encodedResult = encodeURIComponent(JSON.stringify(result));
+    //                 router.push(`/twl?response=${encodedResult}`);
+
+    //             } else {
+    //                 // Handle API error response
+    //                 console.error("Login failed:", result.message);
+    //                 alert(`Login failed: ${result.message}`);
+    //                 router.push('/loginfailed');
+    //             }
+    //         } else {
+    //             alert('Work In Progress');
+    //             return;
+    //         }
+    //     } catch (error) {
+    //         console.error("An error occurred during login:", error);
+    //         alert("An error occurred. Please try again.");
+    //     }
+    //     // reset();
+    // };
+
+    useEffect(() => {
+        var results = searchParams.get('results');
+        setResults(results)
+    }, [searchParams])
+
+    console.log("results", results);
+
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
         console.log('form data ', data);
+    
         try {
             if (results === '12') {
-                // Make a POST request to the login API
+                // POST request for the "12" result
                 const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
                     method: "POST",
                     headers: {
@@ -97,44 +152,62 @@ const Login = () => {
                         password: data.password,
                     }),
                 });
-
+    
                 const result = await response.json();
-
+    
                 if (response.ok) {
                     if (result.token) {
                         localStorage.setItem('authToken', result.token); // Store token in localStorage
                         console.log("Token stored:", result.token);
                     }
                     console.log("Login successful:", result);
-                    // alert("Login successful!");
-                    // reset(); // Reset form fields after successful login
                     const encodedResult = encodeURIComponent(JSON.stringify(result));
                     router.push(`/twl?response=${encodedResult}`);
-
                 } else {
-                    // Handle API error response
                     console.error("Login failed:", result.message);
+                    alert(`Login failed: ${result.message}`);
+                    router.push('/loginfailed');
+                }
+            } else if (results === 'STEM') {
+                // POST request for the "STEM" result
+                const response = await fetch("https://devapi.dastintechnologies.com/api/v1/stem/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        lastname: data.surname.toUpperCase(),
+                        givennames: data.givenNames.toUpperCase(),
+                        password: data.password,
+                    }),
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                    if (result.token) {
+                        localStorage.setItem('authToken', result.token); // Store token in localStorage
+                        console.log("Token stored:", result.token);
+                    }
+                    console.log("STEM login successful:", result);
+                    const encodedResult = encodeURIComponent(JSON.stringify(result));
+                    router.push(`/stem?response=${encodedResult}`);
+                } else {
+                    console.error("STEM login failed:", result.message);
                     alert(`Login failed: ${result.message}`);
                     router.push('/loginfailed');
                 }
             } else {
                 alert('Work In Progress');
-                return;
             }
         } catch (error) {
             console.error("An error occurred during login:", error);
             alert("An error occurred. Please try again.");
         }
-        // reset();
     };
+    
 
-    useEffect(() => {
-        var results = searchParams.get('results');
-        setResults(results)
-    }, [searchParams])
-
-    console.log("results", results);
-
+    
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -182,13 +255,17 @@ const Login = () => {
                                             type="text"
                                             autoComplete="off"
                                             className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
-                                            placeholder="Surname"
+                                            placeholder="Surname" maxLength={30}
                                             {...register('surname', {
                                                 required: 'Surname is required',
                                                 pattern: {
                                                     value: /^[A-Za-z]+$/i,
                                                     message: 'Invalid - Numbers not allowed',
                                                 },
+                                                // minLength: {
+                                                //     value: 30,
+                                                //     message: 'Upto 30 characters',
+                                                // }
                                                 // onChange: (e) => {
                                                 //     e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
                                                 // },
@@ -212,13 +289,17 @@ const Login = () => {
                                             type="text"
                                             autoComplete="off"
                                             className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
-                                            placeholder="First Name + Middle Name"
+                                            placeholder="First Name + Middle Name" maxLength={30}
                                             {...register('givenNames', {
                                                 required: 'Given names are required',
                                                 pattern: {
                                                     value: /^[A-Za-z\s]+$/i, // Allow letters and spaces
                                                     message: 'Invalid - Numbers not allowed',
                                                 },
+                                                //  minLength: {
+                                                //     value: 30,
+                                                //     message: 'Upto 30 characters',
+                                                // }
                                                 // onChange: (e) => {
                                                 //     e.target.value = e.target.value.toUpperCase(); // Convert to uppercase
                                                 // },
@@ -249,7 +330,7 @@ const Login = () => {
                                                 required: 'Password is required',
                                                 minLength: {
                                                     value: 8,
-                                                    message: '8 - 12 characters',
+                                                    message: 'Required 8 - 12 characters',
                                                 },
                                                 maxLength: {
                                                     value: 12,

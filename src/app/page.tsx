@@ -129,7 +129,7 @@ const HomeScreen: React.FC = () => {
                     <div className="row mt-4 justify-content-center">
                         <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">Grade Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font" onClick={handleGrade10ResultsClick}>Grade Results</button>
                         </div>
 
                         <div className="col-md-4 text-center px-0 d-inline-flex align-items-center justify-content-center">
@@ -141,7 +141,7 @@ const HomeScreen: React.FC = () => {
 
                         <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">STEM Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font" onClick={handleGradeSTEMResultsClick}>STEM Results</button>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@ const HomeScreen: React.FC = () => {
                     <div className="row mt-4 justify-content-center">
                         <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28812.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">Grade Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font" onClick={handleGrade10ResultsClick}>Grade Results</button>
                         </div>
 
                         <div className="col-md-4 text-center px-0 d-inline-flex align-items-center justify-content-center">
@@ -162,7 +162,7 @@ const HomeScreen: React.FC = () => {
 
                         <div className="col-md-3 text-center px-0 d-inline-flex align-items-center justify-content-center">
                             <Image src="/images/Group 28829.png" alt="Logo" width={40} height={40} className='mt-1' />
-                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font">STEM Results</button>
+                            <button className="btn btn-bg-gradient ms-1 me-3 color-white btn-md-font" onClick={handleGradeSTEMResultsClick}>STEM Results</button>
                         </div>
                     </div>
                 </div>

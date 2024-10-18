@@ -28,7 +28,7 @@ const ForgotPassword = () => {
                 return "GRADE 12 RESULTS"
             case "STEM":
                 return "STEM RESULTS"
-              
+
 
             default:
                 break;
@@ -57,7 +57,7 @@ const ForgotPassword = () => {
         });
     };
 
-    
+
 
     useEffect(() => {
         var results = searchParams.get('results');
@@ -70,10 +70,11 @@ const ForgotPassword = () => {
 
     // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     //     console.log('form data ', data);
-      
+
     // };
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
         try {
+            if (results === '12') {
             const response = await fetch('https://devapi.dastintechnologies.com/api/v1/twl/forgot', {
                 method: 'POST',
                 headers: {
@@ -89,172 +90,212 @@ const ForgotPassword = () => {
             if (!response.ok) {
                 router.push('/invalid');
                 throw new Error('Failed to reset password');
-               
+
             }
+            else {
 
-            const responseData = await response.json();
-            console.log(responseData);
+                const responseData = await response.json();
+                console.log(responseData);
 
-            // Assuming the response contains the new password or success message
-            // Navigate to the password page and pass the response data via query params
-            router.push(`/password?password=${responseData.data.password}`);
-        } catch (error) {
+
+                router.push(`/password?password=${responseData.data.password}`);
+            }
+        } 
+        else  if (results === 'STEM') {
+            const response = await fetch('https://devapi.dastintechnologies.com/api/v1/stem/forgot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lastname: data.surname.toUpperCase(),
+                    givennames: data.givenNames.toUpperCase(),
+                    slfnumber: data.password,
+                }),
+            });
+
+            if (!response.ok) {
+                router.push('/invalid');
+                throw new Error('Failed to reset password');
+
+            }
+            else {
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+
+                router.push(`/password?password=${responseData.data.password}`);
+            }
+        } 
+    }
+    catch (error) {
             console.error('API error:', error);
             setError('password', { type: 'manual', message: 'Failed to reset password.' });
+
         }
     };
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-        <div className="login-Page vh-100">
-            <div className="container-fluid">
-                <div className="row align-items-center justify-content-center">
+            <div className="login-Page vh-100">
+                <div className="container-fluid">
+                    <div className="row align-items-center justify-content-center">
 
-                    <div className="col-md-4 text-center">
-                        <div>
+                        <div className="col-md-4 text-center">
                             <div>
-                                <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
+                                <div>
+                                    <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
+                                </div>
+                                <div className="mt-0">
+                                    <h2 className="gradeTitle mt-2">{resultTitle}</h2>
+                                    <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
+                                </div>
                             </div>
-                            <div className="mt-0">
-                                <h2 className="gradeTitle mt-2">{resultTitle}</h2>
-                                <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
+                            {/* Logo and Department Title in the same row */}
+                            <div className="row d-flex d-none d-sm-flex justify-content-center align-items-center mt-5 pe-4 ">
+                                <div className="col-auto mt-5 pe-0">
+                                    <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
+                                </div>
+                                <div className="col-auto mt-5 ps-0">
+                                    <p className="departmentTitle mb-0 mt-3">
+                                        Department Of Education
+                                    </p>
+                                    <p className="departmentTitle text-start">
+                                        Papua New Guinea
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        {/* Logo and Department Title in the same row */}
-                        <div className="row d-flex d-none d-sm-flex justify-content-center align-items-center mt-5 pe-4 ">
-                            <div className="col-auto mt-5 pe-0">
-                                <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
-                            </div>
-                            <div className="col-auto mt-5 ps-0">
-                                <p className="departmentTitle mb-0 mt-3">
-                                    Department Of Education
-                                </p>
-                                <p className="departmentTitle text-start">
-                                    Papua New Guinea
-                                </p>
-                            </div>
-                        </div>
-                    </div>
 
 
 
-                    <div className="col-md-4  d-flex justify-content-center align-items-center">
-                        <div className="form-Card p-3">
-                            <h2 className="login-Title mt-2 py-2 mb-3">Forgot Password <Image src="/images/Group 28861.png" alt="Logo" width={28} height={28} /></h2>
+                        <div className="col-md-4  d-flex justify-content-center align-items-center">
+                            <div className="form-Card p-3">
+                                <h2 className="login-Title mt-2 py-2 mb-3">Forgot Password <Image src="/images/Group 28861.png" alt="Logo" width={28} height={28} /></h2>
 
 
-                            <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
-                                <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
-                                    <input
-                                        type="text"
-                                        autoComplete="off"
-                                        className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
-                                        placeholder="Surname"
-                                        {...register('surname', {
-                                            required: 'Surname is required',
-                                            pattern: {
-                                                value: /^[A-Za-z]+$/i,
-                                                message: 'Invalid - Numbers not allowed',
-                                            },
-                                         
-                                        })}
-                                   
-                                    />
-                                    {!errors.surname && (
-                                        <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
-                                    )}
+                                <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
+                                    <div className="mb-2">
+                                        <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
+                                        <input
+                                            type="text"
+                                            autoComplete="off"
+                                            className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
+                                            placeholder="Surname"
+                                            {...register('surname', {
+                                                required: 'Surname is required',
+                                                pattern: {
+                                                    value: /^[A-Za-z]+$/i,
+                                                    message: 'Invalid - Numbers not allowed',
+                                                },
 
-                                    {errors.surname && (
-                                        <span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
-                                            {errors.surname.message}
-                                        </span>
-                                    )}
+                                            })}
+
+                                        />
+                                        {!errors.surname && (
+                                            <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
+                                        )}
+
+                                        {errors.surname && (
+                                            <span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
+                                                {errors.surname.message}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="mb-2">
+                                        <label className="form-label mb-0 ps-4 ms-2">Given Names *</label>
+                                        <input
+                                            type="text"
+                                            autoComplete="off"
+                                            className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
+                                            placeholder="First Name + Middle Name"
+                                            {...register('givenNames', {
+                                                required: 'Given names are required',
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/i, // Allow letters and spaces
+                                                    message: 'Invalid - Numbers not allowed',
+                                                },
+
+                                            })}
+
+                                        />
+                                        {!errors.givenNames && (
+                                            <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
+                                        )}
+                                        {errors.givenNames && (
+
+                                            <span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
+                                                {errors.givenNames.message}
+                                            </span>
+
+                                        )}
+                                    </div>
+
+                                    <div className="mb-2">
+                                        <label className="form-label mb-0 ps-4 ms-2">SLF Number *  </label>
+                                        <input
+                                            type="password"
+                                            autoComplete="off"
+                                            className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
+                                            placeholder="SLFNO Format:YYYYPRSCHCAND " maxLength={12}
+                                            {...register('password', {
+                                                required: 'Password is required',
+                                                minLength: {
+                                                    value: 8,
+                                                    message: 'Required 8 - 12 characters',
+                                                },
+                                                maxLength: {
+                                                    value: 12,
+                                                    message: 'Password must be maximum 12 characters',
+                                                }
+                                            })}
+                                        />
+                                        {!errors.password && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
+                                        {errors.password && (<span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
+                                            {errors.password.message?.toString()}
+                                        </span>)}
+
+
+
+                                    </div>
+
+
+
+                                    <div className="d-flex justify-content-center mt-3">
+                                        <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center">
+                                            <span className="d-flex align-items-center">
+                                                Submit &nbsp;
+                                                <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
+                                            </span>
+                                        </button>
+
+
+                                    </div>
+
+
+                                </form>
+
+
+                                <div className="d-flex align-items-center justify-content-evenly mt-4 pt-2 mb-4">
+                                    <button className="btn btn-outline-info btn-md custom-Button" onClick={handleHomeClick}> Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
+                                    <button className="btn btn-outline-info btn-md custom-Button" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
                                 </div>
-
-                                <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Given Names *</label>
-                                    <input
-                                        type="text"
-                                        autoComplete="off"
-                                        className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
-                                        placeholder="First Name + Middle Name"
-                                        {...register('givenNames', {
-                                            required: 'Given names are required',
-                                            pattern: {
-                                                value: /^[A-Za-z\s]+$/i, // Allow letters and spaces
-                                                message: 'Invalid - Numbers not allowed',
-                                            },
-                                           
-                                        })}
-                                   
-                                    />
-                                    {!errors.givenNames && (
-                                        <span className={"mb-0 ps-4 ms-2 mt-0 error-lh"}>&nbsp;</span>
-                                    )}
-                                    {errors.givenNames && (
-
-                                        <span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
-                                            {errors.givenNames.message}
-                                        </span>
-
-                                    )}
-                                </div>
-
-                                <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">SLF Number *  </label>
-                                    <input
-                                        type="password"
-                                        autoComplete="off"
-                                        className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
-                                        placeholder="SLFNO Format:YYYYPRSCHCAND " maxLength={12}
-                                        {...register('password', {
-                                            required: 'Password is required',
-                                            minLength: {
-                                                value: 8,
-                                                message: '8 - 12 characters',
-                                            },
-                                            maxLength: {
-                                                value: 12,
-                                                message: 'Password must be maximum 12 characters',
-                                            }
-                                        })}
-                                    />
-                                    {!errors.password && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
-                                    {errors.password && (<span className={"invalid-feedback mb-0 ms-5 mt-0 text-end"}>
-                                        {errors.password.message?.toString()}
-                                    </span>)}
-
-                                    
-
-                                </div>
-
-
-
-                                <div className="d-flex justify-content-center mt-3">
-                                    <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center">
-                                        <span className="d-flex align-items-center">
-                                            Submit &nbsp;
-                                            <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
-                                        </span>
-                                    </button>
-                                </div>
-
-
-                            </form>
-
-
-                            <div className="d-flex align-items-center justify-content-evenly mt-4 pt-2 mb-4">
-                                <button className="btn btn-outline-info btn-md custom-Button" onClick={handleHomeClick}> Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
-                                <button className="btn btn-outline-info btn-md custom-Button" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <style>
-                {`
+                {/* <div>
+      <h1>Welcome to the Homepage</h1>
+      <button onClick={() => setModalVisible(true)}>Show Password Modal</button>
+      
+      <PasswordModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
+    </div> */}
+
+                <style>
+                    {`
 
                 .small-label{
     font-size: 0.5rem;
@@ -450,8 +491,8 @@ font-size: 13px!important;
 
                 
                 `}
-            </style>
-        </div>
+                </style>
+            </div>
         </Suspense>
     );
 };
