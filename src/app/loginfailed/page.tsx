@@ -16,11 +16,13 @@ type FormValues = {
 const Login = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const username = searchParams.get('surname');
+    const givenname = searchParams.get('givenNames');
     const [results, setResults] = useState<string | null>(null);
 
 
     const handleloginClick = () => {
-        router.push("/login");
+        router.back();
     };
 
     const handleReset = () => {
@@ -88,7 +90,7 @@ const Login = () => {
                     alert(`Login failed: ${result.message}`);
                 }
             } else {
-                alert('Work In Progress');
+                // alert('Work In Progress');
                 return;
             }
         } catch (error) {
@@ -146,25 +148,40 @@ const Login = () => {
                                 <h2 className="loginTitle mt-2 py-2 mb-3">Login Failed <Image src="/images/Group 28894.png" alt="Logo" width={29} height={29} /></h2>
 
                                 <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
+                                    {/* <div className="d-flex flex-column align-items-center mt-3 text-center">
+                                        <div className="mb-4 paratext justify-content-center align-items-center">
+                                        <p >
+                                            Dear &lt;{username} {givenname}&gt; there seems to be a problem with your Input Details or your Eligibility for Certification.
+                                            Please use the <strong>FORGOT PASSWORD</strong> option to recover your password (or) contact your School as you may have issues with MSD Records.
+                                            <br /><br /></p></div>
+                                            <div className="mb-4 text-end">
+                                            <p >   Thank you. - MSD/NDoE
+                                        </p>
+                                        </div>
+                                    </div> */}
+
                                     <div className="d-flex flex-column align-items-center mt-3 text-center">
 
-                                        <p className="mb-4 paratext">
-                                            Dear &lt;SURNAME GIVENNAMES&gt;, there seems to be a problem with your Input Details or your Eligibility for Certification.
-                                            Please use the <strong>FORGOT PASSWORD</strong> option to recover your password (or) contact your School as you may have issues with MSD Records.
-                                            <br /><br />
-                                            Thank you. - MSD/NDoE
-                                        </p>
+                                        <div className="mb-4 paratext justify-content-center align-items-center text-start">
+                                            <p>
+                                                Dear &lt;{username} {givenname}&gt;, there seems to be a problem with your Input Details or your Eligibility for Certification.
+                                                Please use the <strong>FORGOT PASSWORD</strong> option to recover your password (or) contact your School as you may have issues with MSD Records.
+                                                <br /><br />
+                                            </p>
+                                        </div>
 
+
+                                        <div className="mb-4 text-end w-100 sign">
+                                            <p>Thank you. - MSD/NDoE</p>
+                                        </div>
                                     </div>
-
-
 
 
                                     <div className="d-flex justify-content-center mt-3">
                                         <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center" onClick={handleloginClick}>
-                                            <span className="d-flex align-items-center">
-                                                Back to Login &nbsp;
-                                                <Image src="/images/Group 85.png" alt="Logo" width={20} height={20} />
+                                            <span className="d-flex align-items-center buttontext">
+                                                Login &nbsp;
+                                                <Image src="/images/Vector (1).png" alt="Logo" width={20} height={20} />
                                             </span>
                                         </button>
                                     </div>
@@ -216,6 +233,12 @@ font-size: 13px!important;
 ::-moz-placeholder {  /* Firefox 19+ */
     font-size: 13px!important;
 }
+    .sign{
+    color:white;
+    }
+    .buttontext{
+    font-size:14px;
+    }
 .loginPage {
     
     background: radial-gradient(180.77% 285.2% at 50.05% 54.5%, #006EB9 0.17%, #006EB9 6.13%, #14317F 31.79%);
@@ -227,6 +250,7 @@ font-size: 13px!important;
 }
     .paratext{
     color:white;
+    font-size: 15px;
     }
 
 .gradeTitle {

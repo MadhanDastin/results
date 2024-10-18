@@ -80,10 +80,13 @@ const YourPassword = () => {
                                         </div>
                                     </div>
                                     <div className="d-flex justify-content-center mt-5 pt-3">
-                                        <button type="submit" className="btn btn-primary custom-button btn-sm" onClick={handleLoginRedirect}>
-                                            Back &nbsp;
+                                        <button type="submit" className="btn btn-primary custom-button btn-sm buttontext" onClick={(e) => {
+                                                e.preventDefault(); // Prevent default form submission
+                                                handleLoginRedirect();
+                                            }}>
+                                            Login &nbsp;
 
-                                            <Image src="/images/Group 85 (1).png" alt="Logo" width={20} height={20} />
+                                            <Image src="/images/Vector (1).png" alt="Logo" width={15} height={15} />
 
                                         </button>
                                     </div>

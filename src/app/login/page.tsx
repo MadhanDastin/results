@@ -20,12 +20,9 @@ const Login = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [results, setResults] = useState<string | null>(null);
-    const [showPassword, setShowPassword] = useState(false);
+   
 
-    const togglePasswordVisibility = () => {
-        setShowPassword((prev) => !prev);
-    };
-
+ 
 
     const handleHomeClick = () => {
         router.push("/");
@@ -56,7 +53,7 @@ const Login = () => {
 
     const resultsTitle = getTitle(results as string);
 
-    const [loginResponse, setLoginResponse] = useState<any>(null);
+    
 
     const {
         register,
@@ -166,7 +163,8 @@ const Login = () => {
                 } else {
                     console.error("Login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
-                    router.push('/loginfailed');
+                    // router.push('/loginfailed');
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}`);
                 }
             } else if (results === 'STEM') {
                 // POST request for the "STEM" result

@@ -165,7 +165,9 @@
 .was-validated .form-control:invalid {
     background-image: none !important;
 }
-
+.buttontext{
+    font-size:14px;
+    }
 @media (max-width: 768px) {
     .gradeTitle {
         font-size: 1.5rem;

@@ -182,7 +182,7 @@ const ForgotPassword = () => {
                                             type="text"
                                             autoComplete="off"
                                             className={`form-control inputField ${errors.surname ? 'is-invalid' : ''}`}
-                                            placeholder="Surname"
+                                            placeholder="Surname" maxLength={30}
                                             {...register('surname', {
                                                 required: 'Surname is required',
                                                 pattern: {
@@ -210,7 +210,7 @@ const ForgotPassword = () => {
                                             type="text"
                                             autoComplete="off"
                                             className={`form-control inputField ${errors.givenNames ? 'is-invalid' : ''}`}
-                                            placeholder="First Name + Middle Name"
+                                            placeholder="First Name + Middle Name" maxLength={30}
                                             {...register('givenNames', {
                                                 required: 'Given names are required',
                                                 pattern: {
