@@ -165,7 +165,7 @@ const Login = () => {
                     router.push(`/twl?response=${encodedResult}`);
                 } else {
                     console.error("Login failed:", result.message);
-                    alert(`Login failed: ${result.message}`);
+                    // alert(`Login failed: ${result.message}`);
                     router.push('/loginfailed');
                 }
             } else if (results === 'STEM') {
@@ -194,11 +194,11 @@ const Login = () => {
                     router.push(`/stem?response=${encodedResult}`);
                 } else {
                     console.error("STEM login failed:", result.message);
-                    alert(`Login failed: ${result.message}`);
+                    // alert(`Login failed: ${result.message}`);
                     router.push('/loginfailed');
                 }
             } else {
-                alert('Work In Progress');
+                // alert('Work In Progress');
             }
         } catch (error) {
             console.error("An error occurred during login:", error);
@@ -245,8 +245,8 @@ const Login = () => {
 
                         {/* Right side - Form */}
                         <div className="col-md-4 d-flex justify-content-center align-items-center">
-                            <div className="formCard p-3 forminput">
-                                <h2 className="loginTitle mt-2 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} /></h2>
+                            <div className="formCard py-1 px-3 forminput">
+                                <h2 className="loginTitle mt-0 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} /></h2>
 
                                 <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-2">
@@ -354,7 +354,7 @@ const Login = () => {
                                                 }}
                                             >
                                                 <Image src="/images/Vector.png" alt="Logo" width={10} height={10} />
-                                                Forgot Password?
+                                                &nbsp; Forgot Password?
                                             </a>
                                         </div>                                       
 
@@ -480,7 +480,7 @@ font-size: 13px!important;
 }
 
 .forminput {
-   
+   height:500px;
     border: 2px solid  #4BB5FF;
     border-radius: 20px;
     box-shadow: 0px 4px 4px 4px #00000040;
