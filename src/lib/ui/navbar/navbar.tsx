@@ -6,14 +6,66 @@ import { CSSProperties } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
 import Link from 'next/link';
 
-const CustomNavbar: React.FC = () => {
-  // useEffect(() => {
-  //   // Bootstrap JavaScript for enabling components like the navbar toggle
-  //   typeof document !== 'undefined'
-  //     ? require('bootstrap/dist/js/bootstrap.bundle.min.js')
-  //     : null;
-  // }, []);
+import { useRouter, useSearchParams } from 'next/navigation';
+
+const CustomNavbar: React.FC<{ student: any, results: any }> = ({ student, results  }) => {
+
+  const router=useRouter();
+
+  const handleChange = () => {
+    // Convert the student data to a URL-friendly format (stringify it if it's an object)
+    const studentData = encodeURIComponent(JSON.stringify(student));
+    router.push(`/changepassword?student=${studentData}&results=${results}`);
+  };
+
+  const handleFeedback = () => {
+    // Convert the student data to a URL-friendly format (stringify it if it's an object)
+    const studentData = encodeURIComponent(JSON.stringify(student));
+    router.push(`/feedback?student=${studentData}&results=${results}`);
+  };
+  const handleDownload = async () => {
+    // Determine the API URL based on the 'results' value
+    
+    let apiUrl = '';
+
+    if (results === '12') {
+        apiUrl = `https://devapi.dastintechnologies.com/api/v1/twl/marksheet/${student.id}`; // for results '12'
+    } else if (results === 'STEM') {
+        apiUrl = `https://devapi.dastintechnologies.com/api/v1/stem/marksheet/${student.id}`; // for results 'STEM'
+    } else if (results === '10') {
+      apiUrl = `https://devapi.dastintechnologies.com/api/v1/ten/marksheet/${student.id}`; // for results 'STEM'
+  } 
+    
+    else {
+        console.error('Invalid results value:', results);
+        return; // Exit if results value is invalid
+    }
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const blob = await response.blob(); // Convert response to Blob
+        const url = window.URL.createObjectURL(blob); // Create a URL for the Blob
+
+        const a = document.createElement('a'); // Create an anchor element
+        a.href = url;
+        a.download = 'marksheet.pdf'; // Set the desired file name
+        document.body.appendChild(a); // Append the anchor to the body
+        a.click(); // Programmatically click the anchor to trigger download
+        a.remove(); // Remove the anchor from the DOM
+        window.URL.revokeObjectURL(url); // Clean up the URL object
+    } catch (error) {
+        console.error('Error downloading the marksheet:', error);
+    }
+};
+
   const [showMenu, setShowMenu] = useState(false);
+
+  console.log(student);
+  
 
   const navbarStyle: CSSProperties = {
     backgroundColor: '#0854A0',
@@ -63,7 +115,7 @@ const CustomNavbar: React.FC = () => {
             <Nav className="ms-auto">
               <Nav.Link href="/" style={navLinkStyle}>Home</Nav.Link>
               <Nav.Link href="#" style={navLinkStyle}>Share</Nav.Link>
-              <Nav.Link href="#" style={navLinkStyle}>Download</Nav.Link>
+              <Nav.Link href="#" onClick={handleDownload} style={navLinkStyle}>Download</Nav.Link>
               <Nav.Link href="#" style={navLinkStyle}>Print</Nav.Link>
             </Nav>
           <Dropdown className="d-inline mx-2">
@@ -72,11 +124,11 @@ const CustomNavbar: React.FC = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="custom-dropdown-menu dropdown-menu-lg-end" style={dropStyle}>
-              <Dropdown.Item href="/changepassword" style={dropLinkStyle}>Change Password</Dropdown.Item>
+              <Dropdown.Item href="" onClick={handleChange} style={dropLinkStyle}>Change Password</Dropdown.Item>
               <Dropdown.Divider className="white-divider" />
               <Dropdown.Item href="#" style={dropLinkStyle}>Report an issue</Dropdown.Item>
               <Dropdown.Divider className="white-divider"/>
-              <Dropdown.Item href="#" style={dropLinkStyle}>Service Feedback</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={handleFeedback} style={dropLinkStyle}>Service Feedback</Dropdown.Item>
               <Dropdown.Divider className="white-divider" />
               <Dropdown.Item href="#" style={dropLinkStyle}>Help</Dropdown.Item>
               <Dropdown.Divider className="white-divider"/>
@@ -198,98 +250,3 @@ export default CustomNavbar;
 
 
 
-// "use client";
-// import React, { useState } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Navbar, Nav, Dropdown } from 'react-bootstrap';
-// import { CSSProperties } from 'react';
-// import { GiHamburgerMenu } from "react-icons/gi";
-
-// const CustomNavbar: React.FC = () => {
-//   const [showMenu, setShowMenu] = useState(false);
-
-//   const navbarStyle: CSSProperties = {
-//     backgroundColor: '#0854A0',
-//     padding: '5px 10px',
-//     height: '50px',
-//     width:'auto'
-//   };
-
-//   const navLinkStyle: CSSProperties = {
-//     color: 'white',
-//     fontWeight: 'bold',
-//     padding: '0 20px',
-//   };
-
-//   const dropLinkStyle: CSSProperties = {
-//     color: 'white',
-//     backgroundColor: '#0854A0',
-//   };
-
-//   const dropStyle: CSSProperties = {
-//     backgroundColor: '#0854A0',
-//   };
-
-
-//   const dropdownToggleStyle: CSSProperties = {
-//     backgroundColor: '#0854A0',
-//     border: 'none',
-//     color: 'white', // Optional if you want the icon in white
-//   };
-
-  
-
-//   const toggleMenu = () => {
-//     setShowMenu(!showMenu);
-//   };
-
-//   return (
-//     <div>
-//       {/* Main Navbar */}
-//       <Navbar style={navbarStyle} expand="lg">
-//         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-//         <Navbar.Collapse id="basic-navbar-nav">
-//           <Nav className="mx-auto">
-//             <Nav.Link href="/" className="nav-link-custom" style={navLinkStyle}>Home</Nav.Link>
-//             <Nav.Link href="#" className="nav-link-custom" style={navLinkStyle}>Share</Nav.Link>
-//             <Nav.Link href="#" className="nav-link-custom" style={navLinkStyle}>Download</Nav.Link>
-//             <Nav.Link href="#" className="nav-link-custom" style={navLinkStyle}>Print</Nav.Link>
-//           </Nav>
-//         </Navbar.Collapse>
-//         <Dropdown className="d-inline mx-2">
-//           <Dropdown.Toggle as="div" id="dropdown-autoclose-true" style={dropdownToggleStyle} className="no-caret">
-//             <GiHamburgerMenu />
-//           </Dropdown.Toggle>
-
-//           <Dropdown.Menu className="custom-dropdown-menu" style={dropStyle}>
-//             <Dropdown.Item href="/changepassword" style={dropLinkStyle}>Change Password</Dropdown.Item>
-//             <Dropdown.Divider />
-//             <Dropdown.Item href="#" style={dropLinkStyle}>Report an issue</Dropdown.Item>
-//             <Dropdown.Divider />
-//             <Dropdown.Item href="#" style={dropLinkStyle}>Service Feedback</Dropdown.Item>
-//             <Dropdown.Divider />
-//             <Dropdown.Item href="#" style={dropLinkStyle}>Help</Dropdown.Item>
-//             <Dropdown.Divider />
-//             <Dropdown.Item href="#" style={dropLinkStyle}>Logout</Dropdown.Item>
-//           </Dropdown.Menu>
-//         </Dropdown>
-//       </Navbar>
-
-//       <style>
-//         {`
-//         .no-caret::after {
-//   display: none !important; /* Hides the dropdown arrow */
-// }
-//   .custom-dropdown-menu {
-//   max-height: 300px; /* Set a suitable height if needed */
-//   overflow-y: hidden;  /* Allow scrolling if content exceeds height */
-//   position: absolute !important;  /* Ensure it's positioned correctly */
-//   z-index: 9999;  /* Increase z-index to make sure it's above other content */
-// }
-//         `}
-//       </style>
-//     </div>
-//   );
-// };
-
-// export default CustomNavbar;

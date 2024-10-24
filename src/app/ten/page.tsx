@@ -1,93 +1,39 @@
-
-  "use client";
-import React, { useEffect, useState, Suspense } from "react";
-import dynamic from "next/dynamic";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Image from "next/image";
-import "./stem.css";
-import MyNavbar from "../../lib/ui/navbar/navbar";
-import { useRouter, useSearchParams } from "next/navigation";
+"use client";
+import React, { useEffect, useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Image from 'next/image';
+import './ten.css';
+import MyNavbar from '../../lib/ui/navbar/navbar';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Marksheet = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
-  const [studentResultsData, setStudentResultsData] = useState<any[]>([]);
+  const [studentResultsData, setStudentResultsData] = useState<any>(null);
   const [results, setResults] = useState<any>(null);
   useEffect(() => {
-    const response = searchParams.get("response");
+    const response = searchParams.get('response');
     const resultsParam = searchParams.get('results');
     setResults(resultsParam);
 
     console.log("Results from URL:", resultsParam);
     if (response) {
-      // Assume the response is JSON, so we parse it (adapt this part based on your actual response format)
-      const parsedResponse = JSON.parse(response);
-      console.log('parsedResponse ',parsedResponse);
-      const parsedStudentData = parsedResponse.data.student;
-      
-      // Set student data
-      const student = {
-        ...parsedStudentData,
-        givennames: parsedStudentData.GIVEN_Names,
-        lastname: parsedStudentData.Surname,
-        sex: parsedStudentData.Gender,
-        candidateno: parsedStudentData.Candidate_No,
-        rank: parsedStudentData.Seq_No,
-        ter: "TBD", // Replace this with actual value if available
-        schoolname: parsedStudentData.School_Name,
-        region: parsedStudentData.Region,
-        province: parsedStudentData.Province,
-      };
-      setStudentData(student);
-      console.log('studentData ',studentData);
-      // Set student results data
-      const results = [
-        {
-          subshortname: "BIO",
-          subject: "Biology",
-          marks: parsedStudentData.Biology_Mark,
-          grade: parsedStudentData.Biology_Grade,
-          finalstdscore: parsedStudentData.Biology_Remarks,
-        },
-        {
-          subshortname: "CHEM",
-          subject: "Chemistry",
-          marks: parsedStudentData.Chemistry_Mark,
-          grade: parsedStudentData.Chemistry_Grade,
-          finalstdscore: parsedStudentData.Chemistry_Remarks,
-        },
-        {
-          subshortname: "MATH",
-          subject: "Mathematics",
-          marks: parsedStudentData.Mathematics_Mark,
-          grade: parsedStudentData.Mathematics_Grade,
-          finalstdscore: parsedStudentData.Mathematics_Remarks,
-        },
-        {
-          subshortname: "PHYS",
-          subject: "Physics",
-          marks: parsedStudentData.Physics_Mark,
-          grade: parsedStudentData.Physics_Grade,
-          finalstdscore: parsedStudentData.Physics_Remarks,
-        },
-        {
-          subshortname: "ENG",
-          subject: "Engineering",
-          marks: parsedStudentData.Engineering_Mark,
-          grade: parsedStudentData.Engineering_Grade,
-          finalstdscore: parsedStudentData.Engineering_Remarks,
-        },
-        {
-          subshortname: "TECH",
-          subject: "Technology",
-          marks: parsedStudentData.Technology_Mark,
-          grade: parsedStudentData.Technology_Grade,
-          finalstdscore: parsedStudentData.Technology_Remarks,
-        },
-      ];
-      setStudentResultsData(results);
-      console.log('studentResultsData ',studentResultsData);
+      try {
+        const decodedResponse = decodeURIComponent(response);
+        const parsedResponse = JSON.parse(decodedResponse);
+        setStudentData(parsedResponse.data.student.student);
+        const studentResults = parsedResponse.data.student.results;
+        const filteredResults = studentResults.filter((result: any) =>
+          result.finalstdscore !== 0 && result.grade.trim() !== ""
+        );
+        setStudentResultsData(filteredResults);
+
+        console.log("ten", parsedResponse);
+      } catch (error) {
+        console.error('Failed to decode/parse response:', error);
+      }
     }
   }, [searchParams]);
 
@@ -95,15 +41,30 @@ const Marksheet = () => {
     return <div>Loading...</div>;
   }
 
+  const getAchievement = (grade: string): string => {
+    switch (grade) {
+      case 'A':
+        return 'Very High';
+      case 'B':
+        return 'High';
+      case 'C':
+        return 'Satisfactory';
+      case 'D':
+        return 'Unsatisfactory';
+      default:
+        return 'N/A';
+    }
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className='py-1 navbar-wrapper'>
-            <MyNavbar student={studentData} results={results}/>
-          </div>
+        <MyNavbar student={studentData} results={results} />
+      </div>
       <div className="container d-flex justify-content-center align-items-center">
-      
-        <div className=" sheet px-4 py-1">
-        
+
+        <div className="sheet px-4 py-1">
+
           <div className='p-3 bordercolor'>
             {/* Header */}
             <div className="d-flex align-items-center justify-content-between mb-2">
@@ -120,7 +81,7 @@ const Marksheet = () => {
 
               {/* Title and Subtitle */}
               <div className="text-center flex-grow-1">
-                <h4 className="title mb-1">STEM NATIONAL EXAMINATION RESULTS - 2024</h4>
+                <h4 className="title mb-1">GRADE-10 NATIONAL EXAMINATION RESULTS - 2024</h4>
                 <h5 className="subtitle">Department of Education</h5>
               </div>
 
@@ -135,11 +96,13 @@ const Marksheet = () => {
                 />
               </div>
             </div>
-           <div>
-            <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
-              <p className='para'><strong>Published Date:</strong> 01-10-2024</p>
-              <p className='para'><strong>Valid Until:</strong> 30-03-2025</p>
-            </div></div><hr className="custom-hr mt-0" />
+            <div>
+              <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
+                <p className='para'><strong>Published Date:</strong> 01-10-2024</p>
+                <p className='para'><strong>Valid Until:</strong> 30-03-2025</p>
+              </div>
+            </div>
+              <hr className="custom-hr mt-0" />
             {/* Candidate & School Details */}
             <div className="row mb-2">
               <div className="col-md-6 d-flex">
@@ -148,7 +111,7 @@ const Marksheet = () => {
                   <div className='mt-1 mb-1'>
                     <table>
                       <tbody>
-                        <tr className="">
+                        <tr>
                           <td className='para'><strong>Given Names</strong></td>
                           <td>:</td>
                           <td className='para'>{studentData.givennames}</td>
@@ -184,17 +147,17 @@ const Marksheet = () => {
                         <tr>
                           <td className='para'><strong>Region</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.region} ({studentData.Region_code})</td>
+                          <td className='para'>{studentData.region} ({studentData.regioncode})</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Province</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.province} ({studentData.Province_Code})</td>
+                          <td className='para'>{studentData.province} ({studentData.provincecode})</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>School</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.schoolname} ({studentData.School_Code})</td>
+                          <td className='para'>{studentData.schoolname} ({studentData.schoolcode})</td>
                         </tr>
                       </tbody>
                     </table>
@@ -212,20 +175,24 @@ const Marksheet = () => {
                     <tr>
                       <th>SUBJECT ID</th>
                       <th>SUBJECT</th>
-                      <th>MARKS</th>
                       <th>GRADE</th>
-                      <th>ACHIEVEMENT</th>
+                      <th>REMARKS</th>
+                      <th>RANK</th>
+                      <th>STUDENT COUNT</th>
+                      <th>PERCENTILE</th>
                     </tr>
                   </thead>
                   <tbody>
                     {studentResultsData.length > 0 ? (
                       studentResultsData.map((result: any, index: number) => (
                         <tr key={index}>
-                          <td>{result.subshortname}</td>
+                          <td>{result.short_name}</td>
                           <td style={{ textAlign: 'left', paddingLeft: '20px' }}>{result.subject}</td>
-                          <td>{result.marks}</td>
                           <td>{result.grade}</td>
-                          <td>{result.finalstdscore}</td>
+                          <td>{getAchievement(result.grade)}</td>
+                          <td>1</td>
+                          <td>{result.grade}</td>
+                          <td>100</td>
                         </tr>
                       ))
                     ) : (
@@ -239,25 +206,25 @@ const Marksheet = () => {
             </div>
 
             {/* Summary Section */}
-            {/* <div className="border p-2 mb-2 borderCustom">
+            {/* <div className="card p-2 mb-2 borderCustom">
               <h6 className='textcolor'><strong>Result Summary</strong></h6>
-              <div className="row">
-                <div className="col-md-2">
+              <div className="row d-flex justify-content-between">
+                <div className="col-md-3 text-center">
                   <p className='para'><strong>Rank:</strong> {studentData.rank}</p>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-4 text-center">
                   <p className='para'><strong>Tertiary Entrance Rank:</strong> {studentData.ter}</p>
                 </div>
-                <div className="col-md-6">
-                  <p className='para'><strong>Grade 12 Student Population:</strong> {studentData.schoolname}</p>
+                <div className="col-md-5 text-center">
+                  <p className='para'><strong>Grade 12 Student Population:</strong> 29712</p>
                 </div>
               </div>
             </div> */}
 
             {/* Terms Section */}
-            <div className="card terms border p-2 borderCustom justify-content-center align-items-center text-start">
+            <div className="card terms border p-2 borderCustom">
               <h6><strong>Terms:</strong></h6>
-              <div justify-content-center align-items-center text-start>
+              <div>
                 <p>1) National Department of Education (NDoE) online result is a provisional indicative information copy only; shall not be considered as final. The Original Certificate of Results will be issued by the MSD of NDoE which may be subject to changes for some valid reasons such as corrections from schools.</p>
                 <p>2) The downloaded copy of the result in full/ partial will not guarantee any admission into any of the educational institutions within or outside PNG; Admissions to further education is dependent on the Official National Examination Results only.</p>
                 <p>3) Any sort of manipulation or duplication or re-production of this provisional result copy without the prior consent of NDoE, within or outside PNG will be considered as a serious offense and shall be dealt with it accordingly.</p>

@@ -1,58 +1,138 @@
 "use client";
-import React from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm,SubmitHandler } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-// import './changepassword.css'
+import { useRouter, useSearchParams } from 'next/navigation';
+import './changepassword.css'
+import dynamic from 'next/dynamic';
+
 
 type FormValues = {
+    
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
 };
 
-const ForgotPassword = () => {
-
+const ChangePassword = () => {
     const router = useRouter();
-    const handleHomeClick = () => {
-        router.push("/");
-    };
+    const searchParams = useSearchParams();
+    
+    const [results, setResults] = useState<string | null>(null);
+    const [formData, setFormData] = useState<FormValues | null>(null);
+    const [slf, setSlf] = useState<any>(null);
+    console.log(slf);
+    
+    const getTitle = (title: string) => {
 
-    const handleReset = () => {
-        reset(); // This will reset the form to its default values
-    };
+        switch (title) {
+            case "10":
+                return "GRADE 10 RESULTS"
+            case "12":
+                return "GRADE 12 RESULTS"
+            case "STEM":
+                return "STEM RESULTS"
+
+
+            default:
+                break;
+        }
+    }
+
+    const resultTitle = getTitle(results as string)
 
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isValid }, setError,
-    } =  useForm<FormValues>({
+        formState: { errors }, setError, clearErrors
+    } = useForm<FormValues>({
         mode: 'onChange', // Check form validity on every change
         reValidateMode: 'onChange', // Optional: Re-validate the form on every change
-      });
+    });
+console.log(formData);
 
-      const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, fieldName: keyof FormValues) => {
-        const isNumeric = /^[0-9]$/.test(e.key); // Check if the pressed key is a numeric value
-        if (isNumeric) {
-            e.preventDefault(); // Prevent input of numeric values
-            // Set an error for the specific field
-            setError(fieldName, {
-                type: "manual",
-                message: "Only letters are allowed"
-            });
-        }
+    const handleReset = () => {
+        reset({
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+        }, {
+            keepErrors: false, // This will clear the validation errors
+        });
     };
 
+    useEffect(() => {
+        const data = searchParams.get('data');
+        if (data) {
+          const decodedData: FormValues = JSON.parse(decodeURIComponent(data));
+          setFormData(decodedData);
+        }
+      }, [searchParams]);
+
+    useEffect(() => {
+        var results = searchParams.get('results');
+        setResults(results)
+    }, [searchParams])
+
+    const handleHomeClick = () => {
+        router.back();
+    };
+
+    useEffect(() => {
+        const slfData = searchParams.get('student');
+        if (slfData) {
+          try {
+            const parsedSlf = JSON.parse(decodeURIComponent(slfData)); // Parse the string to an object
+            setSlf(parsedSlf);
+          } catch (error) {
+            console.error('Error parsing student data', error);
+          }
+        }
+      }, [searchParams]);
+    
+
+
+    // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    //     console.log('form data ', data);
+
+    // };
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-        console.log('form data ', data);
         try {
-            // Make a POST request to the login API
-            const response = await fetch("http://devapi.dastintechnologies.com/api/v1/twl/login", {
-                method: "POST",
+            if (results === '12') {
+            const response = await fetch('https://devapi.dastintechnologies.com/api/v1/twl/reset', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lastname: slf.surname,
+                    givennames: slf.givennames,
+                    slfnumber: slf.slfnumber,
+                    newPassword:data.newPassword,
+                }),
+            });
+
+            if (!response.ok) {
+                router.push(`/invalid?results=${results}`);
+                throw new Error('Failed to reset password');
+
+            }
+            else {
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+
+                router.push(`/changesuccess?results=${results}`);
+            }
+        } 
+        else  if (results === 'STEM') {
+            const response = await fetch('https://devapi.dastintechnologies.com/api/v1/stem/reset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     lastname: data.currentPassword,
@@ -61,33 +141,88 @@ const ForgotPassword = () => {
                 }),
             });
 
-            const result = await response.json();
+            if (!response.ok) {
+                router.push(`/invalid?results=${results}`);
+                throw new Error('Failed to reset password');
 
-            if (response.ok) {
-                // Handle successful login
-                console.log("ForgotPassword successful:", result);
-                alert("ForgotPassword successful!");
-                reset(); // Reset form fields after successful login
-            } else {
-                // Handle API error response
-                console.error("ForgotPassword failed:", result.message);
-                alert(`ForgotPassword failed: ${result.message}`);
             }
-        } catch (error) {
-            console.error("An error occurred during login:", error);
-            alert("An error occurred. Please try again.");
+            else {
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+
+                router.push(`/password?password=${responseData.data.password}&results=${results}`);
+            }
+        } 
+        else  if (results === '10') {
+            const response = await fetch('https://devapi.dastintechnologies.com/api/v1/ten/reset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lastname: data.currentPassword,
+                    givennames: data.newPassword,
+                    slfnumber: data.confirmPassword,
+                }),
+            });
+
+            if (!response.ok) {
+                router.push(`/invalid?results=${results}`);
+                throw new Error('Failed to reset password');
+
+            }
+            else {
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+
+                router.push(`/password?password=${responseData.data.password}&results=${results}`);
+            }
+        } 
+    }
+    catch (error) {
+            console.error('API error:', error);
+          
+
         }
-        reset();
     };
 
 
 
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <div className="loginPage vh-100">
             <div className="container-fluid">
                 <div className="row align-items-center justify-content-center">
 
-
+                <div className="col-md-4 text-center">
+                            <div>
+                                <div>
+                                    <Image src="/images/Group 95.png" alt="Logo" width={100} height={100} />
+                                </div>
+                                <div className="mt-0">
+                                    <h2 className="gradeTitle mt-2">{resultTitle}</h2>
+                                    <p className="subTitle">NATIONAL EXAMINATION RESULTS - 2024</p>
+                                </div>
+                            </div>
+                            {/* Logo and Department Title in the same row */}
+                            <div className="row d-flex d-none d-sm-flex justify-content-center align-items-center mt-5 pe-4 ">
+                                <div className="col-auto mt-5 pe-0">
+                                    <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
+                                </div>
+                                <div className="col-auto mt-5 ps-0">
+                                    <p className="departmentTitle mb-0 mt-3">
+                                        Department Of Education
+                                    </p>
+                                    <p className="departmentTitle text-start">
+                                        Papua New Guinea
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                  
 
                     
@@ -197,8 +332,9 @@ const ForgotPassword = () => {
 
             </div>
                 </div>
-
+                </Suspense>
     );
 };
 
-export default ForgotPassword;
+export default dynamic(() => Promise.resolve(ChangePassword), { ssr: false });
+

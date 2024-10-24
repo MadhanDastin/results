@@ -20,9 +20,11 @@ thead th {
   color: white !important;
 }
 
-.borderCustom {
+ .borderCustom {
   border-radius: 13px;
-}
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border: none; 
+ } 
 
 .bordercolor {
   border-radius: 15px;

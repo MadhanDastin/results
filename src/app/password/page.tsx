@@ -136,7 +136,7 @@ const YourPassword = () => {
                                                 e.preventDefault(); // Prevent default form submission
                                                 handleLoginRedirect();
                                             }}>
-                                            Login &nbsp;
+                                            OK &nbsp;
 
                                             <Image src="/images/Vector (1).png" alt="Logo" width={15} height={15} />
 

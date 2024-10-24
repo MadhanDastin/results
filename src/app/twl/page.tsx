@@ -12,20 +12,27 @@ const Marksheet = () => {
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
   const [studentResultsData, setStudentResultsData] = useState<any>(null);
-
+  const [results, setResults] = useState<any>(null);
+  // const [studentId, setStudentId] = useState<string>('');
   useEffect(() => {
     const response = searchParams.get('response');
 
+    const resultsParam = searchParams.get('results');
+    setResults(resultsParam);
+
+    console.log("Results from URL:", resultsParam);
+    
     if (response) {
       try {
         const decodedResponse = decodeURIComponent(response);
         const parsedResponse = JSON.parse(decodedResponse);
-        setStudentData(parsedResponse.data.student.student);
+        setStudentData({...parsedResponse.data.student.student, id: parsedResponse.data.student._id});
         const studentResults = parsedResponse.data.student.results;
         const filteredResults = studentResults.filter((result: any) =>
           result.finalstdscore !== 0 && result.grade.trim() !== ""
         );
         setStudentResultsData(filteredResults);
+
         console.log("twl", parsedResponse);
       } catch (error) {
         console.error('Failed to decode/parse response:', error);
@@ -37,14 +44,29 @@ const Marksheet = () => {
     return <div>Loading...</div>;
   }
 
+  const getAchievement = (grade: string): string => {
+    switch (grade) {
+      case 'A':
+        return 'Very High';
+      case 'B':
+        return 'High';
+      case 'C':
+        return 'Satisfactory';
+      case 'D':
+        return 'Unsatisfactory';
+      default:
+        return 'N/A';
+    }
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className='py-1 navbar-wrapper'>
-        <MyNavbar />
+        <MyNavbar student={studentData} results={results}/>
       </div>
       <div className="container d-flex justify-content-center align-items-center">
 
-        <div className="sheet px-4 py-1">
+        <div className=" sheet px-4 py-1">
 
           <div className='p-3 bordercolor'>
             {/* Header */}
@@ -87,7 +109,7 @@ const Marksheet = () => {
             {/* Candidate & School Details */}
             <div className="row mb-2">
               <div className="col-md-6 d-flex">
-                <div className="border p-2 flex-grow-1 borderCustom">
+                <div className="card p-2 flex-grow-1 borderCustom">
                   <h6 className='textcolor'><strong>Candidate Details</strong></h6>
                   <div className='mt-1 mb-1'>
                     <table>
@@ -120,7 +142,7 @@ const Marksheet = () => {
 
               {/* School Details */}
               <div className="col-md-6 d-flex">
-                <div className="border p-2 flex-grow-1 borderCustom">
+                <div className="card p-2 flex-grow-1 borderCustom">
                   <h6 className='textcolor'><strong>School Details</strong></h6>
                   <div className='mt-1 mb-1'>
                     <table>
@@ -148,7 +170,7 @@ const Marksheet = () => {
             </div>
 
             {/* Results Section */}
-            <div className="mb-2 border p-2 borderCustom">
+            <div className="mb-2 card p-2 borderCustom">
               <h6 className='textcolor'><strong>Results</strong></h6>
               <div className="d-flex justify-content-center align-items-center">
                 <table className="table table-bordered tabletext">
@@ -167,7 +189,7 @@ const Marksheet = () => {
                           <td>{result.subshortname}</td>
                           <td style={{ textAlign: 'left', paddingLeft: '20px' }}>{result.subject}</td>
                           <td>{result.grade}</td>
-                          <td>{result.finalstdscore}</td>
+                          <td>{getAchievement(result.grade)}</td>
                         </tr>
                       ))
                     ) : (
@@ -181,7 +203,7 @@ const Marksheet = () => {
             </div>
 
             {/* Summary Section */}
-            <div className="border p-2 mb-2 borderCustom">
+            <div className="card p-2 mb-2 borderCustom">
               <h6 className='textcolor'><strong>Result Summary</strong></h6>
               <div className="row d-flex justify-content-between">
                 <div className="col-md-3 text-center">
@@ -197,7 +219,7 @@ const Marksheet = () => {
             </div>
 
             {/* Terms Section */}
-            <div className="terms border p-2 borderCustom">
+            <div className="card terms border p-2 borderCustom">
               <h6><strong>Terms:</strong></h6>
               <div>
                 <p>1) National Department of Education (NDoE) online result is a provisional indicative information copy only; shall not be considered as final. The Original Certificate of Results will be issued by the MSD of NDoE which may be subject to changes for some valid reasons such as corrections from schools.</p>

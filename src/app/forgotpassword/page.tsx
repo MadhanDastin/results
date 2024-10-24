@@ -128,6 +128,33 @@ const ForgotPassword = () => {
                 router.push(`/password?password=${responseData.data.password}&results=${results}`);
             }
         } 
+        else  if (results === '10') {
+            const response = await fetch('https://devapi.dastintechnologies.com/api/v1/ten/forgot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lastname: data.surname.toUpperCase(),
+                    givennames: data.givenNames.toUpperCase(),
+                    slfnumber: data.password,
+                }),
+            });
+
+            if (!response.ok) {
+                router.push(`/invalid?results=${results}`);
+                throw new Error('Failed to reset password');
+
+            }
+            else {
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+
+                router.push(`/password?password=${responseData.data.password}&results=${results}`);
+            }
+        } 
     }
     catch (error) {
             console.error('API error:', error);

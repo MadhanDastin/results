@@ -20,7 +20,7 @@ thead th {
   color: white !important;
 }
 
-.borderCustom {
+ .borderCustom {
   border-radius: 13px;
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
   border: none; 
@@ -46,7 +46,7 @@ thead th {
 
 
 .sheet {
-  max-width: 700px;
+  max-width: 750px;
   background-color: #fff;
   /* border-radius: 10px; */
   /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */

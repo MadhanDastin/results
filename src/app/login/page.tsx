@@ -7,12 +7,17 @@ import { useRouter, useSearchParams } from 'next/navigation';
 // import './login.css';
 
 import dynamic from 'next/dynamic';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 type FormValues = {
     surname: string;
     givenNames: string;
     password: string;
 };
+
+
+  
+ 
+
 
 
 
@@ -22,8 +27,7 @@ const Login = () => {
     const [results, setResults] = useState<string | null>(null);
    
 
- 
-
+   
     const handleHomeClick = () => {
         router.push("/");
     };
@@ -66,64 +70,7 @@ const Login = () => {
     });
 
 
-    // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, fieldName: keyof FormValues) => {
-    //     const isNumeric = /^[0-9]$/.test(e.key); // Check if the pressed key is a numeric value
-    //     if (isNumeric) {
-    //         e.preventDefault(); // Prevent input of numeric values
-    //         // Set an error for the specific field
-    //         setError(fieldName, {
-    //             type: "manual",
-    //             message: "Only letters are allowed"
-    //         });
-    //     }
-    // };
-
-    // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    //     console.log('form data ', data);
-    //     try {
-    //         if (results === '12') {
-    //             // Make a POST request to the login API
-    //             const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({
-    //                     lastname: data.surname.toUpperCase(),
-    //                     givennames: data.givenNames.toUpperCase(),
-    //                     password: data.password,
-    //                 }),
-    //             });
-
-    //             const result = await response.json();
-
-    //             if (response.ok) {
-    //                 if (result.token) {
-    //                     localStorage.setItem('authToken', result.token); // Store token in localStorage
-    //                     console.log("Token stored:", result.token);
-    //                 }
-    //                 console.log("Login successful:", result);
-    //                 // alert("Login successful!");
-    //                 // reset(); // Reset form fields after successful login
-    //                 const encodedResult = encodeURIComponent(JSON.stringify(result));
-    //                 router.push(`/twl?response=${encodedResult}`);
-
-    //             } else {
-    //                 // Handle API error response
-    //                 console.error("Login failed:", result.message);
-    //                 alert(`Login failed: ${result.message}`);
-    //                 router.push('/loginfailed');
-    //             }
-    //         } else {
-    //             alert('Work In Progress');
-    //             return;
-    //         }
-    //     } catch (error) {
-    //         console.error("An error occurred during login:", error);
-    //         alert("An error occurred. Please try again.");
-    //     }
-    //     // reset();
-    // };
+    
 
     useEffect(() => {
         var results = searchParams.get('results');
@@ -134,8 +81,10 @@ const Login = () => {
 
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
         console.log('form data ', data);
-    
+       
         try {
+          
+           
             if (results === '12') {
                 // POST request for the "12" result
                 const response = await fetch("https://devapi.dastintechnologies.com/api/v1/twl/login", {
@@ -159,7 +108,7 @@ const Login = () => {
                     }
                     console.log("Login successful:", result);
                     const encodedResult = encodeURIComponent(JSON.stringify(result));
-                    router.push(`/twl?response=${encodedResult}`);
+                    router.push(`/twl?results=${results}&response=${encodedResult}`);
                 } else {
                     console.error("Login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
@@ -189,13 +138,44 @@ const Login = () => {
                     }
                     console.log("STEM login successful:", result);
                     const encodedResult = encodeURIComponent(JSON.stringify(result));
-                    router.push(`/stem?response=${encodedResult}`);
+                    router.push(`/stem?results=${results}&response=${encodedResult}`);
                 } else {
                     console.error("STEM login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
                     router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
                 }
-            } else {
+            } 
+            else if (results === '10') {
+                // POST request for the "STEM" result
+                const response = await fetch("https://devapi.dastintechnologies.com/api/v1/ten/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        lastname: data.surname.toUpperCase(),
+                        givennames: data.givenNames.toUpperCase(),
+                        password: data.password,
+                    }),
+                });
+    
+                const result = await response.json();
+    
+                if (response.ok) {
+                    if (result.token) {
+                        localStorage.setItem('authToken', result.token); // Store token in localStorage
+                        console.log("Token stored:", result.token);
+                    }
+                    console.log("10 login successful:", result);
+                    const encodedResult = encodeURIComponent(JSON.stringify(result));
+                    router.push(`/ten?results=${results}&response=${encodedResult}`);
+                } else {
+                    console.error("10 login failed:", result.message);
+                    // alert(`Login failed: ${result.message}`);
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
+                }
+            }
+            else {
                 // alert('Work In Progress');
             }
         } catch (error) {
@@ -245,7 +225,7 @@ const Login = () => {
                         <div className="col-md-4 d-flex justify-content-center align-items-center">
                             <div className="formCard py-1 px-3 forminput">
                                 <h2 className="loginTitle mt-0 py-2 mb-3">Login <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} /></h2>
-
+                               
                                 <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-2">
                                         <label className="form-label mb-0 ps-4 ms-2">Surname *</label>
@@ -323,7 +303,7 @@ const Login = () => {
                                             autoComplete="off"
                                             
                                             className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
-                                            placeholder="SLFNO Format:YYYYPRSCHCAND" maxLength={12}
+                                            placeholder="SLFNO Format:YYYYPRSCHCAND" maxLength={13}
                                             {...register('password', {
                                                 required: 'Password is required',
                                                 minLength: {
@@ -331,7 +311,7 @@ const Login = () => {
                                                     message: 'Required 8 - 12 characters',
                                                 },
                                                 maxLength: {
-                                                    value: 12,
+                                                    value: 13,
                                                     message: 'Password must be maximum 12 characters',
                                                 }
                                             })}
@@ -372,7 +352,7 @@ const Login = () => {
 
 
                                 </form>
-
+                              
                                 <div className="d-flex justify-content-center align-items-center mt-4 pt-2 mb-4">
                                     <button className="btn btn-sm customButton">
                                         Help&nbsp; <Image src="/images/Vector (2).png" alt="Logo" width={12} height={12} />

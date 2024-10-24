@@ -4,7 +4,7 @@ import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
-import './invalid.css'
+import './reportsuccess.css'
 import dynamic from 'next/dynamic';
 
 type FormValues = {
@@ -13,20 +13,12 @@ type FormValues = {
     password: string;
 };
 
-const InvalidPassword = () => {
+const YourPassword = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [password, setPassword] = useState<string | null>('');
     const [results, setResults] = useState<string | null>(null);
-    const handleLoginRedirect = () => {
-        if (window.history.length > 1) {
-            router.back(); // Go back if there's a history
-        } else {
-            router.push('/login'); // Fallback to login page if no history
-        }
-    };
 
-    
     const getTitle = (title: string) => {
 
         switch (title) {
@@ -45,6 +37,11 @@ const InvalidPassword = () => {
 
     const resultTitle = getTitle(results as string)
 
+
+    const handleLoginRedirect = () => {
+        router.back();// Navigate to the login page
+    };
+
     useEffect(() => {
         var password = searchParams.get('password');
         setPassword(password)
@@ -52,7 +49,6 @@ const InvalidPassword = () => {
 
     useEffect(() => {
         var results = searchParams.get('results');
-        console.log('Retrieved results:', results);
         setResults(results)
     }, [searchParams])
 
@@ -117,30 +113,30 @@ const InvalidPassword = () => {
 
                         <div className="col-md-4 d-flex justify-content-center align-items-center">
                             <div className="formCard p-3">
-                                <h2 className="loginTitle mt-5 pb-2 mb-3">Forgot Password <Image src="/images/Group 28861.png" alt="Logo" width={28} height={28} />
+                                <h2 className="loginTitle mt-5 pb-2 mb-3">YOUR REPORT HAS BEEN SUBMITTED!
                                 </h2>
                                 <form className="w-100" >
                                     <div className='d-flex justify-content-center align-items-center'>
                                         <div className='card border-0 rounded'>
                                             <div className="card-header rounded d-flex justify-content-center align-items-center bg-primary text-white w-100 py-4">
-                                                <p className="fs-18 mb-0">Invalid Credentials!</p>
+                                                <p className="fs-15 mb-0">AKA MONRO</p>
                                             </div>
                                             <div className="card-body rounded bg-white w-100">
                                                 <div className='d-flex justify-content-center align-items-center my-4'>
-                                                    <Image src="/images/Vector (10).png" alt="Logo" width={60} height={60} />
+                                                    <Image src="/images/Vector (9).png" alt="Logo" width={60} height={60} />
                                                 </div>
                                                 <div className='d-flex justify-content-center align-items-center my-4 pt-2'>
-                                                    <p className='fs-6 fw-bold'>Please try again</p>
+                                                    <p className='fs-6'>Reported Successfully</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="d-flex justify-content-center mt-5 pt-3">
                                         <button type="submit" className="btn btn-primary custom-button btn-sm buttontext" onClick={(e) => {
-                                            e.preventDefault(); // Prevent default form submission
-                                            handleLoginRedirect();
-                                        }}>
-                                         OK&nbsp;&nbsp;
+                                                e.preventDefault(); // Prevent default form submission
+                                                handleLoginRedirect();
+                                            }}>
+                                            OK &nbsp;
 
                                             <Image src="/images/Vector (1).png" alt="Logo" width={15} height={15} />
 
@@ -162,4 +158,4 @@ const InvalidPassword = () => {
     );
 };
 
-export default dynamic(() => Promise.resolve(InvalidPassword), { ssr: false });
+export default dynamic(() => Promise.resolve(YourPassword), { ssr: false });
