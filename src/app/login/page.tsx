@@ -33,7 +33,13 @@ const Login = () => {
     };
 
     const handleReset = () => {
-        reset(); // This will reset the form to its default values
+        console.log("coming");
+        
+        reset({
+            surname: '',      // Set this to your default or initial values
+            givenNames: '',   // Set this to your default or initial values
+            password: '',     // Set this to your default or initial values
+        });
     };
 
     const getTitle = (title: string) => {
@@ -75,7 +81,15 @@ const Login = () => {
     });
 
 
-    
+    useEffect(() => {
+        const initialValues = {
+            surname: searchParams.get('surname') || '',
+            givenNames: searchParams.get('givennames') || '',
+            password: searchParams.get('password') || '',
+        };
+        reset(initialValues);  // Reset to URL parameter values on mount or when they change
+        setResults(searchParams.get('results'));
+    }, [searchParams, reset]);
 
     useEffect(() => {
         var results = searchParams.get('results');
@@ -374,7 +388,7 @@ const Login = () => {
 
                             </div>
                         </div>
-                        <div className="row d-flex d-block d-sm-none justify-content-center align-items-center mt-4">
+                        {/* <div className="row d-flex d-block d-sm-none justify-content-center align-items-center mt-4">
                             <div className="col-auto pe-0">
                                 <Image src="/images/img5.png" alt="Department Logo" width={70} height={70} />
                             </div>
@@ -383,7 +397,7 @@ const Login = () => {
                                     Department Of Education<br />Papua New Guinea
                                 </p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                 </div>
