@@ -242,17 +242,14 @@ console.log(formData);
                                         type="password"
                                         autoComplete="off"
                                         className={`form-control inputField ${errors.currentPassword ? 'is-invalid' : ''}`}
-                                        placeholder="Password/SLF NO"  maxLength={12}
+                                        placeholder="Password/SLF NO"  maxLength={13}
                                         {...register('currentPassword', {
                                             required: 'Password is required',
                                             minLength: {
                                                 value: 8,
-                                                message: 'Required 8 - 12 characters',
+                                                message: 'Required 8 - 13 characters',
                                             },
-                                            maxLength: {
-                                                value: 12,
-                                                message: 'Password must be maximum 12 characters',
-                                            }
+                                            
                                         })}
                                     />
                                     {!errors.currentPassword && <span className={"error-lh mb-0 ps-4 ms-2 mt-0"}>&nbsp;</span>}
@@ -268,12 +265,12 @@ console.log(formData);
                                     <input
                                         type="password"
                                         className={`form-control inputField ${errors.newPassword ? 'is-invalid' : ''}`}
-                                        placeholder="Password/SLF NO"
+                                        placeholder="Password/SLF NO"  maxLength={13}
                                         {...register('newPassword', {
                                             required: 'Password is required',
                                             minLength: {
-                                                value: 12,
-                                                message: 'Password must be at least 12 characters',
+                                                value: 8,
+                                                message: 'Required 8 - 12 characters',
                                             }
                                         })}
                                     />
@@ -290,12 +287,12 @@ console.log(formData);
                                     <input
                                         type="password"
                                         className={`form-control inputField ${errors.confirmPassword ? 'is-invalid' : ''}`}
-                                        placeholder="Password/SLF NO"
+                                        placeholder="Password/SLF NO"  maxLength={13}
                                         {...register('confirmPassword', {
                                             required: 'Password is required',
                                             minLength: {
-                                                value: 12,
-                                                message: 'Password must be at least 12 characters',
+                                                value: 8,
+                                                message: 'Required 8 - 12 characters',
                                             }
                                         })}
                                     />
