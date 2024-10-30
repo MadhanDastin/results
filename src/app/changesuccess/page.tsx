@@ -113,20 +113,20 @@ const YourPassword = () => {
 
                         <div className="col-md-4 d-flex justify-content-center align-items-center">
                             <div className="formCard p-3">
-                                <h2 className="loginTitle mt-5 pb-2 mb-3">Change Password<Image src="/images/Group 96.png" alt="Logo" width={28} height={28} />
+                                <h2 className="loginTitle mt-5 pb-2 mb-3">Change Password <Image src="/images/Group 96.png" alt="Logo" width={28} height={28} />
                                 </h2>
                                 <form className="w-100" >
                                     <div className='d-flex justify-content-center align-items-center'>
                                         <div className='card border-0 rounded'>
                                             <div className="card-header rounded d-flex justify-content-center align-items-center bg-primary text-white w-100 py-4">
-                                                <p className="fs-15 mb-0">Success</p>
+                                                <p className="fs-15 mb-0">Success!</p>
                                             </div>
                                             <div className="card-body rounded bg-white w-100">
                                                 <div className='d-flex justify-content-center align-items-center my-4'>
                                                     <Image src="/images/Vector (9).png" alt="Logo" width={60} height={60} />
                                                 </div>
                                                 <div className='d-flex justify-content-center align-items-center my-4 pt-2'>
-                                                    <p className='fs-6'>Reported Successfully</p>
+                                                    <p className='fs-6'>Password changed</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@ const YourPassword = () => {
                                                 e.preventDefault(); // Prevent default form submission
                                                 handleLoginRedirect();
                                             }}>
-                                            OK &nbsp;
+                                            Ok &nbsp;
 
                                             <Image src="/images/Vector (1).png" alt="Logo" width={15} height={15} />
 

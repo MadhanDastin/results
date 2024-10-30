@@ -66,7 +66,12 @@ const Login = () => {
         formState: { errors }, setError,
     } = useForm<FormValues>({
         mode: 'onChange', // Check form validity on every change
-        reValidateMode: 'onChange', // Optional: Re-validate the form on every change
+        reValidateMode: 'onChange',
+        defaultValues: {
+            surname: searchParams.get('surname') || '',
+            givenNames: searchParams.get('givennames') || '',
+            password: searchParams.get('password') || '',
+        }, // Optional: Re-validate the form on every change
     });
 
 
@@ -113,7 +118,7 @@ const Login = () => {
                     console.error("Login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
                     // router.push('/loginfailed');
-                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&password=${data.password}&results=${results}`);
                 }
             } else if (results === 'STEM') {
                 // POST request for the "STEM" result
@@ -142,7 +147,7 @@ const Login = () => {
                 } else {
                     console.error("STEM login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
-                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&password=${data.password}&results=${results}`);
                 }
             } 
             else if (results === '10') {
@@ -172,7 +177,7 @@ const Login = () => {
                 } else {
                     console.error("10 login failed:", result.message);
                     // alert(`Login failed: ${result.message}`);
-                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&results=${results}`);
+                    router.push(`/loginfailed?surname=${data.surname}&givennames=${data.givenNames}&password=${data.password}&results=${results}`);
                 }
             }
             else {
@@ -180,7 +185,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error("An error occurred during login:", error);
-            alert("An error occurred. Please try again.");
+           
         }
     };
     
@@ -308,11 +313,11 @@ const Login = () => {
                                                 required: 'Password is required',
                                                 minLength: {
                                                     value: 8,
-                                                    message: 'Required 8 - 12 characters',
+                                                    message: 'Required 8 - 13 characters',
                                                 },
                                                 maxLength: {
                                                     value: 13,
-                                                    message: 'Password must be maximum 12 characters',
+                                                    message: 'Password must be maximum 13 characters',
                                                 }
                                             })}
                                              

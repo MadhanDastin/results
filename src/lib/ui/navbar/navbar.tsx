@@ -8,21 +8,29 @@ import Link from 'next/link';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const CustomNavbar: React.FC<{ student: any, results: any }> = ({ student, results  }) => {
+const CustomNavbar: React.FC<{ student: any, results: any, response: any }> = ({ student, results, response  }) => {
 
   const router=useRouter();
 
   const handleChange = () => {
     // Convert the student data to a URL-friendly format (stringify it if it's an object)
     const studentData = encodeURIComponent(JSON.stringify(student));
-    router.push(`/changepassword?student=${studentData}&results=${results}`);
+    const studentResponse = encodeURIComponent(JSON.stringify(response));
+    router.push(`/changepassword?student=${studentData}&results=${results}&response=${studentResponse}`);
   };
 
-  const handleFeedback = () => {
-    // Convert the student data to a URL-friendly format (stringify it if it's an object)
+  const handleFeedback = () => {   
     const studentData = encodeURIComponent(JSON.stringify(student));
-    router.push(`/feedback?student=${studentData}&results=${results}`);
+    const studentResponse = encodeURIComponent(JSON.stringify(response));
+    router.push(`/feedback?student=${studentData}&results=${results}&response=${studentResponse}`);
   };
+
+  const handlereport  = () => {   
+    const studentData = encodeURIComponent(JSON.stringify(student));
+    const studentResponse = encodeURIComponent(JSON.stringify(response));
+    router.push(`/reportissue?student=${studentData}&results=${results}&response=${studentResponse}`);
+  };
+
   const handleDownload = async () => {
     // Determine the API URL based on the 'results' value
     
@@ -99,6 +107,49 @@ const CustomNavbar: React.FC<{ student: any, results: any }> = ({ student, resul
     setShowMenu(!showMenu);
   };
 
+  let apiUrl = ''; // Define apiUrl variable
+
+// Your existing conditional logic
+if (results === '12') {
+    apiUrl = `https://devapi.dastintechnologies.com/api/v1/twl/marksheet/${student.id}`;
+} else if (results === 'STEM') {
+    apiUrl = `https://devapi.dastintechnologies.com/api/v1/stem/marksheet/${student.id}`;
+} else if (results === '10') {
+    apiUrl = `https://devapi.dastintechnologies.com/api/v1/ten/marksheet/${student.id}`;
+}
+
+  const handleShare = async () => {
+    const maskedUrl = `https://yourdomain.com/maskedPage.html?apiUrl=${encodeURIComponent(apiUrl)}`;
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Check this out!',
+                url:apiUrl, // Shares the current page URL
+                text: 'I thought you might find this interesting!',
+            });
+            console.log('Content shared successfully');
+        } catch (error) {
+            console.error('Error sharing:', error);
+        }
+    } else {
+        // Fallback: Copy URL to clipboard if share isn't supported
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard!');
+        } catch (error) {
+            console.error('Failed to copy to clipboard:', error);
+        }
+    }
+};
+  
+  const handlePrint = () => {
+    window.print();
+};
+const handleLogout = () => {
+  router.push(`/`)
+};
+
+
   // const [isOpen, setIsOpen] = useState(false);
 
   // const toggleNavbar = () => {
@@ -114,9 +165,9 @@ const CustomNavbar: React.FC<{ student: any, results: any }> = ({ student, resul
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link href="/" style={navLinkStyle}>Home</Nav.Link>
-              <Nav.Link href="#" style={navLinkStyle}>Share</Nav.Link>
+              <Nav.Link href="#" onClick={handleShare} style={navLinkStyle}>Share</Nav.Link>
               <Nav.Link href="#" onClick={handleDownload} style={navLinkStyle}>Download</Nav.Link>
-              <Nav.Link href="#" style={navLinkStyle}>Print</Nav.Link>
+              <Nav.Link href="#" onClick={handlePrint} style={navLinkStyle}>Print</Nav.Link>
             </Nav>
           <Dropdown className="d-inline mx-2">
             <Dropdown.Toggle as="div" id="dropdown-autoclose-true" style={dropdownToggleStyle} className="no-caret">
@@ -126,13 +177,13 @@ const CustomNavbar: React.FC<{ student: any, results: any }> = ({ student, resul
             <Dropdown.Menu className="custom-dropdown-menu dropdown-menu-lg-end" style={dropStyle}>
               <Dropdown.Item href="" onClick={handleChange} style={dropLinkStyle}>Change Password</Dropdown.Item>
               <Dropdown.Divider className="white-divider" />
-              <Dropdown.Item href="#" style={dropLinkStyle}>Report an issue</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={handlereport} style={dropLinkStyle}>Report an issue</Dropdown.Item>
               <Dropdown.Divider className="white-divider"/>
               <Dropdown.Item href="#" onClick={handleFeedback} style={dropLinkStyle}>Service Feedback</Dropdown.Item>
               <Dropdown.Divider className="white-divider" />
               <Dropdown.Item href="#" style={dropLinkStyle}>Help</Dropdown.Item>
               <Dropdown.Divider className="white-divider"/>
-              <Dropdown.Item href="#" style={dropLinkStyle}>Logout</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={handleLogout} style={dropLinkStyle} >Logout</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           </Navbar.Collapse>

@@ -77,7 +77,7 @@ console.log(formData);
     }, [searchParams])
 
     const handleHomeClick = () => {
-        router.back();
+        router.push(`/login?results=${results}`);
     };
 
     useEffect(() => {
@@ -94,20 +94,18 @@ console.log(formData);
     
 
 
-    // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    //     console.log('form data ', data);
-
-    // };
+   
     const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+        console.log('slf ', slf);
         try {
             if (results === '12') {
             const response = await fetch('https://devapi.dastintechnologies.com/api/v1/twl/reset', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    lastname: slf.surname,
+                    lastname: slf.lastname,
                     givennames: slf.givennames,
                     slfnumber: slf.slfnumber,
                     newPassword:data.newPassword,
@@ -130,14 +128,15 @@ console.log(formData);
         } 
         else  if (results === 'STEM') {
             const response = await fetch('https://devapi.dastintechnologies.com/api/v1/stem/reset', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    lastname: data.currentPassword,
-                    givennames: data.newPassword,
-                    slfnumber: data.confirmPassword,
+                    lastname: slf.lastname,
+                    givennames: slf.givennames,
+                    slfnumber: slf.slfnumber,
+                    newPassword:data.newPassword,
                 }),
             });
 
@@ -152,19 +151,20 @@ console.log(formData);
                 console.log(responseData);
 
 
-                router.push(`/password?password=${responseData.data.password}&results=${results}`);
+                router.push(`/changesuccess?results=${results}`);
             }
         } 
         else  if (results === '10') {
             const response = await fetch('https://devapi.dastintechnologies.com/api/v1/ten/reset', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    lastname: data.currentPassword,
-                    givennames: data.newPassword,
-                    slfnumber: data.confirmPassword,
+                    lastname: slf.lastname,
+                    givennames: slf.givennames,
+                    slfnumber: slf.slfnumber,
+                    newPassword:data.newPassword,
                 }),
             });
 
@@ -179,7 +179,7 @@ console.log(formData);
                 console.log(responseData);
 
 
-                router.push(`/password?password=${responseData.data.password}&results=${results}`);
+                router.push(`/changesuccess?results=${results}`);
             }
         } 
     }
@@ -237,7 +237,7 @@ console.log(formData);
                 
 
                                 <div className="mb-2">
-                                    <label className="form-label mb-0 ps-4 ms-2">Current Password * </label>
+                                    <label className="form-label mb-0 ps-4 ms-2">SLF Number * </label>
                                     <input
                                         type="password"
                                         autoComplete="off"
@@ -318,7 +318,7 @@ console.log(formData);
                                 </div>
                                 <div className="d-flex align-items-center justify-content-evenly mt-4 pt-2 mb-4">
                                
-                                <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleHomeClick}>Back to Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
+                                <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleHomeClick}>Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
                                 <button className="btn btn-outline-info  btn-sm customButton mx-3" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
                             </div>
 

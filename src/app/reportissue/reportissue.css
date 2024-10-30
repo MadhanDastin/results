@@ -160,9 +160,9 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
   }
   
   input[type="checkbox"]:checked {
-    accent-color: #fff; /* White checkmark when selected */
+    accent-color: blue; /* White checkmark when selected */
   }
   
   input[type="checkbox"]:not(:checked) {
-    accent-color: #fff; /* White border for unchecked checkboxes */
+    accent-color: blue; /* White border for unchecked checkboxes */
   }

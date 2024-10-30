@@ -22,6 +22,7 @@ const ServiceFeedback = () => {
     const [results, setResults] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormValues | null>(null);
     const [slf, setSlf] = useState<any>(null);
+    const [studentResponse, setStudentResponse] = useState<any>(null);
     console.log(slf);
 
     const getTitle = (title: string) => {
@@ -65,6 +66,12 @@ const ServiceFeedback = () => {
     useEffect(() => {
         var results = searchParams.get('results');
         setResults(results)
+    }, [searchParams])
+
+    useEffect(() => {
+        var response = searchParams.get('response');
+        const decodedResponse = decodeURIComponent(response || '');
+        setStudentResponse(JSON.parse(decodedResponse));
     }, [searchParams])
     useEffect(() => {
         const slfData = searchParams.get('student');
@@ -129,6 +136,8 @@ const ServiceFeedback = () => {
         console.log('Selected Feedback:', selectedFeedback);
         console.log('Remarks:', remarks);
         console.log('Rating:', rating);
+        const encodedStudent = encodeURIComponent(JSON.stringify(slf));
+        const encodedStudentResponse = encodeURIComponent(JSON.stringify(studentResponse));
         try {
             if (results === '12') {
                 const response = await fetch('https://devapi.dastintechnologies.com/api/v1/twl/feedback', {
@@ -157,13 +166,11 @@ const ServiceFeedback = () => {
 
                     const responseData = await response.json();
                     console.log(responseData);
-
-                    const encodedStudent = encodeURIComponent(JSON.stringify(slf));
-                    router.push(`/feedbacksuccess?results=${results}&student=${encodedStudent}`);
+                    router.push(`/feedbacksuccess?results=${results}&student=${encodedStudent}&feedback=${selectedFeedback}&rating=${rating}&response=${encodedStudentResponse}`);
                 }
             }
             else if (results === 'STEM') {
-                const response = await fetch('https://devapi.dastintechnologies.com/api/v1/stem/forgot', {
+                const response = await fetch('https://devapi.dastintechnologies.com/api/v1/stem/feedback', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -174,7 +181,7 @@ const ServiceFeedback = () => {
                 });
 
                 if (!response.ok) {
-                    console.log('Failed to reset password');
+                    console.log('Failed to send request');
 
                 }
                 else {
@@ -183,11 +190,12 @@ const ServiceFeedback = () => {
                     console.log(responseData);
 
 
-                    router.push(`/feedbacksuccess`);
+                    router.push(`/feedbacksuccess?results=${results}&student=${encodedStudent}&feedback=${selectedFeedback}&rating=${rating}&response=${studentResponse}`);
+                    // router.push(`/feedbacksuccess`);
                 }
             }
             else if (results === '10') {
-                const response = await fetch('https://devapi.dastintechnologies.com/api/v1/ten/forgot', {
+                const response = await fetch('https://devapi.dastintechnologies.com/api/v1/ten/feedback', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -207,7 +215,8 @@ const ServiceFeedback = () => {
                     console.log(responseData);
 
 
-                    router.push(`/feedbacksuccess`);
+                    router.push(`/feedbacksuccess?results=${results}&student=${encodedStudent}&feedback=${selectedFeedback}&rating=${rating}&response=${studentResponse}`);
+                    // router.push(`/feedbacksuccess`);
                 }
             }
         }

@@ -84,10 +84,33 @@ const ReportIssue = () => {
         );
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = event.target.files?.[0] || null;
-        setFile(selectedFile);
+    // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const selectedFile = event.target.files?.[0] || null;
+    //     setFile(selectedFile);
+    // };
+
+
+
+    const handleUploadClick = () => {
+        // Dynamically create the input element
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*'; // Optional: Restrict to images
+        input.style.display = 'none'; // Ensure it's not visible
+
+        // Attach event listener for file selection
+        input.onchange = (event: Event) => {
+            const target = event.target as HTMLInputElement;
+            const selectedFile = target.files?.[0] || null;
+            setFile(selectedFile);
+        };
+
+        // Trigger the file dialog
+        document.body.appendChild(input); // Temporarily add to DOM
+        input.click(); // Open file picker
+        document.body.removeChild(input); // Remove from DOM after selection
     };
+
 
     //   const handlingSubmit = (event: React.FormEvent) => {
     //     event.preventDefault();
@@ -217,16 +240,13 @@ const ReportIssue = () => {
 
                         <div className="col-md-4  d-flex justify-content-center align-items-center">
                             <div className="form-Card p-3">
-                                <h2 className="login-Title mt-2 py-2 mb-3">Report an Issue <Image src="/images/Group 28952.png" alt="Logo" width={28} height={28} /></h2>
+                                <h2 className="login-Title mt-2 py-2 mb-1">Report an Issue <Image src="/images/Group 28952.png" alt="Logo" width={28} height={28} /></h2>
 
 
                                 <form className="w-100" onSubmit={handleSubmit(onSubmit)}>
                                     <div className='row'>
-                                        <div className='mx-4 px-5'>
-                                            {/* <label>
-                                                <input type="checkbox" />
-                                                <span className="custom-checkbox"></span> Label Text
-                                            </label> */}
+                                        {/* <div className='mx-4 px-5'>
+                                           
                                             {issues.map((issue) => (
                                                 <div key={issue} className="issues text-start checkbox-container">
                                                     <label htmlFor={issue}><input
@@ -238,19 +258,47 @@ const ReportIssue = () => {
                                                         checked={selectedIssues.includes(issue)}
 
                                                     />
-                                                    {issue}</label>
+                                                        {issue}</label>
+                                                </div>
+                                            ))}
+                                        </div> */}
+
+                                        <div className="mx-3 px-5">
+                                            {issues.map((issue) => (
+                                                <div key={issue} className="issues text-start checkbox-container">
+                                                    <label htmlFor={issue} className="custom-checkbox-label">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={issue}
+                                                            name={issue}
+                                                            value={issue}
+                                                            onChange={() => handleIssueChange(issue)}
+                                                            checked={selectedIssues.includes(issue)}
+                                                            className="styled-checkbox"
+                                                        />&nbsp;
+                                                        <span>{issue}</span>
+                                                    </label>
                                                 </div>
                                             ))}
                                         </div>
 
-                                        <div className="upload-section text-center mt-4">
+
+                                        <div className="upload-section text-center mt-2">
+                                            <p className="upload-section" onClick={handleUploadClick} style={{ cursor: 'pointer' }}>
+                                                <Image src="/images/Vector (11).png" alt="Logo" width={13} height={13} /> Add Screenshot
+                                            </p>
+
+                                            {/* Display the file name if a file is selected */}
+                                            {file && <p className='selected mt-0'>Selected file: {file.name}</p>}
+                                        </div>
+                                        {/* <div className="upload-section text-center mt-4">
                                             <p className="upload-section" onChange={handleFileChange}>
                                                 <Image src="/images/Vector (11).png" alt="Logo" width={15} height={15} /> Add Screenshot
                                             </p>
-                                            {/* <input type="file" id="screenshot" onChange={handleFileChange} /> */}
-                                        </div>
+                                           
+                                        </div> */}
 
-                                        <div className="mb-2">
+                                        <div className="mb-1">
                                             <label className="text-white mb-2" htmlFor="remarks">Remarks *</label>
                                             <textarea
                                                 id="remarks"
@@ -263,7 +311,7 @@ const ReportIssue = () => {
                                             />
                                         </div>
 
-                                        <div className="d-flex justify-content-center mt-3">
+                                        <div className="d-flex justify-content-center mt-2">
                                             <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center">
                                                 <span className="d-flex align-items-center">
                                                     Submit &nbsp;
@@ -294,12 +342,53 @@ const ReportIssue = () => {
                 <style>
                     {`
 
+.styled-checkbox {
+    appearance: none;
+    -webkit-appearance: none; /* For Safari */
+    width: 14px; /* Increased width */
+    height: 14px; /* Increased height */
+    background-color: transparent;
+    border: 1px solid white; /* White border color */
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Center align checkmark */
+    justify-content: center; /* Center align checkmark */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* When the checkbox is checked */
+.styled-checkbox:checked {
+    background-color: white; //linear-gradient(to right, #181D6E, #0071BD); /* Change to blue fill color */
+    border-color: white; /* Optional: make border blue as well */
+}
+
+/* Styling the checkmark */
+.styled-checkbox:checked::before {
+    content: "✓";
+    display: inline-block;
+    color: #181D6E; /* White checkmark color */
+    font-size: 12px;
+    line-height: 1; /* Reset line-height */
+    text-align: center;
+}
                     .issues {
+                    display: flex;
+    align-items: center; /* Align checkbox and text vertically */
+    gap: 8px; /* Optional: adds space between checkbox and text */
   text-align: center; /* Center align the content */
   color: white; /* Make text color white */
-  font-size: 0.8rem; /* Reduce font size */
+  font-size: 0.9rem; /* Reduce font size */
   
 }
+
+.custom-checkbox-label {
+    display: flex;
+    align-items: center;
+}
+  .selected{
+  font-size: 0.8rem;
+  }
+ 
 
 .issue-item {
   margin-bottom: 10px;
@@ -329,6 +418,7 @@ const ReportIssue = () => {
 
 .upload-section{
  color: white;
+  font-size: 0.9rem; 
 }
 
 .subTitle {

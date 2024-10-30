@@ -44,7 +44,12 @@ const ForgotPassword = () => {
         formState: { errors }, setError, clearErrors
     } = useForm<FormValues>({
         mode: 'onChange', // Check form validity on every change
-        reValidateMode: 'onChange', // Optional: Re-validate the form on every change
+        reValidateMode: 'onChange',
+        defaultValues: {
+            surname: searchParams.get('surname') || '',
+            givenNames: searchParams.get('givennames') || '',
+            password: searchParams.get('passwordrec') || '',
+        }, // Optional: Re-validate the form on every change
     });
 
     const handleReset = () => {
@@ -64,8 +69,8 @@ const ForgotPassword = () => {
         setResults(results)
     }, [searchParams])
 
-    const handleHomeClick = () => {
-        router.back();
+    const handleloginClick = () => {
+        router.push(`/login?results=${results}`);
     };
 
     // const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
@@ -88,7 +93,7 @@ const ForgotPassword = () => {
             });
 
             if (!response.ok) {
-                router.push(`/invalid?results=${results}`);
+                router.push(`/invalid?results=${results}&surname=${data.surname}&givennames=${data.givenNames}&password=${data.password}`);
                 throw new Error('Failed to reset password');
 
             }
@@ -266,16 +271,16 @@ const ForgotPassword = () => {
                                             type="password"
                                             autoComplete="off"
                                             className={`form-control inputField ${errors.password ? 'is-invalid' : ''}`}
-                                            placeholder="SLFNO Format:YYYYPRSCHCAND " maxLength={12}
+                                            placeholder="SLFNO Format:YYYYPRSCHCAND " maxLength={13}
                                             {...register('password', {
                                                 required: 'Password is required',
                                                 minLength: {
                                                     value: 8,
-                                                    message: 'Required 8 - 12 characters',
+                                                    message: 'Required 8 - 13 characters',
                                                 },
                                                 maxLength: {
-                                                    value: 12,
-                                                    message: 'Password must be maximum 12 characters',
+                                                    value: 13,
+                                                    message: 'Password must be maximum 13 characters',
                                                 }
                                             })}
                                         />
@@ -306,7 +311,7 @@ const ForgotPassword = () => {
 
 
                                 <div className="d-flex align-items-center justify-content-evenly mt-4 pt-2 mb-4">
-                                    <button className="btn btn-outline-info btn-md custom-Button" onClick={handleHomeClick}> Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
+                                    <button className="btn btn-outline-info btn-md custom-Button" onClick={handleloginClick}> Login <Image src="/images/Vector (1).png" alt="Logo" width={12} height={12} /></button>
                                     <button className="btn btn-outline-info btn-md custom-Button" onClick={handleReset}>Reset <Image src="/images/Group.png" alt="Logo" width={12} height={12} /></button>
                                 </div>
                             </div>

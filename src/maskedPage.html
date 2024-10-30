@@ -1,0 +1,17 @@
+<!-- maskedPage.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Page</title>
+</head>
+<body>
+    <iframe id="resultsIframe" src="" width="100%" height="100%"></iframe>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const apiUrl = urlParams.get('apiUrl');
+        document.getElementById('resultsIframe').src = apiUrl;
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 
-  "use client";
+"use client";
 import React, { useEffect, useState, Suspense } from "react";
 import dynamic from "next/dynamic";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,10 +12,12 @@ const Marksheet = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
+  const [studentResponse, setStudentResponse] = useState<any>(null);
   const [studentResultsData, setStudentResultsData] = useState<any[]>([]);
   const [results, setResults] = useState<any>(null);
   useEffect(() => {
     const response = searchParams.get("response");
+    setStudentResponse(response);
     const resultsParam = searchParams.get('results');
     setResults(resultsParam);
 
@@ -23,9 +25,9 @@ const Marksheet = () => {
     if (response) {
       // Assume the response is JSON, so we parse it (adapt this part based on your actual response format)
       const parsedResponse = JSON.parse(response);
-      console.log('parsedResponse ',parsedResponse);
+      console.log('parsedResponse ', parsedResponse);
       const parsedStudentData = parsedResponse.data.student;
-      
+
       // Set student data
       const student = {
         ...parsedStudentData,
@@ -38,9 +40,10 @@ const Marksheet = () => {
         schoolname: parsedStudentData.School_Name,
         region: parsedStudentData.Region,
         province: parsedStudentData.Province,
+        id: parsedStudentData._id,
       };
       setStudentData(student);
-      console.log('studentData ',studentData);
+      console.log('studentData ', studentData);
       // Set student results data
       const results = [
         {
@@ -87,7 +90,7 @@ const Marksheet = () => {
         },
       ];
       setStudentResultsData(results);
-      console.log('studentResultsData ',studentResultsData);
+      console.log('studentResultsData ', studentResultsData);
     }
   }, [searchParams]);
 
@@ -98,12 +101,12 @@ const Marksheet = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className='py-1 navbar-wrapper'>
-            <MyNavbar student={studentData} results={results}/>
-          </div>
+        <MyNavbar student={studentData} results={results} response={studentResponse} />
+      </div>
       <div className="container d-flex justify-content-center align-items-center">
-      
+
         <div className=" sheet px-4 py-1">
-        
+
           <div className='p-3 bordercolor'>
             {/* Header */}
             <div className="d-flex align-items-center justify-content-between mb-2">
@@ -135,11 +138,11 @@ const Marksheet = () => {
                 />
               </div>
             </div>
-           <div>
-            <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
-              <p className='para'><strong>Published Date:</strong> 01-10-2024</p>
-              <p className='para'><strong>Valid Until:</strong> 30-03-2025</p>
-            </div></div><hr className="custom-hr mt-0" />
+            <div>
+              <div className="d-flex align-items-center justify-content-evenly mb-0 mt-0 ">
+                <p className='para'><strong>Published Date:</strong> 01-10-2024</p>
+                <p className='para'><strong>Valid Until:</strong> 30-03-2025</p>
+              </div></div><hr className="custom-hr mt-0" />
             {/* Candidate & School Details */}
             <div className="row mb-2">
               <div className="col-md-6 d-flex">
@@ -204,38 +207,41 @@ const Marksheet = () => {
             </div>
 
             {/* Results Section */}
-            <div className="mb-2 card p-2 borderCustom">
-              <h6 className='textcolor'><strong>Results</strong></h6>
-              <div className="d-flex justify-content-center align-items-center">
-                <table className="table table-bordered tabletext">
-                  <thead>
-                    <tr>
-                      <th>SUBJECT ID</th>
-                      <th>SUBJECT</th>
-                      <th>MARKS</th>
-                      <th>GRADE</th>
-                      <th>ACHIEVEMENT</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {studentResultsData.length > 0 ? (
-                      studentResultsData.map((result: any, index: number) => (
-                        <tr key={index}>
-                          <td>{result.subshortname}</td>
-                          <td style={{ textAlign: 'left', paddingLeft: '20px' }}>{result.subject}</td>
-                          <td>{result.marks}</td>
-                          <td>{result.grade}</td>
-                          <td>{result.finalstdscore}</td>
-                        </tr>
-                      ))
-                    ) : (
+            <div className="mb-2 p-2 borderCustom row w-100 mx-0">
+              <div className="card markcard col-lg-12">
+                <h6 className='textcolor'><strong>Results</strong></h6>
+                <div className="d-flex justify-content-center align-items-center">
+                  <table className="table table-bordered tabletext table-responsive">
+                    <thead>
                       <tr>
-                        <td colSpan={4}>No data available</td>
+                        {/* <th>SUBJECT ID</th> */}
+                        <th>SUBJECT</th>
+                        <th>MARKS</th>
+                        <th>GRADE</th>
+                        <th>ACHIEVEMENT</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {studentResultsData.length > 0 ? (
+                        studentResultsData.map((result: any, index: number) => (
+                          <tr key={index}>
+                            {/* <td>{result.subshortname}</td> */}
+                            <td style={{ textAlign: 'left', paddingLeft: '20px' }}>{result.subject}</td>
+                            <td>{result.marks}</td>
+                            <td>{result.grade}</td>
+                            <td>{result.finalstdscore}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={4}>No data available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
             </div>
 
             {/* Summary Section */}
@@ -255,7 +261,7 @@ const Marksheet = () => {
             </div> */}
 
             {/* Terms Section */}
-            <div className="card terms border p-2 borderCustom justify-content-center align-items-center text-start">
+            <div className="card terms border p-2 borderCustom  text-start">
               <h6><strong>Terms:</strong></h6>
               <div justify-content-center align-items-center text-start>
                 <p>1) National Department of Education (NDoE) online result is a provisional indicative information copy only; shall not be considered as final. The Original Certificate of Results will be issued by the MSD of NDoE which may be subject to changes for some valid reasons such as corrections from schools.</p>

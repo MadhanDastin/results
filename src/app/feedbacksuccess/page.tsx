@@ -17,7 +17,34 @@ const FeedbackSuccess = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [results, setResults] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [ratingImage, setRatingImage] = useState<string>('');
+  const [rating, setRating] = useState<number>(0);
   const [student, setStudent] = useState<any>(null);
+  const [studentResponse, setStudentResponse] = useState<any>(null);
+  useEffect(() => {
+    const feedback = searchParams.get('feedback');
+    setFeedback(feedback)
+  }, [searchParams])
+
+  useEffect(() => {
+    const feedback = searchParams.get('feedback');
+    setFeedback(feedback)
+  }, [searchParams])
+
+  useEffect(() => {
+    const rating = Number(searchParams.get('rating'));
+    setRating(rating)
+  }, [searchParams])
+
+  useEffect(() => {
+    var response = searchParams.get('response');
+    const decodedResponse = decodeURIComponent(response || '');
+    setStudentResponse(JSON.parse(decodedResponse));
+  }, [searchParams])
+  console.log("c feed", feedback);
+  console.log("c rating", rating);
+
 
   const getTitle = (title: string) => {
 
@@ -37,6 +64,61 @@ const FeedbackSuccess = () => {
 
   const resultTitle = getTitle(results as string)
 
+  const getback = (title: string) => {
+    const student = encodeURIComponent(studentResponse);
+    console.log('title ', title);
+    switch (title) {
+      case "10":
+        router.push(`/ten?results=10&response=${student}`);
+        break;
+      case "12":
+        router.push(`/twl?results=12&response=${student}`);
+        break;
+      case "STEM":
+        router.push(`/stem?results=STEM&response=${student}`);
+        break;
+      default:
+        console.warn('No route found for title:', title);
+        break;
+    }
+  }
+
+
+  const feedbackOptions = [
+    {
+      text: 'Great and keep up..!!',
+      image: '/images/great.png', // Path to your image
+      rating: 5,
+    },
+    {
+      text: 'Excellent',
+      image: '/images/excellent.png', // Path to your image
+      rating: 4,
+    },
+    {
+      text: 'Very Good',
+      image: '/images/very.png', // Path to your image
+      rating: 3,
+    },
+    {
+      text: 'Good',
+      image: '/images/good.png', // Path to your image
+      rating: 2,
+    },
+    {
+      text: 'Unsatisfactory',
+      image: '/images/unsatis.png', // Path to your image
+      rating: 1,
+    },
+  ];
+  const findRatingImage = (ratingFeedback: number) => {
+    // setRatingImage(feedbackOptions.filter(img => img.rating === rating)[0].image);
+    if (ratingFeedback) {
+      return feedbackOptions.filter(img => img.rating === ratingFeedback)[0].image;
+    }
+    return '';
+  }
+
 
   const handleLoginRedirect = () => {
     router.back();// Navigate to the login page
@@ -48,12 +130,15 @@ const FeedbackSuccess = () => {
   }, [searchParams])
 
   useEffect(() => {
-    var studentData = searchParams.get('student');
-    console.log(studentData);
-    setStudent(JSON.parse(studentData || ''))
-  }, [searchParams])
-  console.log(student?.lastname);
-
+    const studentData = searchParams.get('student');
+    if (studentData) {
+      try {
+        setStudent(JSON.parse(decodeURIComponent(studentData)));
+      } catch (error) {
+        console.error('Error parsing student data:', error);
+      }
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -114,20 +199,20 @@ const FeedbackSuccess = () => {
 
             <div className="col-md-4 d-flex justify-content-center align-items-center">
               <div className="formCard p-3">
-                <h2 className="loginTitle mt-5 pb-2 mb-3">THANK YOU FOR YOUR FEEDBACK!
+                <h2 className="loginTitle mt-5 pb-2 mb-3">Service Feedback! <Image src="/images/Group 28911.png" alt="Logo" width={24} height={24} />
                 </h2>
                 <form className="w-100" >
                   <div className='d-flex justify-content-center align-items-center'>
                     <div className='card border-0 rounded'>
                       <div className="card-header rounded d-flex justify-content-center align-items-center bg-primary text-white w-100 py-4">
-                        <p className="fs-15 mb-0">{student?.lastname} {student?.givennames}</p>
+                        <p className="fs-15 mb-0">{feedback}</p>
                       </div>
                       <div className="card-body rounded bg-white w-100">
                         <div className='d-flex justify-content-center align-items-center my-4'>
-                          <Image src="/images/Vector (9).png" alt="Logo" width={60} height={60} />
+                          <Image src={findRatingImage(rating)} alt="Logo" width={60} height={60} />
                         </div>
                         <div className='d-flex justify-content-center align-items-center my-4 pt-2'>
-                          <p className='fs-6'>Reported Successfully</p>
+                          <p className='fs-6'>Thank you {student?.lastname} {student?.givennames}</p>
                         </div>
                       </div>
                     </div>
@@ -135,9 +220,9 @@ const FeedbackSuccess = () => {
                   <div className="d-flex justify-content-center mt-5 pt-3">
                     <button type="submit" className="btn btn-primary custom-button btn-sm buttontext" onClick={(e) => {
                       e.preventDefault(); // Prevent default form submission
-                      handleLoginRedirect();
+                      getback(results as string);
                     }}>
-                      OK &nbsp;
+                      Ok &nbsp;
 
                       <Image src="/images/Vector (1).png" alt="Logo" width={15} height={15} />
 

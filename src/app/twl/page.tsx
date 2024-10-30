@@ -11,11 +11,14 @@ const Marksheet = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [studentData, setStudentData] = useState<any>(null);
+  const [studentResponse, setStudentResponse] = useState<any>(null);
   const [studentResultsData, setStudentResultsData] = useState<any>(null);
   const [results, setResults] = useState<any>(null);
   // const [studentId, setStudentId] = useState<string>('');
   useEffect(() => {
     const response = searchParams.get('response');
+    console.log(response);
+    // setStudentResponse(response);
 
     const resultsParam = searchParams.get('results');
     setResults(resultsParam);
@@ -25,7 +28,10 @@ const Marksheet = () => {
     if (response) {
       try {
         const decodedResponse = decodeURIComponent(response);
+        console.log('decoded response ', decodedResponse);
+        setStudentResponse(decodedResponse);
         const parsedResponse = JSON.parse(decodedResponse);
+        console.log('parsed response ', typeof(parsedResponse));
         setStudentData({...parsedResponse.data.student.student, id: parsedResponse.data.student._id});
         const studentResults = parsedResponse.data.student.results;
         const filteredResults = studentResults.filter((result: any) =>
@@ -59,10 +65,15 @@ const Marksheet = () => {
     }
   };
 
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className='py-1 navbar-wrapper'>
-        <MyNavbar student={studentData} results={results}/>
+        <MyNavbar student={studentData} results={results} response={studentResponse}/>
       </div>
       <div className="container d-flex justify-content-center align-items-center">
 
@@ -117,12 +128,12 @@ const Marksheet = () => {
                         <tr>
                           <td className='para'><strong>Given Names</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.givennames}</td>
+                          <td className='para'>{capitalizeFirstLetter(studentData.givennames)}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Surname</strong></td>
                           <td>:</td>
-                          <td className='para'>{studentData.lastname}</td>
+                          <td className='para'>{capitalizeFirstLetter(studentData.lastname)}</td>
                         </tr>
                         <tr>
                           <td className='para'><strong>Gender</strong></td>

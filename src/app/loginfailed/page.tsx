@@ -18,18 +18,19 @@ const Login = () => {
     const searchParams = useSearchParams();
     const username = searchParams.get('surname');
     const givenname = searchParams.get('givennames');
+    const password=searchParams.get('password');
     const [results, setResults] = useState<string | null>(null);
 
 
-    const handleloginClick = () => {
-        router.back();
+    const handleLoginRedirect = () => {
+        router.push(`/login?surname=${username}&givennames=${givenname}&password=${password}&results=${results}`);
     };
 
     const handleReset = () => {
         reset(); // This will reset the form to its default values
     };
 
-    const [loginResponse, setLoginResponse] = useState<any>(null);
+  
 
     const {
         register,
@@ -80,14 +81,14 @@ const Login = () => {
                     // Handle successful login
                     console.log("Login successful:", result);
                     // alert("Login successful!");
-                    reset(); // Reset form fields after successful login
+                    // reset(); // Reset form fields after successful login
                     const encodedResult = encodeURIComponent(JSON.stringify(result));
                     router.push(`/twl?response=${encodedResult}`);
 
                 } else {
                     // Handle API error response
                     console.error("Login failed:", result.message);
-                    alert(`Login failed: ${result.message}`);
+                    // alert(`Login failed: ${result.message}`);
                 }
             } else {
                 // alert('Work In Progress');
@@ -95,9 +96,9 @@ const Login = () => {
             }
         } catch (error) {
             console.error("An error occurred during login:", error);
-            alert("An error occurred. Please try again.");
+           
         }
-        reset();
+        // reset();
     };
 
     useEffect(() => {
@@ -178,7 +179,10 @@ const Login = () => {
 
 
                                     <div className="d-flex justify-content-center mt-3">
-                                        <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center" onClick={handleloginClick}>
+                                        <button type="submit" className="btn btn-primary custom-button d-flex align-items-center justify-content-center" onClick={(e) => {
+                                            e.preventDefault(); // Prevent default form submission
+                                            handleLoginRedirect();
+                                        }}>
                                             <span className="d-flex align-items-center buttontext">
                                                 Login &nbsp;
                                                 <Image src="/images/Vector (1).png" alt="Logo" width={20} height={20} />

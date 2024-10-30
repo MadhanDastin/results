@@ -16,14 +16,16 @@ type FormValues = {
 const InvalidPassword = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const username = searchParams.get('surname');
+    const givenname = searchParams.get('givennames');
+    const passwordfield=searchParams.get('password');
     const [password, setPassword] = useState<string | null>('');
     const [results, setResults] = useState<string | null>(null);
     const handleLoginRedirect = () => {
-        if (window.history.length > 1) {
-            router.back(); // Go back if there's a history
-        } else {
-            router.push('/login'); // Fallback to login page if no history
-        }
+     
+            router.push(`/forgotpassword?surname=${username}&givennames=${givenname}&passwordrec=${passwordfield}&results=${results}`); // Go back if there's a history
+        
+       
     };
 
     
@@ -140,7 +142,7 @@ const InvalidPassword = () => {
                                             e.preventDefault(); // Prevent default form submission
                                             handleLoginRedirect();
                                         }}>
-                                         OK&nbsp;&nbsp;
+                                         Ok&nbsp;&nbsp;
 
                                             <Image src="/images/Vector (1).png" alt="Logo" width={15} height={15} />
 
