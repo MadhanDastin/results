@@ -38,7 +38,7 @@
     overflow-y: scroll;
 }
 
-.card {
+.invalid-card {
     width: 250px !important;
 }
 

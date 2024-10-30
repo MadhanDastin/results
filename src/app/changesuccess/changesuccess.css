@@ -40,6 +40,10 @@
     overflow-y: scroll;
 }
 
+.change-success-card {
+    width: 250px !important;
+}
+
 .card-header {
     background: radial-gradient(180.77% 285.2% at 50.05% 54.5%, #006EB9 0.17%, #006EB9 6.13%, #14317F 31.79%);
     height: 30px;

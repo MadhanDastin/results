@@ -117,7 +117,7 @@ const YourPassword = () => {
                                 </h2>
                                 <form className="w-100" >
                                     <div className='d-flex justify-content-center align-items-center'>
-                                        <div className='card border-0 rounded'>
+                                        <div className='card border-0 rounded password-card'>
                                             <div className="card-header rounded d-flex justify-content-center align-items-center bg-primary text-white w-100 py-4">
                                                 <p className="fs-18 mb-0">Your Password!</p>
                                             </div>
